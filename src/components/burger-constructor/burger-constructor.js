@@ -1,9 +1,9 @@
-import React from 'react';
-import burgerConstructorStyles from './burger-constructor.module.css';
+// import React from 'react';
+// import burgerConstructorStyles from './burger-constructor.module.css';
 
 
 
-function BurgerConstructor() {
+function BurgerConstructor(props) {
     return
 }
 

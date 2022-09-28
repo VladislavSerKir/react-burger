@@ -1,12 +1,10 @@
 import menuHomeStyles from './menu-home.module.css';
-import { ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 
-function MenuHome() {
+function HeaderMenuButton(props) {
     return (
         <button className={menuHomeStyles.menuHome} type='button' >
-            <ProfileIcon className={menuHomeStyles.menuHomeImg} type="secondary" />
-            <p className={menuHomeStyles.menuHomeText}> Личный кабинет</p>
+            {props.children}
         </button>
     )
 }
-export default MenuHome;
+export default HeaderMenuButton;
