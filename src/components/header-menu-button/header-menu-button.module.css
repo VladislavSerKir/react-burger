@@ -1,0 +1,21 @@
+.button {
+    background-color: transparent;
+    border: none;
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    align-items: center;
+    padding: 16px 20px;
+    cursor: pointer;
+    border-radius: 40px;
+    transition: all 0.3s;
+}
+
+.button:hover {
+    opacity: 0.5;
+    transition: all 0.3s;
+}
+
+.button.active {
+    color:#F2F2F3;
+}

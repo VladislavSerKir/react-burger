@@ -1,21 +1,16 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Logo, ProfileIcon, ListIcon, BurgerIcon } from '@ya.praktikum/react-developer-burger-ui-components'
-import HeaderMenuButton from '../menu-home/menu-home';
+import HeaderMenuButton from '../header-menu-button/header-menu-button';
 import appHeaderStyles from './app-header.module.css';
 
 function AppHeader() {
-    // const [active, setActive] = React.useState({ menu: 'constructor' });
-    // const openMenu = (menu) => {
-    //     setActive((prevState) => ({}))
-    // }
-
     return (
         <header className={appHeaderStyles.header}>
             <nav className={appHeaderStyles.header__nav}>
                 <div className={appHeaderStyles.header__group}>
                     <HeaderMenuButton className={appHeaderStyles.header__button}>
-                        <BurgerIcon type="secondary" />
-                        <p className={`text text_type_main-default ${appHeaderStyles.header__buttontext}`}>Конструктор</p>
+                        <BurgerIcon type="primary" />
+                        <p className={`text text_type_main-default ${appHeaderStyles.header__buttontext} ${appHeaderStyles.active}`}>Конструктор</p>
                     </HeaderMenuButton>
                     <HeaderMenuButton className={appHeaderStyles.header__button}>
                         <ListIcon type="secondary" />
@@ -30,7 +25,6 @@ function AppHeader() {
             </nav>
         </header>
     );
-
 }
 
 export default AppHeader;

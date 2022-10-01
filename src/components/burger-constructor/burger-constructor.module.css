@@ -1,0 +1,47 @@
+.burgerConstructor__listitem {
+display: flex;
+flex-direction: column;
+gap: 16px;
+list-style: none;
+padding: 0;
+height: 43vh;
+overflow-y: scroll;
+}
+
+.burgerConstructor__listitem::-webkit-scrollbar {
+    width: 8px; /* ширина scrollbar */
+  }
+  .burgerConstructor__listitem::-webkit-scrollbar-track {
+    background: #2F2F37; /* цвет дорожки */
+  }
+  .burgerConstructor__listitem::-webkit-scrollbar-thumb {
+    background-color: #8585AD; /* цвет плашки */
+  }
+
+.burgerConstructor__item{
+    display: flex;
+    gap: 8px;
+    align-items: center;
+justify-content:end;
+margin-right: 8px;
+}
+
+.burgerConstructor__checkout{
+    display: flex;
+    gap: 40px;
+    justify-content: end;
+}
+
+.burgerConstructor__total {
+    display: flex;
+    align-items: center;
+    font-family: 'Iceland';
+    font-weight: 400;
+}
+
+.burgerConstructor__ordersum{
+    font-family: 'Iceland';
+font-weight: 400;
+font-size: 48px;
+line-height: 36px;
+}

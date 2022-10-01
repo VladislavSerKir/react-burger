@@ -1,0 +1,24 @@
+.card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 272px;
+    position: relative;
+}
+
+.card__price {
+    display: flex;
+}
+
+.card__description {
+    max-width: 220px;
+    text-align: center;
+}
+
+.card__count {
+    font-family: 'Iceland';
+font-weight: 400;
+font-size: 28px;
+line-height: 24px;
+color: #F2F2F3;
+}

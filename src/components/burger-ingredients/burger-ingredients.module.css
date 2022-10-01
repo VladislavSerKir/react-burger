@@ -1,3 +1,22 @@
+.ingredients {
+max-width: 600px;
+}
+
 .ingredients__switcher {
     display: flex;
 }
+
+.ingredients__content {
+    height: 68vh;
+    overflow-y: scroll;
+}
+
+.ingredients__content::-webkit-scrollbar {
+    width: 8px; /* ширина scrollbar */
+  }
+  .ingredients__content::-webkit-scrollbar-track {
+    background: #2F2F37; /* цвет дорожки */
+  }
+  .ingredients__content::-webkit-scrollbar-thumb {
+    background-color: #8585AD; /* цвет плашки */
+  }
