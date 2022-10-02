@@ -1,10 +1,10 @@
 import headerMenuButtonStyles from './header-menu-button.module.css';
 
-function HeaderMenuButton(props) {
+function HeaderMenuButton({ children, path }) {
     return (
-        <button className={headerMenuButtonStyles.button} type='button' >
-            {props.children}
-        </button>
+        <a href={path} className={headerMenuButtonStyles.link}>
+            {children}
+        </a>
     )
 }
 export default HeaderMenuButton;

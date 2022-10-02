@@ -2,117 +2,42 @@ import React from 'react';
 import { DragIcon, ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import burgerConstructorStyles from './burger-constructor.module.css';
 
-function BurgerConstructor() {
+function BurgerConstructor({ data }) {
+    const [summary, setSummary] = React.useState(data);
+
     return (
-        <div className={`mt-25 ml-4 ${burgerConstructorStyles.burgerConstructor}`}>
+        <form name='order' action='#' className={`mt-25 ml-4 ${burgerConstructorStyles.burgerConstructor}`}>
             <div className={`mb-4 pr-2 ${burgerConstructorStyles.burgerConstructor__item}`}>
                 <ConstructorElement
                     type="top"
                     isLocked={true}
-                    text="Краторная булка N-200i (верх)"
-                    price={200}
-                    thumbnail={'https://code.s3.yandex.net/react/code/bun-02.png'}
+                    text={`${summary[0].name} (верх)`}
+                    price={summary[0].price}
+                    thumbnail={summary[0].image}
                 />
             </div>
             <ul className={`${burgerConstructorStyles.burgerConstructor__listitem}`}>
-                <li className={`${burgerConstructorStyles.burgerConstructor__item}`}>
-                    <DragIcon type="primary" />
-                    <ConstructorElement
-                        isLocked={false}
-                        text="Краторная булка N-200i (верх)"
-                        price={200}
-                        thumbnail={'https://code.s3.yandex.net/react/code/bun-02.png'}
-                    />
-                </li>
-                <li className={`${burgerConstructorStyles.burgerConstructor__item}`}>
-                    <DragIcon type="primary" />
-                    <ConstructorElement
-                        isLocked={false}
-                        text="Краторная булка N-200i (верх)"
-                        price={200}
-                        thumbnail={'https://code.s3.yandex.net/react/code/bun-02.png'}
-                    />
-                </li>
-                <li className={`${burgerConstructorStyles.burgerConstructor__item}`}>
-                    <DragIcon type="primary" />
-                    <ConstructorElement
-                        isLocked={false}
-                        text="Краторная булка N-200i (верх)"
-                        price={200}
-                        thumbnail={'https://code.s3.yandex.net/react/code/bun-02.png'}
-                    />
-                </li>
-                <li className={`${burgerConstructorStyles.burgerConstructor__item}`}>
-                    <DragIcon type="primary" />
-                    <ConstructorElement
-                        isLocked={false}
-                        text="Краторная булка N-200i (верх)"
-                        price={200}
-                        thumbnail={'https://code.s3.yandex.net/react/code/bun-02.png'}
-                    />
-                </li>
-                <li className={`${burgerConstructorStyles.burgerConstructor__item}`}>
-                    <DragIcon type="primary" />
-                    <ConstructorElement
-                        isLocked={false}
-                        text="Краторная булка N-200i (верх)"
-                        price={200}
-                        thumbnail={'https://code.s3.yandex.net/react/code/bun-02.png'}
-                    />
-                </li>
-                <li className={`${burgerConstructorStyles.burgerConstructor__item}`}>
-                    <DragIcon type="primary" />
-                    <ConstructorElement
-                        isLocked={false}
-                        text="Краторная булка N-200i (верх)"
-                        price={200}
-                        thumbnail={'https://code.s3.yandex.net/react/code/bun-02.png'}
-                    />
-                </li>
-                <li className={`${burgerConstructorStyles.burgerConstructor__item}`}>
-                    <DragIcon type="primary" />
-                    <ConstructorElement
-                        isLocked={false}
-                        text="Краторная булка N-200i (верх)"
-                        price={200}
-                        thumbnail={'https://code.s3.yandex.net/react/code/bun-02.png'}
-                    />
-                </li>
-                <li className={`${burgerConstructorStyles.burgerConstructor__item}`}>
-                    <DragIcon type="primary" />
-                    <ConstructorElement
-                        isLocked={false}
-                        text="Краторная булка N-200i (верх)"
-                        price={200}
-                        thumbnail={'https://code.s3.yandex.net/react/code/bun-02.png'}
-                    />
-                </li>
-                <li className={`${burgerConstructorStyles.burgerConstructor__item}`}>
-                    <DragIcon type="primary" />
-                    <ConstructorElement
-                        isLocked={false}
-                        text="Краторная булка N-200i (верх)"
-                        price={200}
-                        thumbnail={'https://code.s3.yandex.net/react/code/bun-02.png'}
-                    />
-                </li>
-                <li className={`${burgerConstructorStyles.burgerConstructor__item}`}>
-                    <DragIcon type="primary" />
-                    <ConstructorElement
-                        isLocked={false}
-                        text="Краторная булка N-200i (верх)"
-                        price={200}
-                        thumbnail={'https://code.s3.yandex.net/react/code/bun-02.png'}
-                    />
-                </li>
+                {summary.map((position) => {
+                    return (
+                        <li key={position._id} className={`${burgerConstructorStyles.burgerConstructor__item}`}>
+                            <DragIcon type="primary" />
+                            <ConstructorElement
+                                isLocked={false}
+                                text={position.name}
+                                price={position.price}
+                                thumbnail={position.image}
+                            />
+                        </li>
+                    )
+                })}
             </ul>
             <div className={`mt-4 pr-2 ${burgerConstructorStyles.burgerConstructor__item}`}>
                 <ConstructorElement
                     type="bottom"
                     isLocked={true}
-                    text="Краторная булка N-200i (низ)"
-                    price={200}
-                    thumbnail={'https://code.s3.yandex.net/react/code/bun-02.png'}
+                    text={`${summary[summary.length - 1].name} (низ)`}
+                    price={summary[summary.length - 1].price}
+                    thumbnail={summary[summary.length - 1].image}
                 />
             </div>
             <div className={`mt-10 pb-10 ${burgerConstructorStyles.burgerConstructor__checkout}`}>
@@ -120,9 +45,9 @@ function BurgerConstructor() {
                     <p className={`mr-2 text text_type_main-large ${burgerConstructorStyles.burgerConstructor__ordersum}`}>610</p>
                     <CurrencyIcon type="primary" />
                 </div>
-                <Button htmlType='button' type="primary" size="large">Оформить заказ</Button>
+                <Button htmlType='submit' type="primary" size="large">Оформить заказ</Button>
             </div>
-        </div>
+        </form>
     )
 }
 

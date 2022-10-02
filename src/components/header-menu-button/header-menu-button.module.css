@@ -1,4 +1,4 @@
-.button {
+.link {
     background-color: transparent;
     border: none;
     display: flex;
@@ -9,13 +9,14 @@
     cursor: pointer;
     border-radius: 40px;
     transition: all 0.3s;
+    text-decoration: none;
 }
 
-.button:hover {
+.link:hover {
     opacity: 0.5;
     transition: all 0.3s;
 }
 
-.button.active {
+.link.active {
     color:#F2F2F3;
 }

@@ -8,17 +8,17 @@ function AppHeader() {
         <header className={appHeaderStyles.header}>
             <nav className={appHeaderStyles.header__nav}>
                 <div className={appHeaderStyles.header__group}>
-                    <HeaderMenuButton className={appHeaderStyles.header__button}>
+                    <HeaderMenuButton className={appHeaderStyles.header__button} path={'/'}>
                         <BurgerIcon type="primary" />
                         <p className={`text text_type_main-default ${appHeaderStyles.header__buttontext} ${appHeaderStyles.active}`}>Конструктор</p>
                     </HeaderMenuButton>
-                    <HeaderMenuButton className={appHeaderStyles.header__button}>
+                    <HeaderMenuButton path={'/orders'} className={appHeaderStyles.header__button}>
                         <ListIcon type="secondary" />
                         <p className={`text text_type_main-default ${appHeaderStyles.header__buttontext}`}>Лента заказов</p>
                     </HeaderMenuButton>
                 </div>
                 <Logo />
-                <HeaderMenuButton className={appHeaderStyles.header__button}>
+                <HeaderMenuButton path={'/profile'} className={appHeaderStyles.header__button}>
                     <ProfileIcon type="secondary" />
                     <p className={`text text_type_main-default ${appHeaderStyles.header__buttontext}`}>Личный кабинет</p>
                 </HeaderMenuButton>

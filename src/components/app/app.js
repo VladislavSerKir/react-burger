@@ -11,8 +11,11 @@ function App() {
         <div className={appStyles.body} >
             <AppHeader />
             <main className={appStyles.main}>
-                <section className={appStyles.column}><BurgerIngredients data={data} /></section>
-                <section className={appStyles.column}><BurgerConstructor /></section>
+                {/* <section className={appStyles.column}><BurgerIngredients className={appStyles.column} data={data} /></section>
+                <section className={appStyles.column}><BurgerConstructor className={appStyles.column} /></section> */}
+
+                <BurgerIngredients className={appStyles.column} data={data} />
+                <BurgerConstructor className={appStyles.column} data={data} />
             </main>
         </div>
     );
