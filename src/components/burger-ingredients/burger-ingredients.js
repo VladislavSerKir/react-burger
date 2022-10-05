@@ -4,7 +4,7 @@ import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 import burgerIngredientsStyles from './burger-ingredients.module.css';
 import CardsGroup from '../cards-group/cards-group';
 
-function BurgerIngredients({ data }) {
+function BurgerIngredients({ data, getCardsData }) {
     const [current, setCurrent] = React.useState('one');
     const dataBun = data.filter(item => item.type === 'bun');
     const dataMain = data.filter(item => item.type === 'main');
@@ -26,9 +26,9 @@ function BurgerIngredients({ data }) {
             </div>
             <div className={`${burgerIngredientsStyles.ingredients__content}`}>
                 {/* группы карточек по категориям */}
-                <CardsGroup data={dataBun} title={'Булки'} />
-                <CardsGroup data={DataSauce} title={'Соусы'} />
-                <CardsGroup data={dataMain} title={'Начинки'} />
+                <CardsGroup data={dataBun} title={'Булки'} getCardsData={getCardsData} />
+                <CardsGroup data={DataSauce} title={'Соусы'} getCardsData={getCardsData} />
+                <CardsGroup data={dataMain} title={'Начинки'} getCardsData={getCardsData} />
             </div>
         </section>
     )

@@ -1,27 +1,32 @@
 .body {
-    background-color: #131316;
-height: 100vh;
+  background-color: #131316;
+  height: 100vh;
 }
 
 body::-webkit-scrollbar {
-    width: 8px; /* ширина scrollbar */
-  }
-  body::-webkit-scrollbar-track {
-    background: #2F2F37; /* цвет дорожки */
-  }
-  body::-webkit-scrollbar-thumb {
-    background-color: #8585AD; /* цвет плашки */
-  }
+  width: 8px;
+  /* ширина scrollbar */
+}
+
+body::-webkit-scrollbar-track {
+  background: #2F2F37;
+  /* цвет дорожки */
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: #8585AD;
+  /* цвет плашки */
+}
 
 .main {
-    max-width: 1240px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    gap: 40px;
-    margin: 0 auto;
+  max-width: 1240px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 40px;
+  margin: 0 auto;
 }
 
 .column {
-    width: 600px;
+  width: 600px;
 }

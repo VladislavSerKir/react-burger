@@ -1,16 +1,14 @@
 .modal {
-border-radius: 40px;
-background: #1C1C21;
-z-index: 1;
-position: absolute;
-overflow: hidden;
-top: 50%;
-left: 50%;
-transform: translate(-50%, -50%);
-display: flex;
-flex-direction: column;
-max-width: 720px;
-/* min-height: 720px; */
-/* margin: 0 auto; */
-/* justify-content: center; */
+    border-radius: 40px;
+    background: #1C1C21;
+    z-index: 1;
+    position: absolute;
+    overflow: hidden;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    width: 720px;
+    transition: all 0.3s;
 }

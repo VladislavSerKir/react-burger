@@ -12,7 +12,7 @@
     margin: 0 auto;
 }
 
-.header__group{
+.header__group {
     display: flex;
     gap: 8px;
     justify-content: start;
@@ -23,8 +23,6 @@
     align-items: center;
     text-decoration: none;
 }
-
-
 
 .header__buttontext {
     color: rgba(133, 133, 173, 1);

@@ -2,7 +2,7 @@ import React from 'react';
 import { DragIcon, ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import burgerConstructorStyles from './burger-constructor.module.css';
 
-function BurgerConstructor({ data }) {
+function BurgerConstructor({ data, openOrder }) {
     // console.log(data[0])
     return (
         <form name='order' action='#' className={`mt-25 ml-4 ${burgerConstructorStyles.burgerConstructor}`}>
@@ -44,7 +44,7 @@ function BurgerConstructor({ data }) {
                     <p className={`mr-2 text text_type_main-large ${burgerConstructorStyles.burgerConstructor__ordersum}`}>610</p>
                     <CurrencyIcon type="primary" />
                 </div>
-                <Button htmlType='submit' type="primary" size="large">Оформить заказ</Button>
+                <Button htmlType='submit' type="primary" size="large" onClick={openOrder}>Оформить заказ</Button>
             </div>
         </form>
     )
