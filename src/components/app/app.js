@@ -19,7 +19,6 @@ function App() {
     }, []);
 
     const getCardsData = (cardData) => {
-        console.log(cardData)
         setIngredientDetails({ isOpened: true, ingredient: cardData })
     }
 
@@ -36,7 +35,7 @@ function App() {
         setOrderDetails({ ...orderDetails, isOpened: true });
     }
 
-    const getData = () => {
+    const getData = async () => {
         return fetch(url)
             .then((response) => {
                 return response.ok ? response.json() : setState({ ...state, success: false });
@@ -61,8 +60,7 @@ function App() {
                 <Modal
                     title={'Детали заказа'}
                     onOverlayClick={closeAllModals}
-                    onEscKeydown={handleEscKeydown}
-                >
+                    onEscKeydown={handleEscKeydown}>
                     <OrderDetails orderId={`034536`} closeModal={closeAllModals} />
                 </Modal>}
 
@@ -70,8 +68,7 @@ function App() {
                 <Modal
                     title={'Детали ингредиента'}
                     onOverlayClick={closeAllModals}
-                    onEscKeydown={handleEscKeydown}
-                >
+                    onEscKeydown={handleEscKeydown}>
                     <IngredientDetails title={`Детали ингредиента`} ingredientData={ingredientDetails.ingredient} closeModal={closeAllModals} name={`Биокотлета из марсианской Магнолии`} />
                 </Modal>}
         </div>

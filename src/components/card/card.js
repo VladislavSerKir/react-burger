@@ -4,7 +4,6 @@ import cardStyles from './card.module.css';
 
 function Card({ cardData, getCardsData }) {
 
-
     return (
         <li key={cardData._id} className={`${cardStyles.card}`} onClick={() => getCardsData(cardData)}>
             <Counter count={1} size="default" />

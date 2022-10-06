@@ -9,7 +9,7 @@ function BurgerIngredients({ data, getCardsData }) {
     const dataBun = data.filter(item => item.type === 'bun');
     const dataMain = data.filter(item => item.type === 'main');
     const DataSauce = data.filter(item => item.type === 'sauce');
-    // console.log(data)
+
     return (
         <section className={burgerIngredientsStyles.ingredients}>
             <h1 className={`text text_type_main-large mt-10 mb-5 ${burgerIngredientsStyles.ingredients__title}`}>Соберите бургер</h1>

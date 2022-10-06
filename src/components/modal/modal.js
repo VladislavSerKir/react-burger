@@ -5,7 +5,7 @@ import { ModalOverlay } from '../modal-overlay/modal-overlay';
 import modalStyles from './modal.module.css';
 const modalsContainer = document.querySelector('#modals');
 
-const Modal = ({ title, onOverlayClick, onEscKeydown, children }) => {
+const Modal = ({ onOverlayClick, onEscKeydown, children }) => {
     React.useEffect(() => {
         document.addEventListener('keydown', onEscKeydown);
         return () => {

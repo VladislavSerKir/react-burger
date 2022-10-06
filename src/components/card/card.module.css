@@ -4,10 +4,13 @@
     align-items: center;
     width: 272px;
     position: relative;
+    transition: all 0.3s;
 }
 
 .card:hover {
     cursor: pointer;
+    opacity: 0.7;
+    transition: all 0.3s;
 }
 
 .card__price {

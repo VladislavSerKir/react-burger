@@ -1,11 +1,8 @@
-import React from 'react';
 import cardsGroupStyles from './cards-group.module.css';
 import Card from '../card/card';
 
 function CardsGroup({ data, title, getCardsData }) {
-    // const getCardsData = (cardData) => {
-    //     console.log(cardData)
-    // }
+
     return (
         <div className={cardsGroupStyles.cards}>
             <h3 className={`text text_type_main-medium ${cardsGroupStyles.cards__title}`}>{title}</h3>
