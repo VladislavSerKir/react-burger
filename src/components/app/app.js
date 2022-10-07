@@ -6,7 +6,7 @@ import BurgerConstructor from '../burger-constructor/burger-constructor';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
-import { url } from '../utils/data';
+import { url } from '../../utils/data';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 
 function App() {
@@ -25,10 +25,6 @@ function App() {
     const closeAllModals = () => {
         setOrderDetails({ ...orderDetails, isOpened: false });
         setIngredientDetails({ ...ingredientDetails, isOpened: false });
-    }
-
-    const handleEscKeydown = (e) => {
-        e.key === 'Escape' && closeAllModals();
     }
 
     const openOrderDetails = () => {
@@ -60,7 +56,7 @@ function App() {
                 <Modal
                     title={'Детали заказа'}
                     onOverlayClick={closeAllModals}
-                    onEscKeydown={handleEscKeydown}>
+                >
                     <OrderDetails orderId={`034536`} closeModal={closeAllModals} />
                 </Modal>}
 
@@ -68,7 +64,7 @@ function App() {
                 <Modal
                     title={'Детали ингредиента'}
                     onOverlayClick={closeAllModals}
-                    onEscKeydown={handleEscKeydown}>
+                >
                     <IngredientDetails title={`Детали ингредиента`} ingredientData={ingredientDetails.ingredient} closeModal={closeAllModals} name={`Биокотлета из марсианской Магнолии`} />
                 </Modal>}
         </div>

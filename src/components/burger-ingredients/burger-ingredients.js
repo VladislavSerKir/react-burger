@@ -4,11 +4,21 @@ import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 import burgerIngredientsStyles from './burger-ingredients.module.css';
 import CardsGroup from '../cards-group/cards-group';
 
+
 function BurgerIngredients({ data, getCardsData }) {
     const [current, setCurrent] = React.useState('one');
-    const dataBun = data.filter(item => item.type === 'bun');
-    const dataMain = data.filter(item => item.type === 'main');
-    const DataSauce = data.filter(item => item.type === 'sauce');
+
+    const dataBun = React.useMemo(() => {
+        return data.filter(item => item.type === 'bun');
+    }, [data])
+
+    const dataMain = React.useMemo(() => {
+        return data.filter(item => item.type === 'main');
+    }, [data])
+
+    const dataSauce = React.useMemo(() => {
+        return data.filter(item => item.type === 'sauce')
+    }, [data])
 
     return (
         <section className={burgerIngredientsStyles.ingredients}>
@@ -17,17 +27,17 @@ function BurgerIngredients({ data, getCardsData }) {
                 <Tab value="one" active={current === 'one'} onClick={setCurrent}>
                     Булки
                 </Tab>
-                <Tab value="two" active={current === 'two'} onClick={setCurrent}>
+                <Tab value="two" active={current === 'two'} onClick={setCurrent} >
                     Соусы
                 </Tab>
-                <Tab value="three" active={current === 'three'} onClick={setCurrent}>
+                <Tab value="three" active={current === 'three'} onClick={setCurrent} >
                     Начинки
                 </Tab>
             </div>
             <div className={`${burgerIngredientsStyles.ingredients__content}`}>
                 {/* группы карточек по категориям */}
                 <CardsGroup data={dataBun} title={'Булки'} getCardsData={getCardsData} />
-                <CardsGroup data={DataSauce} title={'Соусы'} getCardsData={getCardsData} />
+                <CardsGroup data={dataSauce} title={'Соусы'} getCardsData={getCardsData} />
                 <CardsGroup data={dataMain} title={'Начинки'} getCardsData={getCardsData} />
             </div>
         </section>

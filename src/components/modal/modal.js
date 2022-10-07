@@ -5,13 +5,17 @@ import { ModalOverlay } from '../modal-overlay/modal-overlay';
 import modalStyles from './modal.module.css';
 const modalsContainer = document.querySelector('#modals');
 
-const Modal = ({ onOverlayClick, onEscKeydown, children }) => {
+const Modal = ({ onOverlayClick, children }) => {
     React.useEffect(() => {
-        document.addEventListener('keydown', onEscKeydown);
+        document.addEventListener('keydown', handleEscKeydown);
         return () => {
-            document.removeEventListener('keydown', onEscKeydown);
+            document.removeEventListener('keydown', handleEscKeydown);
         }
     }, []);
+
+    const handleEscKeydown = (e) => {
+        e.key === 'Escape' && onOverlayClick(e);
+    }
 
     return ReactDOM.createPortal(
         <>
@@ -27,7 +31,6 @@ const Modal = ({ onOverlayClick, onEscKeydown, children }) => {
 Modal.propTypes = {
     title: PropTypes.string.isRequired,
     onOverlayClick: PropTypes.func.isRequired,
-    onEscKeydown: PropTypes.func.isRequired,
     children: PropTypes.node.isRequired
 }
 
