@@ -29,7 +29,6 @@ const Modal = ({ onOverlayClick, children }) => {
 }
 
 Modal.propTypes = {
-    title: PropTypes.string.isRequired,
     onOverlayClick: PropTypes.func.isRequired,
     children: PropTypes.node.isRequired
 }

@@ -3,12 +3,11 @@ import orderDetailsStyles from './order-details.module.css';
 import orderAcceptedImg from '../../images/graphics.svg';
 import closeButtonImg from '../../images/close-button.png';
 
-function OrderDetails({ orderId, closeModal }) {
-
+function OrderDetails({ orderNumber, closeModal }) {
     return (
         <div className={orderDetailsStyles.order}>
             <button onClick={closeModal} type='button' className={`${orderDetailsStyles.order__closeButton}`}><img src={closeButtonImg} alt='Закрыть окно' /></button>
-            <h2 className={`text text_type_digits-large mt-30 mb-8 ${orderDetailsStyles.order__title}`}>{orderId}</h2>
+            <h2 className={`text text_type_digits-large mt-30 mb-8 ${orderDetailsStyles.order__title}`}>{orderNumber}</h2>
             <p className={`text text_type_main-medium ${orderDetailsStyles.order__id}`}>Идентификатор заказа</p>
             <img className={`mt-15 mb-15 ${orderDetailsStyles.order__image}`} src={orderAcceptedImg} alt='Ваш заказ принят' />
             <p className={`text text_type_main-default ${orderDetailsStyles.order__description}`}>Ваш заказ начали готовить</p>
@@ -18,8 +17,8 @@ function OrderDetails({ orderId, closeModal }) {
 }
 
 OrderDetails.propTypes = {
-    orderId: PropTypes.string.isRequired,
-    closeModal: PropTypes.func.isRequired
+    closeModal: PropTypes.func.isRequired,
+    orderNumber: PropTypes.number.isRequired
 }
 
 export default OrderDetails;

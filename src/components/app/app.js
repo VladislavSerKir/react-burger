@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useReducer } from 'react';
 // import ReactDOM from 'react-dom';
 import appStyles from './app.module.css';
 import AppHeader from '../app-header/app-header';
@@ -8,36 +8,63 @@ import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import { url } from '../../utils/data';
 import IngredientDetails from '../ingredient-details/ingredient-details';
+import { IngredientsContext } from '../services/ingredientsContext';
+import reducer from '../services/reducers/appReducer';
+
+const initialState = {
+    ingredients: [],
+    success: false,
+    orderDetails: {
+        isOpened: false,
+        orderNumber: null
+    },
+    ingredientDetails: {
+        isOpened: false,
+        ingredient: null
+    },
+    burgerConstructor: {
+        bun: null,
+        ingredients: [],
+    }
+};
 
 function App() {
-    const [state, setState] = useState({ apiData: [], success: false });
-    const [orderDetails, setOrderDetails] = useState({ isOpened: false });
-    const [ingredientDetails, setIngredientDetails] = useState({ isOpened: false, ingredient: null })
+    const [state, dispatch] = useReducer(reducer, initialState);
 
     React.useEffect(() => {
         getData();
     }, []);
 
     const getCardsData = (cardData) => {
-        setIngredientDetails({ isOpened: true, ingredient: cardData })
+        dispatch({
+            type: 'LOAD_CARD_DATA',
+            payload: cardData
+        })
+        dispatch({
+            type: 'ADD',
+            payload: cardData
+        })
     }
 
     const closeAllModals = () => {
-        setOrderDetails({ ...orderDetails, isOpened: false });
-        setIngredientDetails({ ...ingredientDetails, isOpened: false });
-    }
-
-    const openOrderDetails = () => {
-        setOrderDetails({ ...orderDetails, isOpened: true });
+        dispatch({
+            type: "CLOSE_ALL_MODALS"
+        })
     }
 
     const getData = async () => {
         return fetch(url)
             .then((response) => {
-                return response.ok ? response.json() : setState({ ...state, success: false });
+                return response.ok ?
+                    response.json()
+                    :
+                    dispatch({ type: 'LOAD_DATA_FAIL' });
             })
             .then((data) => {
-                setState({ apiData: data.data, success: data.success })
+                dispatch({
+                    type: 'LOAD_DATA',
+                    payload: data
+                })
             })
             .catch((error) => {
                 console.log(error)
@@ -48,26 +75,32 @@ function App() {
         <div className={appStyles.body} >
             <AppHeader />
             <main className={appStyles.main}>
-                <BurgerIngredients className={appStyles.column} data={state.apiData} getCardsData={getCardsData} />
-                <BurgerConstructor className={appStyles.column} data={state.apiData} openOrder={openOrderDetails} />
+                <IngredientsContext.Provider value={{ state, dispatch }} >
+                    <BurgerIngredients className={appStyles.column} getCardsData={getCardsData} />
+                    <BurgerConstructor className={appStyles.column} />
+                </IngredientsContext.Provider>
             </main>
 
-            {orderDetails.isOpened &&
+            {
+                state.orderDetails?.isOpened &&
                 <Modal
                     title={'Детали заказа'}
                     onOverlayClick={closeAllModals}
                 >
-                    <OrderDetails orderId={`034536`} closeModal={closeAllModals} />
-                </Modal>}
+                    <OrderDetails orderNumber={state.orderDetails.orderNumber} closeModal={closeAllModals} />
+                </Modal>
+            }
 
-            {ingredientDetails.isOpened &&
+            {
+                state.ingredientDetails?.isOpened &&
                 <Modal
                     title={'Детали ингредиента'}
                     onOverlayClick={closeAllModals}
                 >
-                    <IngredientDetails title={`Детали ингредиента`} ingredientData={ingredientDetails.ingredient} closeModal={closeAllModals} name={`Биокотлета из марсианской Магнолии`} />
-                </Modal>}
-        </div>
+                    <IngredientDetails title={`Детали ингредиента`} ingredientData={state.ingredientDetails.ingredient} closeModal={closeAllModals} name={`Биокотлета из марсианской Магнолии`} />
+                </Modal>
+            }
+        </div >
     );
 }
 

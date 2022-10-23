@@ -3,22 +3,26 @@ import PropTypes from 'prop-types';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 import burgerIngredientsStyles from './burger-ingredients.module.css';
 import CardsGroup from '../cards-group/cards-group';
+import { IngredientsContext } from '../services/ingredientsContext';
 
+function BurgerIngredients({ getCardsData }) {
 
-function BurgerIngredients({ data, getCardsData }) {
+    const { state } = React.useContext(IngredientsContext);
+    const { ingredients } = state;
+
     const [current, setCurrent] = React.useState('one');
 
     const dataBun = React.useMemo(() => {
-        return data.filter(item => item.type === 'bun');
-    }, [data])
+        return ingredients.filter(item => item.type === 'bun');
+    }, [ingredients])
 
     const dataMain = React.useMemo(() => {
-        return data.filter(item => item.type === 'main');
-    }, [data])
+        return ingredients.filter(item => item.type === 'main');
+    }, [ingredients])
 
     const dataSauce = React.useMemo(() => {
-        return data.filter(item => item.type === 'sauce')
-    }, [data])
+        return ingredients.filter(item => item.type === 'sauce')
+    }, [ingredients])
 
     return (
         <section className={burgerIngredientsStyles.ingredients}>
