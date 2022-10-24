@@ -12,3 +12,10 @@
     width: 720px;
     transition: all 0.3s;
 }
+
+.modal__closeButton {
+    position: absolute;
+    top: 60px;
+    right: 40px;
+    z-index: 2;
+}

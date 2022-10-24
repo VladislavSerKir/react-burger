@@ -1,5 +1,7 @@
 import cardsGroupStyles from './cards-group.module.css';
 import Card from '../card/card';
+import PropTypes from 'prop-types';
+import { ingredientType } from '../../utils/types'
 
 function CardsGroup({ data, title, getCardsData }) {
 
@@ -16,6 +18,12 @@ function CardsGroup({ data, title, getCardsData }) {
             </ul>
         </div>
     )
+}
+
+CardsGroup.propTypes = {
+    getCardsData: PropTypes.func.isRequired,
+    title: PropTypes.string.isRequired,
+    data: PropTypes.arrayOf(PropTypes.shape(ingredientType))
 }
 
 export default CardsGroup;

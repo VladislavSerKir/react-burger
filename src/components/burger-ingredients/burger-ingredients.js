@@ -6,11 +6,13 @@ import CardsGroup from '../cards-group/cards-group';
 import { IngredientsContext } from '../services/ingredientsContext';
 
 function BurgerIngredients({ getCardsData }) {
-
     const { state } = React.useContext(IngredientsContext);
     const { ingredients } = state;
+    // const tabBun = React.useRef(null);
+    // const tabSauce = React.useRef(null);
+    // const tabMain = React.useRef(null);
 
-    const [current, setCurrent] = React.useState('one');
+    const [current, setCurrent] = React.useState('bun');
 
     const dataBun = React.useMemo(() => {
         return ingredients.filter(item => item.type === 'bun');
@@ -28,41 +30,28 @@ function BurgerIngredients({ getCardsData }) {
         <section className={burgerIngredientsStyles.ingredients}>
             <h1 className={`text text_type_main-large mt-10 mb-5 ${burgerIngredientsStyles.ingredients__title}`}>Соберите бургер</h1>
             <div className={`mb-10 ${burgerIngredientsStyles.ingredients__switcher}`}>
-                <Tab value="one" active={current === 'one'} onClick={setCurrent}>
+                <Tab value="bun" active={current === 'bun'} onClick={setCurrent}>
                     Булки
                 </Tab>
-                <Tab value="two" active={current === 'two'} onClick={setCurrent} >
+                <Tab value="sauce" active={current === 'sauce'} onClick={setCurrent} >
                     Соусы
                 </Tab>
-                <Tab value="three" active={current === 'three'} onClick={setCurrent} >
+                <Tab value="main" active={current === 'main'} onClick={setCurrent} >
                     Начинки
                 </Tab>
             </div>
             <div className={`${burgerIngredientsStyles.ingredients__content}`}>
                 {/* группы карточек по категориям */}
-                <CardsGroup data={dataBun} title={'Булки'} getCardsData={getCardsData} />
-                <CardsGroup data={dataSauce} title={'Соусы'} getCardsData={getCardsData} />
-                <CardsGroup data={dataMain} title={'Начинки'} getCardsData={getCardsData} />
+                <CardsGroup data={dataBun} id='bun' title={'Булки'} getCardsData={getCardsData} />
+                <CardsGroup data={dataSauce} id='sauce' title={'Соусы'} getCardsData={getCardsData} />
+                <CardsGroup data={dataMain} id='main' title={'Начинки'} getCardsData={getCardsData} />
             </div>
         </section>
     )
 }
 
-// проверка пропов типов данных массива и его свойств
 BurgerIngredients.propTypes = {
-    data: PropTypes.arrayOf(PropTypes.shape({
-        calories: PropTypes.number.isRequired,
-        carbohydrates: PropTypes.number.isRequired,
-        fat: PropTypes.number.isRequired,
-        image: PropTypes.string.isRequired,
-        image_large: PropTypes.string.isRequired,
-        image_mobile: PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
-        price: PropTypes.number.isRequired,
-        proteins: PropTypes.number.isRequired,
-        type: PropTypes.string.isRequired,
-        _id: PropTypes.string
-    }))
+    getCardsData: PropTypes.func.isRequired
 }
 
 export default BurgerIngredients;

@@ -1,12 +1,10 @@
 import PropTypes from 'prop-types';
 import orderDetailsStyles from './order-details.module.css';
 import orderAcceptedImg from '../../images/graphics.svg';
-import closeButtonImg from '../../images/close-button.png';
 
-function OrderDetails({ orderNumber, closeModal }) {
+function OrderDetails({ orderNumber }) {
     return (
         <div className={orderDetailsStyles.order}>
-            <button onClick={closeModal} type='button' className={`${orderDetailsStyles.order__closeButton}`}><img src={closeButtonImg} alt='Закрыть окно' /></button>
             <h2 className={`text text_type_digits-large mt-30 mb-8 ${orderDetailsStyles.order__title}`}>{orderNumber}</h2>
             <p className={`text text_type_main-medium ${orderDetailsStyles.order__id}`}>Идентификатор заказа</p>
             <img className={`mt-15 mb-15 ${orderDetailsStyles.order__image}`} src={orderAcceptedImg} alt='Ваш заказ принят' />
@@ -17,7 +15,6 @@ function OrderDetails({ orderNumber, closeModal }) {
 }
 
 OrderDetails.propTypes = {
-    closeModal: PropTypes.func.isRequired,
     orderNumber: PropTypes.number.isRequired
 }
 

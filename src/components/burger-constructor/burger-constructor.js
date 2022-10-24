@@ -1,16 +1,17 @@
 import { useContext, useMemo } from 'react';
-import PropTypes from 'prop-types';
 import { DragIcon, ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import burgerConstructorStyles from './burger-constructor.module.css';
 import { IngredientsContext } from '../services/ingredientsContext';
-import { urlOrder } from '../../utils/data';
+import { BASE_URL } from '../../utils/data';
+import { LOAD_SUMMARY_ORDER_DATA } from '../services/actions/actions';
+import { checkResponse } from '../../utils/utils';
 
 function BurgerConstructor() {
     const { state, dispatch } = useContext(IngredientsContext);
     const { ingredients, burgerConstructor } = state;
 
     const saveOrder = async () => {
-        return fetch(urlOrder, {
+        return fetch(`${BASE_URL}/orders`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
@@ -19,12 +20,10 @@ function BurgerConstructor() {
                 "ingredients": [burgerConstructor.bun._id, ...burgerConstructor.ingredients.map((item) => item._id), burgerConstructor.bun._id]
             })
         })
-            .then((response) => {
-                return response.ok ? response.json() : null;
-            })
+            .then(checkResponse)
             .then((data) => {
                 dispatch({
-                    type: 'LOAD_SUMMARY_ORDER_DATA',
+                    type: LOAD_SUMMARY_ORDER_DATA,
                     payload: data.order.number
                 })
             })
@@ -42,7 +41,7 @@ function BurgerConstructor() {
     }
 
     return (
-        <form name='order' action='#' className={`mt-25 ml-4 ${burgerConstructorStyles.burgerConstructor}`}>
+        <form name='order' action='#' onSubmit={handleOrderClick} className={`mt-25 ml-4 ${burgerConstructorStyles.burgerConstructor}`}>
             {
                 burgerConstructor.bun &&
                 <div className={`mb-4 pr-2 ${burgerConstructorStyles.burgerConstructor__item}`}>
@@ -57,9 +56,9 @@ function BurgerConstructor() {
             }
 
             <ul className={`${burgerConstructorStyles.burgerConstructor__listitem}`}>
-                {burgerConstructor.ingredients.map((position) => {
+                {burgerConstructor.ingredients.map((position, index) => {
                     return (
-                        <li key={position._id} className={`${burgerConstructorStyles.burgerConstructor__item}`}>
+                        <li key={index} className={`${burgerConstructorStyles.burgerConstructor__item}`}>
                             <DragIcon type="primary" />
                             <ConstructorElement
                                 isLocked={false}
@@ -91,31 +90,10 @@ function BurgerConstructor() {
                         <CurrencyIcon type="primary" />
                     </div>
                 }
-                <Button htmlType='submit' type="primary" size="large" onClick={handleOrderClick}>Оформить заказ</Button>
+                <Button htmlType='submit' type="primary" size="large" disabled={!burgerConstructor.bun}>Оформить заказ</Button>
             </div>
         </form >
     )
-}
-
-BurgerConstructor.propTypes = {
-    // openOrderModal: PropTypes.func.isRequired,
-    ingredients: PropTypes.arrayOf(PropTypes.shape({
-        calories: PropTypes.number.isRequired,
-        carbohydrates: PropTypes.number.isRequired,
-        fat: PropTypes.number.isRequired,
-        image: PropTypes.string.isRequired,
-        image_large: PropTypes.string.isRequired,
-        image_mobile: PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
-        price: PropTypes.number.isRequired,
-        proteins: PropTypes.number.isRequired,
-        type: PropTypes.string.isRequired,
-        _id: PropTypes.string
-    })),
-    burgerConstructor: PropTypes.arrayOf(PropTypes.shape({
-        bun: PropTypes.object,
-        ingredients: PropTypes.array
-    }))
 }
 
 export default BurgerConstructor;

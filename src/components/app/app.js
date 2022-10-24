@@ -6,10 +6,12 @@ import BurgerConstructor from '../burger-constructor/burger-constructor';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
-import { url } from '../../utils/data';
+import { BASE_URL } from '../../utils/data';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import { IngredientsContext } from '../services/ingredientsContext';
 import reducer from '../services/reducers/appReducer';
+import { ADD, CLOSE_ALL_MODALS, LOAD_DATA, LOAD_CARD_DATA } from '../services/actions/actions';
+import { checkResponse } from '../../utils/utils';
 
 const initialState = {
     ingredients: [],
@@ -37,32 +39,27 @@ function App() {
 
     const getCardsData = (cardData) => {
         dispatch({
-            type: 'LOAD_CARD_DATA',
+            type: LOAD_CARD_DATA,
             payload: cardData
         })
         dispatch({
-            type: 'ADD',
+            type: ADD,
             payload: cardData
         })
     }
 
     const closeAllModals = () => {
         dispatch({
-            type: "CLOSE_ALL_MODALS"
+            type: CLOSE_ALL_MODALS
         })
     }
 
     const getData = async () => {
-        return fetch(url)
-            .then((response) => {
-                return response.ok ?
-                    response.json()
-                    :
-                    dispatch({ type: 'LOAD_DATA_FAIL' });
-            })
+        return fetch(`${BASE_URL}/ingredients`)
+            .then(checkResponse)
             .then((data) => {
                 dispatch({
-                    type: 'LOAD_DATA',
+                    type: LOAD_DATA,
                     payload: data
                 })
             })
@@ -85,7 +82,8 @@ function App() {
                 state.orderDetails?.isOpened &&
                 <Modal
                     title={'Детали заказа'}
-                    onOverlayClick={closeAllModals}
+                    onClick={closeAllModals}
+                    closeModal={closeAllModals}
                 >
                     <OrderDetails orderNumber={state.orderDetails.orderNumber} closeModal={closeAllModals} />
                 </Modal>
@@ -95,7 +93,8 @@ function App() {
                 state.ingredientDetails?.isOpened &&
                 <Modal
                     title={'Детали ингредиента'}
-                    onOverlayClick={closeAllModals}
+                    onClick={closeAllModals}
+                    closeModal={closeAllModals}
                 >
                     <IngredientDetails title={`Детали ингредиента`} ingredientData={state.ingredientDetails.ingredient} closeModal={closeAllModals} name={`Биокотлета из марсианской Магнолии`} />
                 </Modal>

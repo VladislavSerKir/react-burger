@@ -1,15 +1,14 @@
 import ingredientDetailsStyles from './ingredient-details.module.css';
 import PropTypes from 'prop-types';
-import closeButtonImg from '../../images/close-button.png';
+import { ingredientType } from '../../utils/types';
 
-function IngredientDetails({ closeModal, title, ingredientData }) {
+function IngredientDetails({ title, ingredientData }) {
     const { image_large, name, calories, carbohydrates, fat, proteins } = ingredientData;
 
     return (
         <div className={`pl-10 pr-10 ${ingredientDetailsStyles.ingredient}`}>
             <div className={`mt-10 ${ingredientDetailsStyles.ingredient__header}`}>
                 <h2 className={`text text_type_main-large ${ingredientDetailsStyles.ingredient__title}`}>{title}</h2>
-                <button onClick={closeModal} type='button' className={`${ingredientDetailsStyles.ingredient__closeButton}`}><img src={closeButtonImg} alt='Закрыть окно' /></button>
             </div>
             <img className={`mt-15 mb-15 ${ingredientDetailsStyles.ingredient__image}`} src={image_large} alt='Ингредиент' />
             <p className={`text text_type_main-medium mt-4 mb-8 ${ingredientDetailsStyles.ingredient__name}`}>{name}</p>
@@ -36,8 +35,8 @@ function IngredientDetails({ closeModal, title, ingredientData }) {
 }
 
 IngredientDetails.propTypes = {
-    closeModal: PropTypes.func.isRequired,
-    title: PropTypes.string.isRequired
+    title: PropTypes.string.isRequired,
+    ingredientData: PropTypes.shape(ingredientType)
 }
 
 export default IngredientDetails;

@@ -1,6 +1,7 @@
+import { ADD, CLOSE_ALL_MODALS, LOAD_DATA, LOAD_DATA_FAIL, LOAD_CARD_DATA, LOAD_SUMMARY_ORDER_DATA } from '../actions/actions';
 function reducer(state, action) {
     switch (action.type) {
-        case "ADD":
+        case ADD:
             if (action.payload.type === 'bun') {
                 return {
                     ...state,
@@ -17,7 +18,7 @@ function reducer(state, action) {
                     ingredients: [action.payload, ...state.burgerConstructor.ingredients]
                 }
             }
-        case "CLOSE_ALL_MODALS":
+        case CLOSE_ALL_MODALS:
             return {
                 ...state,
                 orderDetails: {
@@ -29,17 +30,17 @@ function reducer(state, action) {
                     isOpened: false
                 }
             }
-        case "LOAD_DATA":
+        case LOAD_DATA:
             return {
                 ...state,
                 ingredients: action.payload.data,
                 success: action.payload.success,
             }
-        case "LOAD_DATA_FAIL":
+        case LOAD_DATA_FAIL:
             return {
                 ...state, success: false
             }
-        case "LOAD_CARD_DATA":
+        case LOAD_CARD_DATA:
             return {
                 ...state,
                 ingredientDetails: {
@@ -48,7 +49,7 @@ function reducer(state, action) {
                     ingredient: action.payload
                 },
             }
-        case "LOAD_SUMMARY_ORDER_DATA":
+        case LOAD_SUMMARY_ORDER_DATA:
             return {
                 ...state,
                 orderDetails: {
