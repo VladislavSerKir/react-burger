@@ -1,7 +1,9 @@
-import { ADD, CLOSE_ALL_MODALS, LOAD_DATA, LOAD_DATA_FAIL, LOAD_CARD_DATA, LOAD_SUMMARY_ORDER_DATA } from '../actions/actions';
-function reducer(state, action) {
+import { ADD_INGREDIENT_TO_CONSTRUCTOR, REMOVE_INGREDIENT_FROM_CONSTRUCTOR, CLOSE_ALL_MODALS, LOAD_DATA, LOAD_DATA_FAIL, LOAD_CARD_DATA, LOAD_SUMMARY_ORDER_DATA, INGREDIENTS_SWITCH_TAB } from '../actions/actions';
+import { initialState } from '../../components/app/app';
+
+export const reducer = (state = initialState, action = {}) => {
     switch (action.type) {
-        case ADD:
+        case ADD_INGREDIENT_TO_CONSTRUCTOR:
             if (action.payload.type === 'bun') {
                 return {
                     ...state,
@@ -18,6 +20,14 @@ function reducer(state, action) {
                     ingredients: [action.payload, ...state.burgerConstructor.ingredients]
                 }
             }
+        case REMOVE_INGREDIENT_FROM_CONSTRUCTOR:
+            return {
+                ...state,
+                burgerConstructor: {
+                    ...state.burgerConstructor,
+                    ingredients: [...state.burgerConstructor.ingredients].filter((item, index) => index !== action.payload)
+                }
+            }
         case CLOSE_ALL_MODALS:
             return {
                 ...state,
@@ -27,7 +37,8 @@ function reducer(state, action) {
                 },
                 ingredientDetails: {
                     ...state.ingredientDetails,
-                    isOpened: false
+                    isOpened: false,
+                    ingredient: null
                 }
             }
         case LOAD_DATA:
@@ -62,11 +73,14 @@ function reducer(state, action) {
                     ingredients: [],
                 }
             }
+        case INGREDIENTS_SWITCH_TAB:
+            return {
+                ...state,
+                ingredientsCurrentTab: action.payload
+            }
         default:
             return {
                 ...state
             }
     }
 }
-
-export default reducer;

@@ -1,5 +1,9 @@
-import React, { useReducer } from 'react';
-// import ReactDOM from 'react-dom';
+import React from 'react';
+import { compose } from 'redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { configureStore } from '@reduxjs/toolkit';
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 import appStyles from './app.module.css';
 import AppHeader from '../app-header/app-header';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
@@ -8,14 +12,14 @@ import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import { BASE_URL } from '../../utils/data';
 import IngredientDetails from '../ingredient-details/ingredient-details';
-import { IngredientsContext } from '../services/ingredientsContext';
-import reducer from '../services/reducers/appReducer';
-import { ADD, CLOSE_ALL_MODALS, LOAD_DATA, LOAD_CARD_DATA } from '../services/actions/actions';
+import { CLOSE_ALL_MODALS, LOAD_DATA, LOAD_DATA_FAIL, ADD_INGREDIENT_TO_CONSTRUCTOR } from '../../services/actions/actions';
 import { checkResponse } from '../../utils/utils';
+import { reducer } from '../../services/reducers/reducers';
 
-const initialState = {
+export const initialState = {
     ingredients: [],
     success: false,
+    ingredientsCurrentTab: 'bun',
     orderDetails: {
         isOpened: false,
         orderNumber: null
@@ -30,21 +34,30 @@ const initialState = {
     }
 };
 
+const composeEnhancers = typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
+    : compose;
+
+export const store = configureStore({
+    reducer,
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
+    devTools: process.env.NODE_ENV !== 'production',
+    initialState,
+    enhancers: [],
+});
+
 function App() {
-    const [state, dispatch] = useReducer(reducer, initialState);
+    const state = useSelector((store) => { return store })
+    const dispatch = useDispatch();
 
     React.useEffect(() => {
-        getData();
+        dispatch(getData());
     }, []);
 
-    const getCardsData = (cardData) => {
+    const handleDrop = (ingredient) => {
         dispatch({
-            type: LOAD_CARD_DATA,
-            payload: cardData
-        })
-        dispatch({
-            type: ADD,
-            payload: cardData
+            type: ADD_INGREDIENT_TO_CONSTRUCTOR,
+            payload: ingredient
         })
     }
 
@@ -54,30 +67,34 @@ function App() {
         })
     }
 
-    const getData = async () => {
-        return fetch(`${BASE_URL}/ingredients`)
-            .then(checkResponse)
-            .then((data) => {
-                dispatch({
-                    type: LOAD_DATA,
-                    payload: data
+    const getData = () => {
+        return async function (dispatch) {
+            return fetch(`${BASE_URL}/ingredients`)
+                .then(checkResponse)
+                .then((data) => {
+                    dispatch({
+                        type: LOAD_DATA,
+                        payload: data
+                    })
                 })
-            })
-            .catch((error) => {
-                console.log(error)
-            })
+                .catch((error) => {
+                    dispatch({
+                        type: LOAD_DATA_FAIL
+                    })
+                    console.log(error)
+                })
+        }
     }
 
     return (
         <div className={appStyles.body} >
             <AppHeader />
             <main className={appStyles.main}>
-                <IngredientsContext.Provider value={{ state, dispatch }} >
-                    <BurgerIngredients className={appStyles.column} getCardsData={getCardsData} />
-                    <BurgerConstructor className={appStyles.column} />
-                </IngredientsContext.Provider>
+                <DndProvider backend={HTML5Backend}>
+                    <BurgerIngredients className={appStyles.column} />
+                    <BurgerConstructor onDropHandler={handleDrop} className={appStyles.column} />
+                </DndProvider>
             </main>
-
             {
                 state.orderDetails?.isOpened &&
                 <Modal
@@ -85,10 +102,9 @@ function App() {
                     onClick={closeAllModals}
                     closeModal={closeAllModals}
                 >
-                    <OrderDetails orderNumber={state.orderDetails.orderNumber} closeModal={closeAllModals} />
+                    <OrderDetails orderNumber={state.orderDetails?.orderNumber} closeModal={closeAllModals} />
                 </Modal>
             }
-
             {
                 state.ingredientDetails?.isOpened &&
                 <Modal
@@ -96,7 +112,7 @@ function App() {
                     onClick={closeAllModals}
                     closeModal={closeAllModals}
                 >
-                    <IngredientDetails title={`Детали ингредиента`} ingredientData={state.ingredientDetails.ingredient} closeModal={closeAllModals} name={`Биокотлета из марсианской Магнолии`} />
+                    <IngredientDetails title={`Детали ингредиента`} ingredientData={state.ingredientDetails?.ingredient} closeModal={closeAllModals} name={`Биокотлета из марсианской Магнолии`} />
                 </Modal>
             }
         </div >

@@ -1,10 +1,25 @@
+.burgerConstructor {
+  width: 100%;
+  opacity: 1;
+  transition: all 0.3s;
+}
+
+.constructor-element__action {
+  background-color: aliceblue;
+}
+
+.burgerConstructorHover {
+  width: 100%;
+  opacity: 0.3;
+  transition: all 0.3s;
+}
+
 .burgerConstructor__listitem {
   display: flex;
   flex-direction: column;
   gap: 16px;
   list-style: none;
   padding: 0;
-  /* height: 43vh; */
   overflow-y: scroll;
 }
 
