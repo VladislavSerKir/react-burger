@@ -1,7 +1,7 @@
 import { ADD_INGREDIENT_TO_CONSTRUCTOR, REMOVE_INGREDIENT_FROM_CONSTRUCTOR, CLOSE_ALL_MODALS, LOAD_DATA, LOAD_DATA_FAIL, LOAD_CARD_DATA, LOAD_SUMMARY_ORDER_DATA, INGREDIENTS_SWITCH_TAB, CHANGE_TARGET_PLACE_IN_CONSTRUCTOR } from '../actions/actions';
-// import { initialState } from '../../components/app/app';
 
-const initialState = {
+
+export const initialState = {
     ingredients: [],
     success: false,
     ingredientsCurrentTab: 'bun',
@@ -19,7 +19,72 @@ const initialState = {
     }
 };
 
-export function reducer(state = initialState, action = {}) {
+
+
+export function dataReducer(state = initialState, action = {}) {
+    switch (action.type) {
+        case LOAD_DATA:
+            return {
+                ...state,
+                ingredients: action.payload.data,
+                success: action.payload.success,
+            }
+        case LOAD_DATA_FAIL:
+            return {
+                ...state, success: false
+            }
+        case LOAD_CARD_DATA:
+            return {
+                ...state,
+                ingredientDetails: {
+                    ...state.ingredientDetails,
+                    isOpened: true,
+                    ingredient: action.payload
+                },
+            }
+        case LOAD_SUMMARY_ORDER_DATA:
+            return {
+                ...state,
+                orderDetails: {
+                    ...state.orderDetails,
+                    isOpened: true,
+                    orderNumber: action.payload
+                },
+                burgerConstructor: {
+                    bun: null,
+                    ingredients: [],
+                }
+            }
+        default:
+            return {
+                ...state
+            }
+    }
+}
+
+export function modalReducer(state = initialState, action = {}) {
+    switch (action.type) {
+        case CLOSE_ALL_MODALS:
+            return {
+                ...state,
+                orderDetails: {
+                    ...state.orderDetails,
+                    isOpened: false
+                },
+                ingredientDetails: {
+                    ...state.ingredientDetails,
+                    isOpened: false,
+                    ingredient: null
+                }
+            }
+        default:
+            return {
+                ...state
+            }
+    }
+}
+
+export function ingredientReducer(state = initialState, action = {}) {
     switch (action.type) {
         case ADD_INGREDIENT_TO_CONSTRUCTOR:
             if (action.payload.type === 'bun') {
@@ -57,51 +122,6 @@ export function reducer(state = initialState, action = {}) {
                 }
             };
         }
-        case CLOSE_ALL_MODALS:
-            return {
-                ...state,
-                orderDetails: {
-                    ...state.orderDetails,
-                    isOpened: false
-                },
-                ingredientDetails: {
-                    ...state.ingredientDetails,
-                    isOpened: false,
-                    ingredient: null
-                }
-            }
-        case LOAD_DATA:
-            return {
-                ...state,
-                ingredients: action.payload.data,
-                success: action.payload.success,
-            }
-        case LOAD_DATA_FAIL:
-            return {
-                ...state, success: false
-            }
-        case LOAD_CARD_DATA:
-            return {
-                ...state,
-                ingredientDetails: {
-                    ...state.ingredientDetails,
-                    isOpened: true,
-                    ingredient: action.payload
-                },
-            }
-        case LOAD_SUMMARY_ORDER_DATA:
-            return {
-                ...state,
-                orderDetails: {
-                    ...state.orderDetails,
-                    isOpened: true,
-                    orderNumber: action.payload
-                },
-                burgerConstructor: {
-                    bun: null,
-                    ingredients: [],
-                }
-            }
         case INGREDIENTS_SWITCH_TAB:
             return {
                 ...state,
@@ -113,3 +133,4 @@ export function reducer(state = initialState, action = {}) {
             }
     }
 }
+

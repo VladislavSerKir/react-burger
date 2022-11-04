@@ -1,15 +1,25 @@
 import { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDrop } from 'react-dnd';
-import { DragIcon, ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components'
+import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import { checkResponse } from '../../utils/utils';
 import burgerConstructorStyles from './burger-constructor.module.css';
 import { BASE_URL } from '../../utils/data';
-import { LOAD_SUMMARY_ORDER_DATA, REMOVE_INGREDIENT_FROM_CONSTRUCTOR } from '../../services/actions/actions';
+import { LOAD_SUMMARY_ORDER_DATA } from '../../services/actions/actions';
+import { Ingredient } from '../ingredient/ingredient';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { placeOrder, saveOrderNumber, statusSuccess } from '../../services/reducers/constructorReducer';
+import { openOrder } from '../../services/reducers/modalReducer';
 
 function BurgerConstructor({ onDropHandler }) {
+
     const dispatch = useDispatch();
-    const { ingredients, burgerConstructor } = useSelector(store => store);
+    // const { ingredients, burgerConstructor } = useSelector(store => store);
+
+    const store = useSelector(store => store);
+    const ingredients = store.data.ingredients;
+    const burgerConstructor = store.burgerConstructor
+
     const [{ isHover }, dropTarget] = useDrop({
         accept: 'ingredient',
         drop(ingredient) {
@@ -17,7 +27,7 @@ function BurgerConstructor({ onDropHandler }) {
         },
         collect: monitor => ({
             isHover: monitor.isOver()
-        })
+        }),
     })
     const hoverDrop = isHover ? burgerConstructorStyles.burgerConstructorHover : burgerConstructorStyles.burgerConstructor;
 
@@ -34,10 +44,19 @@ function BurgerConstructor({ onDropHandler }) {
             })
                 .then(checkResponse)
                 .then((data) => {
-                    dispatch({
-                        type: LOAD_SUMMARY_ORDER_DATA,
-                        payload: data.order.number
-                    })
+                    // dispatch({
+                    //     type: LOAD_SUMMARY_ORDER_DATA,
+                    //     payload: data.order.number
+                    // })
+                    console.log(data)
+                    dispatch(saveOrderNumber(data))
+                })
+                .then(() => {
+                    dispatch(openOrder())
+                })
+                .catch((error) => {
+                    dispatch(statusSuccess())
+                    console.log(error)
                 })
         }
     }
@@ -53,18 +72,8 @@ function BurgerConstructor({ onDropHandler }) {
         dispatch(saveOrder(ingredients))
     }
 
-    const handleDeleteIngredient = (event, ingredient) => {
-        event.preventDefault();
-        const index = burgerConstructor.ingredients.indexOf(ingredient)
-        dispatch({
-            type: REMOVE_INGREDIENT_FROM_CONSTRUCTOR,
-            payload: index
-        })
-    }
-
     return (
         <form ref={dropTarget} name='order' action='#' onSubmit={handleOrderClick} className={`mt-25 ml-4 ${hoverDrop} `}>
-
             {
                 burgerConstructor?.bun &&
                 <div className={`mb-4 pr-2 ${burgerConstructorStyles.burgerConstructor__item} `}>
@@ -77,22 +86,8 @@ function BurgerConstructor({ onDropHandler }) {
                     />
                 </div>
             }
-
             <ul className={`${burgerConstructorStyles.burgerConstructor__listitem} `}>
-                {burgerConstructor?.ingredients?.map((position, index) => {
-                    return (
-                        <li key={index} draggable className={`${burgerConstructorStyles.burgerConstructor__item} `}>
-                            <DragIcon type="primary" />
-                            <ConstructorElement
-                                isLocked={false}
-                                text={position?.name}
-                                price={position?.price}
-                                thumbnail={position?.image}
-                                handleClose={(event) => handleDeleteIngredient(event, position)}
-                            />
-                        </li>
-                    )
-                })}
+                {burgerConstructor?.ingredients?.map((position, index) => <Ingredient key={index} id={position._id} position={position} index={index} />)}
             </ul>
             {
                 burgerConstructor?.bun &&
@@ -106,7 +101,6 @@ function BurgerConstructor({ onDropHandler }) {
                     />
                 </div>
             }
-
             <div className={`mt-10 pb-10 ${burgerConstructorStyles.burgerConstructor__checkout} `}>
                 {burgerConstructor?.bun && burgerConstructor?.ingredients &&
                     <div className={`${burgerConstructorStyles.burgerConstructor__total} `}>

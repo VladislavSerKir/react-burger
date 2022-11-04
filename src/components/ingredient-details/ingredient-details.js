@@ -4,6 +4,7 @@ import { ingredientType } from '../../utils/types';
 
 function IngredientDetails({ title, ingredientData }) {
     const { image_large, name, calories, carbohydrates, fat, proteins } = ingredientData;
+    // console.log(name)
 
     return (
         <div className={`pl-10 pr-10 ${ingredientDetailsStyles.ingredient}`}>

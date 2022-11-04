@@ -5,16 +5,23 @@ import burgerIngredientsStyles from './burger-ingredients.module.css';
 import CardsGroup from '../cards-group/cards-group';
 import { useDispatch, useSelector } from 'react-redux';
 import { INGREDIENTS_SWITCH_TAB } from '../../services/actions/actions';
+import { toggleIngredientsTab } from '../../services/reducers/dataReducer';
 
 const BurgerIngredients = () => {
-    const { ingredients, ingredientsCurrentTab } = useSelector(store => store);
+    // const { ingredients, ingredientsCurrentTab } = useSelector(store => store);
+
+    const store = useSelector(store => store);
+    const ingredients = store.data.ingredients;
+    const ingredientsCurrentTab = store.data.ingredientsCurrentTab;
+    // console.log(ingredients)
     const dispatch = useDispatch();
 
     const onTabClick = (tab) => {
-        dispatch({
-            type: INGREDIENTS_SWITCH_TAB,
-            payload: tab
-        })
+        // dispatch({
+        //     type: INGREDIENTS_SWITCH_TAB,
+        //     payload: tab
+        // })
+        dispatch(toggleIngredientsTab(tab))
         const element = document.getElementById(tab);
         if (element) element.scrollIntoView({ behavior: "smooth" });
     };
@@ -33,20 +40,23 @@ const BurgerIngredients = () => {
 
     React.useEffect(() => {
         if (inViewBuns) {
-            dispatch({
-                type: INGREDIENTS_SWITCH_TAB,
-                payload: 'bun'
-            })
+            // dispatch({
+            //     type: INGREDIENTS_SWITCH_TAB,
+            //     payload: 'bun'
+            // })
+            dispatch(toggleIngredientsTab('bun'))
         } else if (inViewSauces) {
-            dispatch({
-                type: INGREDIENTS_SWITCH_TAB,
-                payload: 'sauce'
-            })
+            // dispatch({
+            //     type: INGREDIENTS_SWITCH_TAB,
+            //     payload: 'sauce'
+            // })
+            dispatch(toggleIngredientsTab('sauce'))
         } else if (inViewFilling) {
-            dispatch({
-                type: INGREDIENTS_SWITCH_TAB,
-                payload: 'main'
-            })
+            // dispatch({
+            //     type: INGREDIENTS_SWITCH_TAB,
+            //     payload: 'main'
+            // })
+            dispatch(toggleIngredientsTab('main'))
         }
     }, [ingredientsCurrentTab, inViewBuns, inViewFilling, inViewSauces]);
 
