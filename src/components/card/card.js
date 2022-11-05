@@ -4,20 +4,14 @@ import cardStyles from './card.module.css';
 import PropTypes from 'prop-types';
 import { ingredientType } from '../../utils/types';
 import { useDispatch, useSelector } from 'react-redux';
-import { LOAD_CARD_DATA } from '../../services/actions/actions';
 import { useDrag } from 'react-dnd';
 import { getCardData } from '../../services/reducers/dataReducer';
 import { openIngredient } from '../../services/reducers/modalReducer';
 
 function Card({ cardData }) {
     const dispatch = useDispatch();
-    // const { burgerConstructor } = useSelector(store => store);
-    // const { ingredients } = burgerConstructor;
-
     const store = useSelector(store => store);
-    // const ingredients = store.data.ingredients;
     const ingredients = store.burgerConstructor.ingredients;
-    // console.log(store.data.ingredientDetails)
 
     const [, dragRef] = useDrag({
         type: "ingredient",
@@ -25,11 +19,6 @@ function Card({ cardData }) {
     });
 
     const getCardsData = (cardData) => {
-        // dispatch({
-        //     type: LOAD_CARD_DATA,
-        //     payload: cardData
-        // })
-        // console.log(cardData)
         dispatch(getCardData(cardData))
         dispatch(openIngredient())
     }

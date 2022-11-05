@@ -1,24 +1,21 @@
 import { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDrop } from 'react-dnd';
+import PropTypes from 'prop-types';
 import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import { checkResponse } from '../../utils/utils';
 import burgerConstructorStyles from './burger-constructor.module.css';
 import { BASE_URL } from '../../utils/data';
-import { LOAD_SUMMARY_ORDER_DATA } from '../../services/actions/actions';
 import { Ingredient } from '../ingredient/ingredient';
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { placeOrder, saveOrderNumber, statusSuccess } from '../../services/reducers/constructorReducer';
-import { openOrder } from '../../services/reducers/modalReducer';
+import { saveOrderNumber, statusSuccess } from '../../services/reducers/constructorReducer';
+import { openOrderModal } from '../../services/reducers/modalReducer';
 
 function BurgerConstructor({ onDropHandler }) {
 
     const dispatch = useDispatch();
-    // const { ingredients, burgerConstructor } = useSelector(store => store);
-
     const store = useSelector(store => store);
-    const ingredients = store.data.ingredients;
-    const burgerConstructor = store.burgerConstructor
+    const { ingredients } = store.burgerConstructor;
+    const { burgerConstructor } = store;
 
     const [{ isHover }, dropTarget] = useDrop({
         accept: 'ingredient',
@@ -31,7 +28,7 @@ function BurgerConstructor({ onDropHandler }) {
     })
     const hoverDrop = isHover ? burgerConstructorStyles.burgerConstructorHover : burgerConstructorStyles.burgerConstructor;
 
-    const saveOrder = () => {
+    const placeOrder = () => {
         return async function (dispatch) {
             return fetch(`${BASE_URL}/orders`, {
                 method: 'POST',
@@ -44,19 +41,14 @@ function BurgerConstructor({ onDropHandler }) {
             })
                 .then(checkResponse)
                 .then((data) => {
-                    // dispatch({
-                    //     type: LOAD_SUMMARY_ORDER_DATA,
-                    //     payload: data.order.number
-                    // })
-                    console.log(data)
                     dispatch(saveOrderNumber(data))
                 })
                 .then(() => {
-                    dispatch(openOrder())
+                    dispatch(openOrderModal())
                 })
                 .catch((error) => {
-                    dispatch(statusSuccess())
-                    console.log(error)
+                    dispatch(statusSuccess(error))
+                    console.warn(error)
                 })
         }
     }
@@ -67,13 +59,13 @@ function BurgerConstructor({ onDropHandler }) {
         }, 0)
     }, [burgerConstructor])
 
-    const handleOrderClick = (event) => {
+    const handlePlaceOrder = (event) => {
         event.preventDefault();
-        dispatch(saveOrder(ingredients))
+        dispatch(placeOrder(ingredients))
     }
 
     return (
-        <form ref={dropTarget} name='order' action='#' onSubmit={handleOrderClick} className={`mt-25 ml-4 ${hoverDrop} `}>
+        <form ref={dropTarget} name='order' action='#' onSubmit={handlePlaceOrder} className={`mt-25 ml-4 ${hoverDrop} `}>
             {
                 burgerConstructor?.bun &&
                 <div className={`mb-4 pr-2 ${burgerConstructorStyles.burgerConstructor__item} `}>
@@ -108,10 +100,21 @@ function BurgerConstructor({ onDropHandler }) {
                         <CurrencyIcon type="primary" />
                     </div>
                 }
-                <Button htmlType='submit' type="primary" size="large" disabled={!burgerConstructor?.bun}>Оформить заказ</Button>
+                <Button
+                    htmlType='submit'
+                    type="primary"
+                    size="large"
+                    disabled={!burgerConstructor?.bun}
+                >
+                    Оформить заказ
+                </Button>
             </div>
         </form >
     )
+}
+
+BurgerConstructor.propTypes = {
+    onDropHandler: PropTypes.func.isRequired,
 }
 
 export default BurgerConstructor;

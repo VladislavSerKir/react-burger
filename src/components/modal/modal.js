@@ -21,7 +21,10 @@ const Modal = ({ closeModal, onClick, children }) => {
     return ReactDOM.createPortal(
         <>
             <div className={modalStyles.modal}>
-                <div className={modalStyles.modal__closeButton} onClick={closeModal}>
+                <div
+                    className={modalStyles.modal__closeButton}
+                    onClick={closeModal}
+                >
                     <CloseIcon onClick={closeModal} />
                 </div>
                 {children}
