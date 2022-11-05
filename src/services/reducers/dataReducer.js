@@ -38,6 +38,7 @@ export const dataSlice = createSlice({
         loadDataFail: (state, action) => {
             state.errorMessage = action.payload;
             state.success = action.success;
+            state.ingredients = [];
         },
         getCardData: (state, action) => {
             state.ingredientDetails.ingredient = action.payload;

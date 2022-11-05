@@ -34,8 +34,9 @@ export const constructorSlice = createSlice({
             state.success = true;
         },
         statusSuccess: (state, action) => {
-            state.errorMessage = action.payload
-            state.success = false
+            state.errorMessage = action.payload;
+            state.success = false;
+            state.orderNumber = null;
         }
     },
 })
