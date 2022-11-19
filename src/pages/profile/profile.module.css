@@ -1,0 +1,36 @@
+.profile {
+    max-width: 1240px;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    gap: 60px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.menu {
+    width: 320px;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.content {}
+
+.link {
+    height: 64px;
+    text-decoration: none;
+    color: #8585AD;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+}
+
+.link:hover {
+    opacity: 0.7;
+    transition: all 0.3s;
+}
+
+.link_active {
+    color: #F2F2F3;
+}
