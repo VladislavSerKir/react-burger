@@ -39,3 +39,17 @@
 .text {
     opacity: 0.4;
 }
+
+.button {
+    display: flex;
+    line-height: 64px;
+    text-decoration: none;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.button:hover {
+    opacity: 0.7;
+    transition: all 0.3s;
+}

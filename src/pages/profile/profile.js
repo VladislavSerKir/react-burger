@@ -3,11 +3,12 @@ import { NavLink, Route, Switch } from 'react-router-dom';
 import profileStyle from './profile.module.css';
 import { useRouteMatch } from 'react-router-dom';
 import { ProfileData } from '../../components/profile-data/profile-data';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { onLogout } from '../../utils/api';
 
 export const Profile = () => {
     const store = useSelector(store => store);
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
     console.log(store);
     const { url } = useRouteMatch();
 
@@ -20,9 +21,18 @@ export const Profile = () => {
                 <NavLink to={`${url}/orders`} className={`text text_type_main-medium ${profileStyle.link}`} activeClassName={profileStyle.link_active}>
                     История заказов
                 </NavLink>
-                <NavLink to={`${url}/quit`} className={`text text_type_main-medium ${profileStyle.link}`} activeClassName={profileStyle.link_active}>
+
+                {/* <NavLink to={`${url}/quit`} className={`text text_type_main-medium ${profileStyle.link}`} activeClassName={profileStyle.link_active}>
                     Выход
-                </NavLink>
+                </NavLink> */}
+                <button
+                    type="button"
+                    className={`text text_type_main-medium text_color_inactive from global ${profileStyle.button}`}
+                    onClick={onLogout}
+                >
+                    Выход
+                </button>
+
                 <p className={`mt-20 text text_color_inactive text_type_main-default ${profileStyle.text}`}>В этом разделе вы можете изменить свои персональные данные
                 </p>
             </nav >

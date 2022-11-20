@@ -4,7 +4,9 @@ import { checkResponse } from '../../utils/utils';
 
 const userState = {
     isAuthenticated: false,
-    data: {
+    isRegistrationFailed: false,
+    isLoginFailed: false,
+    userData: {
         email: '',
         password: '',
         name: ''
@@ -31,10 +33,25 @@ export const userSlice = createSlice({
     initialState: userState,
     reducers: {
         setUser: (state, action) => {
-
+            state.userData.email = action.payload.user.email;
+            state.userData.name = action.payload.user.name;
+            state.isAuthenticated = true
         },
+        setRegistrationFailed: (state, action) => {
+            state.isRegistrationFailed = true;
+            state.isAuthenticated = false;
+        },
+        setLoginFailed: (state, action) => {
+            state.isLoginFailed = true;
+        },
+        removeUser: (state, action) => {
+            state.userData.email = '';
+            state.userData.name = '';
+            state.userData.password = '';
+            state.isAuthenticated = false;
+        }
     },
 })
 
-export const { setUser } = userSlice.actions
+export const { setUser, setRegistrationFailed, setLoginFailed, removeUser } = userSlice.actions
 export const userReducer = userSlice.reducer

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Button, EmailInput, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components'
 import registerStyles from './register.module.css';
 import { Link } from 'react-router-dom';
+import { onRegister } from '../../utils/api';
 
 export const Register = () => {
     const [userData, setUserData] = useState({
@@ -21,7 +22,7 @@ export const Register = () => {
     const handleRegister = (event) => {
         event.preventDefault();
         console.log('зарегистрироваться', userData);
-
+        onRegister(userData);
         setUserData({
             name: '',
             email: '',

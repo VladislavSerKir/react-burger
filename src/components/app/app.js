@@ -8,12 +8,14 @@ import IngredientDetails from '../ingredient-details/ingredient-details';
 import { getAllIngredients } from '../../services/reducers/dataReducer';
 import { closeAllModals } from '../../services/reducers/modalReducer';
 import { Constructor } from '../../pages/constructor/constructor';
-import { Route, Switch, ProtectedRoute } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { Login } from '../../pages/login/login';
 import { Register } from '../../pages/register/register';
 import { Reset } from '../../pages/reset/reset';
 import { ResetConfirm } from '../../pages/reset-confirm/reset-confirm';
 import { Profile } from '../../pages/profile/profile';
+import { ProtectedRoute } from '../protected-route/protected-route';
+import { NotFound } from '../../pages/not-found/not-found';
 
 function App() {
     const state = useSelector((store) => { return store })
@@ -34,9 +36,13 @@ function App() {
                 <Route path='/' exact>
                     <Constructor />
                 </Route>
-                <Route path='/profile' >
+                {/* <ProtectedRoute path='/profile' isAuth={state.user.isAuthenticated} user={state.user.userData}>
+                    <Profile />
+                </ProtectedRoute> */}
+                <Route path='/profile'>
                     <Profile />
                 </Route>
+
                 <Route path='/login' exact>
                     <Login />
                 </Route>
@@ -50,7 +56,7 @@ function App() {
                     <ResetConfirm />
                 </Route>
                 <Route path="*">
-                    <h1>404</h1>
+                    <NotFound />
                 </Route>
             </Switch>
 
