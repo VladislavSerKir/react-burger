@@ -12,10 +12,11 @@
     width: 320px;
     display: flex;
     flex-direction: column;
-
 }
 
-.content {}
+.content {
+    max-width: 480px;
+}
 
 .link {
     height: 64px;
@@ -33,4 +34,8 @@
 
 .link_active {
     color: #F2F2F3;
+}
+
+.text {
+    opacity: 0.4;
 }

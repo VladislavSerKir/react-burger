@@ -1,0 +1,40 @@
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { BASE_URL } from '../../utils/api';
+import { checkResponse } from '../../utils/utils';
+
+const userState = {
+    isAuthenticated: false,
+    data: {
+        email: '',
+        password: '',
+        name: ''
+    }
+};
+
+// export const getUserData = createAsyncThunk(
+//     'user',
+//     async function (_, { dispatch }) {
+//         return fetch(`${BASE_URL}/auth/user`)
+//             .then(checkResponse)
+//             .then((data) => {
+//                 // dispatch(setIngredients(data))
+//             })
+//             .catch((error) => {
+//                 // dispatch(loadDataFail(error))
+//                 console.warn(error)
+//             })
+//     }
+// );
+
+export const userSlice = createSlice({
+    name: 'user',
+    initialState: userState,
+    reducers: {
+        setUser: (state, action) => {
+
+        },
+    },
+})
+
+export const { setUser } = userSlice.actions
+export const userReducer = userSlice.reducer

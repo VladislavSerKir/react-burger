@@ -29,13 +29,12 @@ function App() {
 
     return (
         <div className={appStyles.body} >
-
             <AppHeader />
             <Switch>
                 <Route path='/' exact>
                     <Constructor />
                 </Route>
-                <Route path='/profile' exact>
+                <Route path='/profile' >
                     <Profile />
                 </Route>
                 <Route path='/login' exact>

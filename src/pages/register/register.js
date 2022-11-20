@@ -1,47 +1,66 @@
-import React from 'react-redux';
+import React, { useState } from 'react';
 import { Button, EmailInput, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components'
 import registerStyles from './register.module.css';
 import { Link } from 'react-router-dom';
 
 export const Register = () => {
+    const [userData, setUserData] = useState({
+        name: '',
+        email: '',
+        password: ''
+    });
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setUserData({
+            ...userData,
+            [name]: value
+        })
+    }
 
     const handleRegister = (event) => {
         event.preventDefault();
-        console.log('зарегистрироваться');
+        console.log('зарегистрироваться', userData);
+
+        setUserData({
+            name: '',
+            email: '',
+            password: ''
+        })
     }
 
     return (
         <div className={`${registerStyles.register} `}>
-            <form name='register' action='#' onSubmit={handleRegister} className={`${registerStyles.form}`}>
+            <form
+                name='register'
+                action='#'
+                onSubmit={handleRegister}
+                className={`${registerStyles.form}`}
+            >
                 <h3 className={`mb-6 text text_type_main-medium ${registerStyles.text}`} >Регистрация</h3>
-
                 <Input
                     type={'text'}
                     placeholder={'Имя'}
-                    // onChange={e => setValue(e.target.value)}
-                    // icon={'CurrencyIcon'}
-                    // value={value}
+                    onChange={handleChange}
+                    value={userData.name}
                     name={'name'}
                     error={false}
-                    // ref={inputRef}
-                    // onIconClick={onIconClick}
                     errorText={'Ошибка'}
                     size={'default'}
                     extraClass={`mb-6`}
                 />
                 <EmailInput
                     extraClass={`mb-6`}
-                    // onChange={onChange}
-                    // value={value}
+                    onChange={handleChange}
+                    value={userData.email}
                     name={'email'}
                     isIcon={false}
                 />
                 <PasswordInput
                     extraClass={`mb-6`}
-                    // onChange={onChange}
-                    // value={value}
+                    onChange={handleChange}
+                    value={userData.password}
                     name={'password'}
-                // icon="EditIcon"
                 />
                 <Button
                     htmlType='submit'

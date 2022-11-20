@@ -1,37 +1,50 @@
-import React from 'react-redux';
 import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components'
 import resetConfirmStyles from './reset-confirm.module.css';
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 
 export const ResetConfirm = () => {
+    const [userData, setUserData] = useState({
+        newPassword: '',
+        code: ''
+    });
 
-    const handleResetConfirm = (event) => {
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setUserData({
+            ...userData,
+            [name]: value
+        })
+    }
+
+    const handleConfirmReset = (event) => {
         event.preventDefault();
         console.log('подтвердить сброс пароля');
     }
 
     return (
         <div className={`${resetConfirmStyles.resetConfirm} `}>
-            <form name='register' action='#' onSubmit={handleResetConfirm} className={`${resetConfirmStyles.form}`}>
+            <form
+                name='register'
+                action='#'
+                onSubmit={handleConfirmReset}
+                className={`${resetConfirmStyles.form}`}
+            >
                 <h3 className={`mb-6 text text_type_main-medium ${resetConfirmStyles.text}`} >Восстановление пароля</h3>
                 <PasswordInput
                     extraClass={`mb-6`}
-                    // onChange={onChange}
-                    // value={value}
-                    name={'password'}
+                    onChange={handleChange}
+                    value={userData.newPassword}
+                    name={'newPassword'}
                     placeholder={'Введите новый пароль'}
-                // icon="EditIcon"
                 />
                 <Input
                     type={'text'}
                     placeholder={'Введите код из письма'}
-                    // onChange={e => setValue(e.target.value)}
-                    // icon={'CurrencyIcon'}
-                    // value={value}
-                    name={'name'}
+                    onChange={handleChange}
+                    value={userData.code}
+                    name={'code'}
                     error={false}
-                    // ref={inputRef}
-                    // onIconClick={onIconClick}
                     errorText={'Ошибка'}
                     size={'default'}
                     extraClass={`mb-6`}

@@ -1,32 +1,60 @@
-import React from 'react-redux';
+import React, { useState } from 'react';
 import { Button, EmailInput, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components'
 import loginStyles from './login.module.css';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 export const Login = () => {
+    const store = useSelector(store => store);
+    const dispatch = useDispatch();
+    const [userData, setUserData] = useState({
+        email: '',
+        password: ''
+    });
 
-    const handleLogin = (event) => {
-        event.preventDefault();
-        console.log('войти');
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setUserData({
+            ...userData,
+            [name]: value
+        });
+    }
+
+    const handleLogin = (e) => {
+        e.preventDefault();
+        console.log('войти', userData);
+        if (!userData.email || !userData.password) {
+            return;
+        }
+        //   onLogin(userData.username, userData.password);
+
+        setUserData({
+            email: '',
+            password: ''
+        });
     }
 
     return (
-        <div className={`${loginStyles.login} `}>
-            <form name='login' action='#' onSubmit={handleLogin} className={`${loginStyles.form}`}>
+        <div className={`${loginStyles.login}`}>
+            <form
+                name='login'
+                action='#'
+                onSubmit={handleLogin}
+                className={`${loginStyles.form}`}
+            >
                 <h3 className={`mb-6 text text_type_main-medium ${loginStyles.text}`} >Вход</h3>
                 <EmailInput
                     extraClass={`mb-6`}
-                    // onChange={onChange}
-                    // value={value}
+                    onChange={handleChange}
+                    value={userData.email}
                     name={'email'}
                     isIcon={false}
                 />
                 <PasswordInput
                     extraClass={`mb-6`}
-                    // onChange={onChange}
-                    // value={value}
+                    onChange={handleChange}
+                    value={userData.password}
                     name={'password'}
-                // icon="EditIcon"
                 />
                 <Button
                     htmlType='submit'
@@ -36,7 +64,6 @@ export const Login = () => {
                 >
                     Войти
                 </Button>
-
                 <p className={`mb-4 text text_color_inactive text_type_main-default ${loginStyles.text}`}>Вы — новый пользователь? &nbsp;
                     <span>
                         <Link to='/register' className={`text text_type_main-default ${loginStyles.link}`}>
@@ -44,7 +71,6 @@ export const Login = () => {
                         </Link>
                     </span>
                 </p>
-
                 <p className={`text text_color_inactive text_type_main-default ${loginStyles.text}`}>Забыли пароль? &nbsp;
                     <span>
                         <Link to='/forgot-password' className={`text text_type_main-default ${loginStyles.link}`}>

@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import { checkResponse } from '../../utils/utils';
 import burgerConstructorStyles from './burger-constructor.module.css';
-import { BASE_URL } from '../../utils/data';
+import { BASE_URL } from '../../utils/api';
 import { Ingredient } from '../ingredient/ingredient';
 import { saveOrderNumber, statusSuccess } from '../../services/reducers/constructorReducer';
 import { openOrderModal } from '../../services/reducers/modalReducer';
