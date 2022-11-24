@@ -1,13 +1,21 @@
 import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components'
 import resetConfirmStyles from './reset-confirm.module.css';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { onResetPassword } from '../../utils/api';
 
 export const ResetConfirm = () => {
+    const store = useSelector(store => store);
+    const dispatch = useDispatch();
     const [userData, setUserData] = useState({
-        newPassword: '',
-        code: ''
+        password: '',
+        token: ''
     });
+
+    if (store.user.changePasswordConfirmed) {
+        return <Redirect to={{ pathname: '/profile' }} />
+    }
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -17,9 +25,10 @@ export const ResetConfirm = () => {
         })
     }
 
-    const handleConfirmReset = (event) => {
+    const handleResetPassword = (event) => {
         event.preventDefault();
         console.log('подтвердить сброс пароля');
+        dispatch(onResetPassword(userData))
     }
 
     return (
@@ -27,23 +36,23 @@ export const ResetConfirm = () => {
             <form
                 name='register'
                 action='#'
-                onSubmit={handleConfirmReset}
+                onSubmit={handleResetPassword}
                 className={`${resetConfirmStyles.form}`}
             >
                 <h3 className={`mb-6 text text_type_main-medium ${resetConfirmStyles.text}`} >Восстановление пароля</h3>
                 <PasswordInput
                     extraClass={`mb-6`}
                     onChange={handleChange}
-                    value={userData.newPassword}
-                    name={'newPassword'}
+                    value={userData.password}
+                    name={'password'}
                     placeholder={'Введите новый пароль'}
                 />
                 <Input
                     type={'text'}
                     placeholder={'Введите код из письма'}
                     onChange={handleChange}
-                    value={userData.code}
-                    name={'code'}
+                    value={userData.token}
+                    name={'token'}
                     error={false}
                     errorText={'Ошибка'}
                     size={'default'}

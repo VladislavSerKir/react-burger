@@ -1,12 +1,20 @@
 import { useState } from 'react';
 import { Button, EmailInput } from '@ya.praktikum/react-developer-burger-ui-components'
 import resetStyles from './reset.module.css';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
+import { onReset } from '../../utils/api';
+import { useDispatch, useSelector } from 'react-redux';
 
 export const Reset = () => {
+    const store = useSelector(store => store);
+    const dispatch = useDispatch();
     const [userData, setUserData] = useState({
         email: ''
     });
+
+    if (store.user.resetRequestConfirmed) {
+        return <Redirect to={{ pathname: '/reset-password' }} />
+    }
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -19,6 +27,7 @@ export const Reset = () => {
     const handleReset = (event) => {
         event.preventDefault();
         console.log('сброс пароля', userData.email);
+        dispatch(onReset(userData))
     }
 
     return (
@@ -34,7 +43,7 @@ export const Reset = () => {
                     extraClass={`mb-6`}
                     onChange={handleChange}
                     value={userData.email}
-                    name={'Укажите e-mail'}
+                    name={'email'}
                     isIcon={false}
                 />
                 <Button

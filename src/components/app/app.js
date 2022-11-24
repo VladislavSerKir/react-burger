@@ -8,7 +8,7 @@ import IngredientDetails from '../ingredient-details/ingredient-details';
 import { getAllIngredients } from '../../services/reducers/dataReducer';
 import { closeAllModals } from '../../services/reducers/modalReducer';
 import { Constructor } from '../../pages/constructor/constructor';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, useHistory, useLocation } from 'react-router-dom';
 import { Login } from '../../pages/login/login';
 import { Register } from '../../pages/register/register';
 import { Reset } from '../../pages/reset/reset';
@@ -16,13 +16,23 @@ import { ResetConfirm } from '../../pages/reset-confirm/reset-confirm';
 import { Profile } from '../../pages/profile/profile';
 import { ProtectedRoute } from '../protected-route/protected-route';
 import { NotFound } from '../../pages/not-found/not-found';
+import Spinner from '../../pages/spinner/spinner';
+import { checkAuth } from '../../services/reducers/userReducer';
 
 function App() {
+    const history = useHistory();
+    const location = useLocation();
     const state = useSelector((store) => { return store })
     const dispatch = useDispatch();
 
+    const background = location.state?.background;
+
     React.useEffect(() => {
         dispatch(getAllIngredients());
+    }, []);
+
+    React.useEffect(() => {
+        dispatch(checkAuth());
     }, []);
 
     const handleCloseModals = () => {
@@ -32,20 +42,24 @@ function App() {
     return (
         <div className={appStyles.body} >
             <AppHeader />
-            <Switch>
+            <Switch location={background || location}>
                 <Route path='/' exact>
                     <Constructor />
                 </Route>
-                {/* <ProtectedRoute path='/profile' isAuth={state.user.isAuthenticated} user={state.user.userData}>
+                <ProtectedRoute path='/profile' isAuth={state.user.isAuthCheck} user={state.user.userData}>
                     <Profile />
+                </ProtectedRoute>
+                {/* <Route path='/profile'>
+                    <Profile />
+                </Route> */}
+
+                {/* <ProtectedRoute path='/login' isAuth={state.user.isAuthCheck} user={state.user.userData}>
+                    {state.user.userRequest ? <Spinner /> : <Login />}
                 </ProtectedRoute> */}
-                <Route path='/profile'>
-                    <Profile />
+                <Route path='/login' exact>
+                    {state.user.userRequest ? <Spinner /> : <Login />}
                 </Route>
 
-                <Route path='/login' exact>
-                    <Login />
-                </Route>
                 <Route path='/register' exact>
                     <Register />
                 </Route>
@@ -57,6 +71,7 @@ function App() {
                 </Route>
                 <Route path="*">
                     <NotFound />
+                    {/* <Spinner /> */}
                 </Route>
             </Switch>
 

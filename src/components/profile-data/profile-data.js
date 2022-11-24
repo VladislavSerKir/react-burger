@@ -1,11 +1,15 @@
 import { Button, EmailInput, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import profileDataStyles from './profile-data.module.css';
+import { onEditUser } from '../../utils/api';
 
 export const ProfileData = () => {
+    const store = useSelector(store => store);
+    const dispatch = useDispatch();
     const [userData, setUserData] = useState({
-        name: '',
-        email: '',
+        name: store.user.userData.name,
+        email: store.user.userData.email,
         password: ''
     });
 
@@ -19,16 +23,16 @@ export const ProfileData = () => {
 
     const handleResetForm = (e) => {
         setUserData({
-            name: 'a',
-            email: 'a',
-            password: 'a'
+            name: store.user.userData.name,
+            email: store.user.userData.email,
+            password: ''
         })
     }
 
     const handleEditUser = (event) => {
         event.preventDefault();
         console.log('редактировать данные', userData);
-
+        dispatch(onEditUser(userData))
     }
 
     return (

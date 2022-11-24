@@ -3,8 +3,10 @@ import { Button, EmailInput, Input, PasswordInput } from '@ya.praktikum/react-de
 import registerStyles from './register.module.css';
 import { Link } from 'react-router-dom';
 import { onRegister } from '../../utils/api';
+import { useDispatch } from 'react-redux';
 
 export const Register = () => {
+    const dispatch = useDispatch();
     const [userData, setUserData] = useState({
         name: '',
         email: '',
@@ -22,7 +24,7 @@ export const Register = () => {
     const handleRegister = (event) => {
         event.preventDefault();
         console.log('зарегистрироваться', userData);
-        onRegister(userData);
+        dispatch(onRegister(userData));
         setUserData({
             name: '',
             email: '',

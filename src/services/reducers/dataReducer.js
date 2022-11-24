@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { BASE_URL } from '../../utils/utils';
-import { checkResponse } from '../../utils/utils';
+import { checkResponse } from '../../utils/api';
 
 const dataState = {
     ingredients: [],

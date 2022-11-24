@@ -5,12 +5,18 @@ import { useRouteMatch } from 'react-router-dom';
 import { ProfileData } from '../../components/profile-data/profile-data';
 import { useSelector } from 'react-redux';
 import { onLogout } from '../../utils/api';
+import { useDispatch } from 'react-redux';
 
 export const Profile = () => {
     const store = useSelector(store => store);
-    // const dispatch = useDispatch();
+    const dispatch = useDispatch();
     console.log(store);
     const { url } = useRouteMatch();
+
+    const onLogoutHandler = (e) => {
+        e.preventDefault();
+        dispatch(onLogout())
+    }
 
     return (
         <div className={`${profileStyle.profile}`}>
@@ -21,14 +27,10 @@ export const Profile = () => {
                 <NavLink to={`${url}/orders`} className={`text text_type_main-medium ${profileStyle.link}`} activeClassName={profileStyle.link_active}>
                     История заказов
                 </NavLink>
-
-                {/* <NavLink to={`${url}/quit`} className={`text text_type_main-medium ${profileStyle.link}`} activeClassName={profileStyle.link_active}>
-                    Выход
-                </NavLink> */}
                 <button
                     type="button"
                     className={`text text_type_main-medium text_color_inactive from global ${profileStyle.button}`}
-                    onClick={onLogout}
+                    onClick={onLogoutHandler}
                 >
                     Выход
                 </button>

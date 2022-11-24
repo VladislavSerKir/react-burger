@@ -1,17 +1,24 @@
-// import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import React, { useState } from 'react';
 import { Button, EmailInput, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components'
 import loginStyles from './login.module.css';
-import { Link } from 'react-router-dom';
+import { Link, Redirect, useLocation } from 'react-router-dom';
 import { onLogin } from '../../utils/api';
 
 export const Login = () => {
     // const store = useSelector(store => store);
-    // const dispatch = useDispatch();
+    const dispatch = useDispatch();
+    // const location = useLocation();
     const [userData, setUserData] = useState({
         email: '',
         password: ''
     });
+
+    // if (store.user.userData.email) {
+    //     return (
+    //         <Redirect to={{ pathname: "/login", state: { from: location } }} />
+    //     );
+    // }
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -27,7 +34,7 @@ export const Login = () => {
         if (!userData.email || !userData.password) {
             return;
         }
-        onLogin(userData);
+        dispatch(onLogin(userData));
         setUserData({
             email: '',
             password: ''

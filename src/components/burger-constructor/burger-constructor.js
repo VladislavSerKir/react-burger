@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useDrop } from 'react-dnd';
 import PropTypes from 'prop-types';
 import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components'
-import { checkResponse } from '../../utils/utils';
+import { checkResponse } from '../../utils/api';
 import burgerConstructorStyles from './burger-constructor.module.css';
 import { BASE_URL } from '../../utils/utils';
 import { Ingredient } from '../ingredient/ingredient';
