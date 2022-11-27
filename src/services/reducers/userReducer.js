@@ -1,6 +1,4 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { BASE_URL } from '../../utils/api';
-import { checkResponse } from '../../utils/utils';
 import { getCookie } from '../../utils/cookie';
 import { userRequest } from '../../utils/utils';
 
@@ -14,6 +12,8 @@ const userState = {
     registerRequest: false,
     loginError: null,
     loginRequest: false,
+    logoutError: null,
+    logoutRequest: false,
     updateError: null,
     updateRequest: false,
     userError: null,
@@ -30,13 +30,10 @@ export const checkAuth = createAsyncThunk(
     'user/checkAuth',
     async function (_, { dispatch }) {
         if (getCookie('accessToken')) {
-            console.log('isCookie')
             dispatch(getUser())
-            dispatch(setAuthChecked())
-
+            dispatch(setAuthChecked(true))
         } else {
-            console.log('noCookie')
-            dispatch(setAuthChecked())
+            dispatch(setAuthChecked(true))
         }
     }
 );
@@ -44,22 +41,15 @@ export const checkAuth = createAsyncThunk(
 export const getUser = createAsyncThunk(
     'user/getUser',
     async function (_, { dispatch }) {
+        dispatch(setUserRequest(true))
         return userRequest()
             .then((user) => {
-                console.log('userRequest', user)
-                dispatch(setUserRequest(true))
                 dispatch(setUser(user))
-                dispatch(setUserRequest(false))
             })
-            // .then((user) => {
-            //     console.log('setUser', user)
-            //     dispatch(setUser(user))
-            //     dispatch(setUserRequest(false))
-            // })
             .catch((err) => {
-                console.log('setUserError')
-                dispatch(setUserRequest(true))
                 dispatch(setUserError(err))
+            })
+            .finally(() => {
                 dispatch(setUserRequest(false))
             })
     }
@@ -70,7 +60,7 @@ export const userSlice = createSlice({
     initialState: userState,
     reducers: {
         setAuthChecked: (state, action) => {
-            state.isAuthChecked = true;
+            state.isAuthChecked = action.payload
         },
         setUser: (state, action) => {
             state.userData.email = action.payload.user.email;
@@ -82,14 +72,26 @@ export const userSlice = createSlice({
         setUserError: (state, action) => {
             state.userError = action.payload
         },
-        setEditUser: (state, action) => {
+        setRegisterRequest: (state, action) => {
+            state.registerRequest = action.payload
+        },
+        setRegisterError: (state, action) => {
+            state.registerError = action.payload
+        },
+        setLoginRequest: (state, action) => {
+            state.loginRequest = action.payload
+        },
+        setLoginError: (state, action) => {
+            state.loginError = action.payload
+        },
+        setUpdateUser: (state, action) => {
             state.userData.email = action.payload.user.email;
             state.userData.name = action.payload.user.name;
         },
-        setEditUserRequest: (state, action) => {
+        setUpdateUserRequest: (state, action) => {
             state.updateRequest = action.payload
         },
-        setEditUserError: (state, action) => {
+        setUpdateUserError: (state, action) => {
             state.updateError = action.payload
         },
         setResetRequest: (state, action) => {
@@ -113,9 +115,15 @@ export const userSlice = createSlice({
         setLogoutUser: (state, action) => {
             state.userData.email = '';
             state.userData.name = '';
-        }
+        },
+        setLogoutRequest: (state, action) => {
+            state.logoutRequest = action.payload
+        },
+        setLogoutError: (state, action) => {
+            state.logoutError = action.payload
+        },
     },
 })
 
-export const { setAuthChecked, setUser, setUserRequest, setUserError, setEditUser, setEditUserRequest, setEditUserError, setResetRequest, setResetConfirmed, setResetError, setChangePasswordRequest, setChangePasswordConfirmed, setChangePasswordError, setLogoutUser } = userSlice.actions
+export const { setAuthChecked, setUser, setUserRequest, setUserError, setRegisterRequest, setRegisterError, setLoginRequest, setLoginError, setLogoutRequest, setLogoutError, setUpdateUser, setUpdateUserRequest, setUpdateUserError, setResetRequest, setResetConfirmed, setResetError, setChangePasswordRequest, setChangePasswordConfirmed, setChangePasswordError, setLogoutUser } = userSlice.actions
 export const userReducer = userSlice.reducer

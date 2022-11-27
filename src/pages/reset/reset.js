@@ -1,11 +1,16 @@
 import { useState } from 'react';
 import { Button, EmailInput } from '@ya.praktikum/react-developer-burger-ui-components'
 import resetStyles from './reset.module.css';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Redirect, useLocation } from 'react-router-dom';
 import { onReset } from '../../utils/api';
 import { useDispatch, useSelector } from 'react-redux';
+import Spinner from '../spinner/spinner';
 
 export const Reset = () => {
+    const isAuthChecked = useSelector(store => store.user.isAuthChecked);
+    const resetRequest = useSelector(store => store.user.resetRequest)
+    const user = useSelector(store => store.user.userData.name);
+    const { state } = useLocation()
     const store = useSelector(store => store);
     const dispatch = useDispatch();
     const [userData, setUserData] = useState({
@@ -28,6 +33,18 @@ export const Reset = () => {
         event.preventDefault();
         console.log('сброс пароля', userData.email);
         dispatch(onReset(userData))
+    }
+
+    if (isAuthChecked && user) {
+        return (
+            <Redirect to={state?.from || '/'} />
+        );
+    }
+
+    if (resetRequest) {
+        return (
+            <Spinner />
+        );
     }
 
     return (

@@ -9,6 +9,7 @@ import { getCardData } from '../../services/reducers/dataReducer';
 import { openIngredient } from '../../services/reducers/modalReducer';
 
 function Card({ cardData }) {
+
     const dispatch = useDispatch();
     const store = useSelector(store => store);
     const ingredients = store.burgerConstructor.ingredients;
@@ -19,6 +20,7 @@ function Card({ cardData }) {
     });
 
     const getCardsData = (cardData) => {
+        console.log(cardData)
         dispatch(getCardData(cardData))
         dispatch(openIngredient())
     }
@@ -36,7 +38,7 @@ function Card({ cardData }) {
                 <CurrencyIcon type="primary" />
             </div>
             <p className={`text text_type_main-small ${cardStyles.card__description}`}>{cardData.name}</p>
-        </li>
+        </li >
     )
 }
 

@@ -4,8 +4,9 @@ const constructorState = {
     bun: null,
     ingredients: [],
     orderNumber: null,
+    orderRequest: false,
     success: false,
-    errorMessage: null
+    orderError: null
 }
 
 export const constructorSlice = createSlice({
@@ -27,19 +28,22 @@ export const constructorSlice = createSlice({
         removeIngredient: (state, action) => {
             state.ingredients = [...state.ingredients].filter((item, index) => index !== action.payload);
         },
-        saveOrderNumber: (state, action) => {
+        setPlaceOrderRequest: (state, action) => {
+            state.orderRequest = action.payload
+        },
+        setOrderNumber: (state, action) => {
             state.orderNumber = action.payload.order.number;
             state.ingredients = [];
             state.bun = null;
             state.success = true;
         },
-        statusSuccess: (state, action) => {
-            state.errorMessage = action.payload;
+        setStatusSuccess: (state, action) => {
+            state.orderError = action.payload;
             state.success = false;
             state.orderNumber = null;
         }
     },
 })
 
-export const { addIngredient, removeIngredient, moveIngredient, saveOrderNumber, statusSuccess } = constructorSlice.actions;
+export const { addIngredient, removeIngredient, moveIngredient, setPlaceOrderRequest, setOrderNumber, setStatusSuccess } = constructorSlice.actions;
 export const constructorReducer = constructorSlice.reducer;

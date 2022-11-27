@@ -1,8 +1,10 @@
-import PropTypes from 'prop-types';
 import orderDetailsStyles from './order-details.module.css';
 import orderAcceptedImg from '../../images/graphics.svg';
+import { useSelector } from 'react-redux';
 
-function OrderDetails({ orderNumber }) {
+function OrderDetails() {
+    const orderNumber = useSelector(store => store.burgerConstructor.orderNumber)
+
     return (
         <div className={orderDetailsStyles.order}>
             <h2 className={`text text_type_digits-large mt-30 mb-8 ${orderDetailsStyles.order__title}`}>{orderNumber}</h2>
@@ -12,10 +14,6 @@ function OrderDetails({ orderNumber }) {
             <p className={`text text_type_main-default mt-2 mb-30 ${orderDetailsStyles.order__descriptionReady}`}>Дождитесь готовности на орбитальной станции</p>
         </div>
     )
-}
-
-OrderDetails.propTypes = {
-    orderNumber: PropTypes.number.isRequired
 }
 
 export default OrderDetails;

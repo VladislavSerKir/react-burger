@@ -4,6 +4,7 @@ import { checkResponse } from '../../utils/api';
 
 const dataState = {
     ingredients: [],
+    ingredientsRequest: false,
     success: false,
     errorMessage: null,
     ingredientsCurrentTab: 'bun',
@@ -15,6 +16,7 @@ const dataState = {
 export const getAllIngredients = createAsyncThunk(
     'data',
     async function (_, { dispatch }) {
+        dispatch(setIngredientsRequest(true))
         return fetch(`${BASE_URL}/ingredients`)
             .then(checkResponse)
             .then((data) => {
@@ -23,6 +25,9 @@ export const getAllIngredients = createAsyncThunk(
             .catch((error) => {
                 dispatch(loadDataFail(error))
                 console.warn(error)
+            })
+            .finally(() => {
+                dispatch(setIngredientsRequest(false))
             })
     }
 );
@@ -34,6 +39,9 @@ export const dataSlice = createSlice({
         setIngredients: (state, action) => {
             state.ingredients = action.payload.data;
             state.success = action.payload.success;
+        },
+        setIngredientsRequest: (state, action) => {
+            state.ingredientsRequest = action.payload
         },
         loadDataFail: (state, action) => {
             state.errorMessage = action.payload;
@@ -49,5 +57,5 @@ export const dataSlice = createSlice({
     },
 })
 
-export const { setIngredients, loadDataFail, getCardData, toggleIngredientsTab } = dataSlice.actions
+export const { setIngredients, setIngredientsRequest, loadDataFail, getCardData, toggleIngredientsTab } = dataSlice.actions
 export const dataReducer = dataSlice.reducer

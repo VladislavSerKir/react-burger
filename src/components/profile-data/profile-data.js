@@ -1,11 +1,14 @@
 import { Button, EmailInput, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import profileDataStyles from './profile-data.module.css';
-import { onEditUser } from '../../utils/api';
+import { onUpdateUser } from '../../utils/api';
+import Spinner from '../../pages/spinner/spinner';
 
 export const ProfileData = () => {
     const store = useSelector(store => store);
+    const updateRequest = useSelector(store => store.user.updateRequest)
+    const [isFormEdited, setIsFormEdited] = useState(false)
     const dispatch = useDispatch();
     const [userData, setUserData] = useState({
         name: store.user.userData.name,
@@ -13,12 +16,15 @@ export const ProfileData = () => {
         password: ''
     });
 
+    const isActive = isFormEdited && (userData.name.length ? true : false) && (userData.password.length > 5 ? true : false)
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setUserData({
             ...userData,
             [name]: value
         })
+        setIsFormEdited(true)
     }
 
     const handleResetForm = (e) => {
@@ -27,19 +33,35 @@ export const ProfileData = () => {
             email: store.user.userData.email,
             password: ''
         })
+        setIsFormEdited(false)
     }
 
-    const handleEditUser = (event) => {
-        event.preventDefault();
-        console.log('редактировать данные', userData);
-        dispatch(onEditUser(userData))
+    useEffect(() => {
+        handleResetForm()
+    }, [updateRequest]);
+
+    if (updateRequest) {
+        return (
+            <Spinner />
+        );
+    }
+
+    const handleUpdateUser = (e) => {
+        e.preventDefault();
+        if (userData.name) {
+            dispatch(onUpdateUser(userData))
+            setUserData({
+                password: ''
+            })
+            setIsFormEdited(false)
+        }
     }
 
     return (
         <form
             name='edit-data'
             action='#'
-            onSubmit={handleEditUser}
+            onSubmit={handleUpdateUser}
             className={`mt-30 ${profileDataStyles.profileData}`}
         >
             <Input
@@ -69,23 +91,26 @@ export const ProfileData = () => {
                 name={'password'}
                 icon="EditIcon"
             />
-            <Button
-                htmlType='submit'
-                type="primary"
-                size="large"
-                extraClass={`mt-10`}
-            >
-                Сохранить
-            </Button>
-            <Button
-                htmlType='button'
-                type="secondary"
-                size="large"
-                extraClass={`mt-5`}
-                onClick={handleResetForm}
-            >
-                Отмена
-            </Button>
+            <div className={`${profileDataStyles.profileButtons}`}>
+                <Button
+                    htmlType='button'
+                    type="secondary"
+                    size="large"
+                    disabled={!isFormEdited}
+                    onClick={handleResetForm}
+                >
+                    Отмена
+                </Button>
+                <Button
+                    htmlType='submit'
+                    type="primary"
+                    size="large"
+                    disabled={!isActive}
+                >
+                    Сохранить
+                </Button>
+            </div>
+
         </form >
     )
 }

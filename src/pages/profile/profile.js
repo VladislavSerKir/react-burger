@@ -1,4 +1,3 @@
-import React from 'react';
 import { NavLink, Route, Switch } from 'react-router-dom';
 import profileStyle from './profile.module.css';
 import { useRouteMatch } from 'react-router-dom';
@@ -6,16 +5,22 @@ import { ProfileData } from '../../components/profile-data/profile-data';
 import { useSelector } from 'react-redux';
 import { onLogout } from '../../utils/api';
 import { useDispatch } from 'react-redux';
+import Spinner from '../spinner/spinner';
 
 export const Profile = () => {
-    const store = useSelector(store => store);
+    const logoutRequest = useSelector(store => store.user.logoutRequest)
     const dispatch = useDispatch();
-    console.log(store);
     const { url } = useRouteMatch();
 
     const onLogoutHandler = (e) => {
         e.preventDefault();
         dispatch(onLogout())
+    }
+
+    if (logoutRequest) {
+        return (
+            <Spinner />
+        );
     }
 
     return (
@@ -42,9 +47,6 @@ export const Profile = () => {
                 <Switch>
                     <Route path={`${url}`} exact>
                         <ProfileData />
-                    </Route>
-                    <Route path={`${url}/quit`} exact>
-                        <h1>quit</h1>
                     </Route>
                 </Switch>
             </article >

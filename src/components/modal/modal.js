@@ -1,12 +1,18 @@
 import React from 'react';
+import { closeAllModals } from '../../services/reducers/modalReducer';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { ModalOverlay } from '../modal-overlay/modal-overlay';
 import modalStyles from './modal.module.css';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 const modalsContainer = document.querySelector('#modals');
 
-const Modal = ({ closeModal, onClick, children }) => {
+const Modal = ({ children }) => {
+    const dispatch = useDispatch();
+    const history = useHistory();
+
     React.useEffect(() => {
         document.addEventListener('keydown', handleEscKeydown);
         return () => {
@@ -15,7 +21,14 @@ const Modal = ({ closeModal, onClick, children }) => {
     }, []);
 
     const handleEscKeydown = (e) => {
-        e.key === 'Escape' && onClick(e);
+        e.key === 'Escape' && handleCloseModals(e);
+    }
+
+    const handleCloseModals = () => {
+        dispatch(closeAllModals())
+        history.push({
+            pathname: '/',
+        })
     }
 
     return ReactDOM.createPortal(
@@ -23,22 +36,20 @@ const Modal = ({ closeModal, onClick, children }) => {
             <div className={modalStyles.modal}>
                 <div
                     className={modalStyles.modal__closeButton}
-                    onClick={closeModal}
+                    onClick={handleCloseModals}
                 >
-                    <CloseIcon onClick={closeModal} />
+                    <CloseIcon onClick={handleCloseModals} />
                 </div>
                 {children}
             </div>
-            <ModalOverlay onClick={onClick} />
+            <ModalOverlay onClick={handleCloseModals} />
         </>,
         modalsContainer
     )
 }
 
 Modal.propTypes = {
-    onClick: PropTypes.func.isRequired,
     children: PropTypes.node.isRequired,
-    closeModal: PropTypes.func.isRequired
 }
 
 export default Modal;

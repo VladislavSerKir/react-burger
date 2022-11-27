@@ -4,21 +4,30 @@ import { Button, EmailInput, PasswordInput } from '@ya.praktikum/react-developer
 import loginStyles from './login.module.css';
 import { Link, Redirect, useLocation } from 'react-router-dom';
 import { onLogin } from '../../utils/api';
+import Spinner from '../spinner/spinner';
 
 export const Login = () => {
-    // const store = useSelector(store => store);
+    const isAuthChecked = useSelector(store => store.user.isAuthChecked);
+    const userRequest = useSelector(store => store.user.userRequest)
+    const user = useSelector(store => store.user.userData.name);
+    const { state } = useLocation()
     const dispatch = useDispatch();
-    // const location = useLocation();
     const [userData, setUserData] = useState({
         email: '',
         password: ''
     });
 
-    // if (store.user.userData.email) {
-    //     return (
-    //         <Redirect to={{ pathname: "/login", state: { from: location } }} />
-    //     );
-    // }
+    if (userRequest) {
+        return (
+            <Spinner />
+        );
+    }
+
+    if (isAuthChecked && user) {
+        return (
+            <Redirect to={state?.from || '/'} />
+        );
+    }
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -30,7 +39,6 @@ export const Login = () => {
 
     const handleLogin = (e) => {
         e.preventDefault();
-        console.log('войти', userData);
         if (!userData.email || !userData.password) {
             return;
         }

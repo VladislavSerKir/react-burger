@@ -5,3 +5,9 @@
     padding: 0;
     gap: 24px;
 }
+
+.card__link {
+    list-style-type: none;
+    text-decoration: none;
+    color: #F2F2F3;
+}

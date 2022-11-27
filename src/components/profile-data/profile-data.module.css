@@ -2,6 +2,12 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
     position: relative;
+}
+
+.profileButtons {
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    align-items: center;
 }

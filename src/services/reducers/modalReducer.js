@@ -20,11 +20,11 @@ export const modalSlice = createSlice({
         openIngredient: (state, action) => {
             state.ingredientDetails.isOpened = true;
         },
-        openOrderModal: (state, action) => {
+        setOpenOrderModal: (state, action) => {
             state.orderDetails.isOpened = true
         },
     },
 })
 
-export const { closeAllModals, openIngredient, openOrderModal } = modalSlice.actions
+export const { closeAllModals, openIngredient, setOpenOrderModal } = modalSlice.actions
 export const modalReducer = modalSlice.reducer

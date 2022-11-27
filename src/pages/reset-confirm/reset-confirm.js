@@ -1,11 +1,16 @@
 import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components'
 import resetConfirmStyles from './reset-confirm.module.css';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Redirect, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { onResetPassword } from '../../utils/api';
+import Spinner from '../spinner/spinner';
 
 export const ResetConfirm = () => {
+    const isAuthChecked = useSelector(store => store.user.isAuthChecked);
+    const user = useSelector(store => store.user.userData.name);
+    const changePasswordRequest = useSelector(store => store.user.changePasswordRequest)
+    const { state } = useLocation()
     const store = useSelector(store => store);
     const dispatch = useDispatch();
     const [userData, setUserData] = useState({
@@ -29,6 +34,18 @@ export const ResetConfirm = () => {
         event.preventDefault();
         console.log('подтвердить сброс пароля');
         dispatch(onResetPassword(userData))
+    }
+
+    if (isAuthChecked && user) {
+        return (
+            <Redirect to={state?.from || '/'} />
+        );
+    }
+
+    if (changePasswordRequest) {
+        return (
+            <Spinner />
+        );
     }
 
     return (

@@ -5,15 +5,21 @@ import PropTypes from 'prop-types';
 import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import { checkResponse } from '../../utils/api';
 import burgerConstructorStyles from './burger-constructor.module.css';
-import { BASE_URL } from '../../utils/utils';
+import { placeOrderRequest } from '../../utils/utils';
 import { Ingredient } from '../ingredient/ingredient';
-import { saveOrderNumber, statusSuccess } from '../../services/reducers/constructorReducer';
-import { openOrderModal } from '../../services/reducers/modalReducer';
+import { setOrderNumber, setPlaceOrderRequest, setStatusSuccess } from '../../services/reducers/constructorReducer';
+import { setOpenOrderModal } from '../../services/reducers/modalReducer';
+import { Link, useHistory, useLocation } from 'react-router-dom';
+import Spinner from '../../pages/spinner/spinner';
 
 function BurgerConstructor({ onDropHandler }) {
 
     const dispatch = useDispatch();
     const store = useSelector(store => store);
+    const user = useSelector(store => store.user.userData.name);
+    const orderRequest = useSelector(store => store.burgerConstructor.orderRequest)
+    const location = useLocation();
+    const history = useHistory();
     const { ingredients } = store.burgerConstructor;
     const { burgerConstructor } = store;
 
@@ -27,28 +33,30 @@ function BurgerConstructor({ onDropHandler }) {
         }),
     })
     const hoverDrop = isHover ? burgerConstructorStyles.burgerConstructorHover : burgerConstructorStyles.burgerConstructor;
+    const isActive = (burgerConstructor.bun && user.length ? true : false)
+
+    const cart = useMemo(() => {
+        if (burgerConstructor.bun && burgerConstructor.ingredients)
+            return [burgerConstructor?.bun?._id, ...burgerConstructor.ingredients?.map((item) => item?._id), burgerConstructor?.bun._id]
+    }, [burgerConstructor.bun, burgerConstructor.ingredients])
 
     const placeOrder = () => {
         return async function (dispatch) {
-            return fetch(`${BASE_URL}/orders`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json;charset=utf-8'
-                },
-                body: JSON.stringify({
-                    "ingredients": [burgerConstructor?.bun._id, ...burgerConstructor.ingredients?.map((item) => item._id), burgerConstructor?.bun._id]
-                })
-            })
+            dispatch(setPlaceOrderRequest(true))
+            return placeOrderRequest(cart)
                 .then(checkResponse)
                 .then((data) => {
-                    dispatch(saveOrderNumber(data))
+                    dispatch(setOrderNumber(data))
                 })
                 .then(() => {
-                    dispatch(openOrderModal())
+                    dispatch(setOpenOrderModal())
                 })
                 .catch((error) => {
-                    dispatch(statusSuccess(error))
+                    dispatch(setStatusSuccess(error))
                     console.warn(error)
+                })
+                .finally(() => {
+                    dispatch(setPlaceOrderRequest(false))
                 })
         }
     }
@@ -60,8 +68,24 @@ function BurgerConstructor({ onDropHandler }) {
     }, [burgerConstructor])
 
     const handlePlaceOrder = (event) => {
-        event.preventDefault();
-        dispatch(placeOrder(ingredients))
+        if (!user) {
+            history.push('/login')
+        } else {
+            event.preventDefault();
+            dispatch(placeOrder(ingredients))
+            history.push({
+                pathname: '/order',
+                state: {
+                    background: location
+                }
+            })
+        }
+    }
+
+    if (orderRequest) {
+        return (
+            <Spinner />
+        );
     }
 
     return (
@@ -79,7 +103,7 @@ function BurgerConstructor({ onDropHandler }) {
                 </div>
             }
             <ul className={`${burgerConstructorStyles.burgerConstructor__listitem} `}>
-                {burgerConstructor?.ingredients?.map((position, index) => <Ingredient key={index} id={position._id} position={position} index={index} />)}
+                {burgerConstructor.ingredients.map((position, index) => <Ingredient key={index} id={position._id} position={position} index={index} />)}
             </ul>
             {
                 burgerConstructor?.bun &&
@@ -104,11 +128,28 @@ function BurgerConstructor({ onDropHandler }) {
                     htmlType='submit'
                     type="primary"
                     size="large"
-                    disabled={!burgerConstructor?.bun}
+                    disabled={!isActive}
                 >
                     Оформить заказ
                 </Button>
             </div>
+            {!user &&
+                <p className={`text text_type_main-default text_color_inactive ${burgerConstructorStyles.burgerConstructor__text}`}>Для того чтобы оформить заказ нужно&nbsp;
+                    <Link
+                        className={`text text_type_main-default ${burgerConstructorStyles.burgerConstructor__link}`}
+                        to={{
+                            pathname: `/login`,
+                        }}>
+                        войти
+                    </Link>
+                </p>
+            }
+
+            {!burgerConstructor.bun &&
+                <p className={`mt-5 text text_type_main-default text_color_inactive ${burgerConstructorStyles.burgerConstructor__text}`}>Добавьте булку
+                </p>
+            }
+
         </form >
     )
 }

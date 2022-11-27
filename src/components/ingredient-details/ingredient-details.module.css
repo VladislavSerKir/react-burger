@@ -15,6 +15,7 @@
 
 .ingredient__title {
     max-width: 520px;
+    margin: 0 auto;
 }
 
 .ingredient__itemValue {

@@ -1,8 +1,7 @@
 import { registerRequest, loginRequest, logoutRequest, resetRequest, editRequest, resetPasswordRequest } from "./utils";
-import { setCookie, getCookie, deleteCookie } from "./cookie";
-import { setUser, setLogoutUser, setEditUser, setEditUserRequest, setEditUserError, setResetRequest, setResetConfirmed, setResetError, setChangePasswordRequest, setChangePasswordConfirmed, setChangePasswordError } from "../services/reducers/userReducer";
+import { setCookie, deleteCookie } from "./cookie";
+import { setUser, setLogoutUser, setUpdateUser, setUpdateUserRequest, setUpdateUserError, setResetRequest, setResetConfirmed, setResetError, setChangePasswordRequest, setChangePasswordConfirmed, setChangePasswordError, setUserRequest, setUserError, setLogoutRequest, setLogoutError } from "../services/reducers/userReducer";
 import { refreshTokenRequest } from "./utils";
-import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const checkResponse = (res) => {
     if (res.ok) {
@@ -10,22 +9,6 @@ export const checkResponse = (res) => {
     }
     return Promise.reject(`Ошибка ${res.status}`);
 }
-
-//         .then(checkResponse)
-//         .then(res => {
-//             let authToken;
-//             res.headers.forEach(header => {
-//                 if (header.indexOf('Bearer') === 0) {
-//                     authToken = header.split('Bearer ')[1];
-//                 }
-//             });
-//             if (authToken) {
-//                 setCookie('token', authToken);
-//                 console.log(getCookie('token'));
-//             }
-//             console.log(res)
-//             return res.json();
-//         })
 
 export const onRefreshToken = async (url, options) => {
     try {
@@ -37,11 +20,8 @@ export const onRefreshToken = async (url, options) => {
             if (!refreshData.success) {
                 Promise.reject(refreshData);
             }
-            localStorage.setItem("refreshToken", refreshData.refreshToken);
             setCookie("accessToken", refreshData.accessToken);
-
             options.headers.authorization = refreshData.accessToken;
-
             const res = await fetch(url, options);
             return await checkResponse(res);
         } else {
@@ -51,8 +31,8 @@ export const onRefreshToken = async (url, options) => {
 }
 
 export const onRegister = (body) => {
-    console.log('registerApi', body);
     return async function (dispatch) {
+        dispatch(setUserRequest(true))
         return registerRequest(body)
             .then(checkResponse)
             .then((res) => {
@@ -60,20 +40,21 @@ export const onRegister = (body) => {
                 const refreshToken = res.refreshToken;
                 setCookie('accessToken', accessToken);
                 setCookie('refreshToken', refreshToken);
-                // console.log(getCookie('token'));
-                // localStorage.setItem('refreshToken', refreshToken);
                 dispatch(setUser(res));
-                console.log('work');
             })
             .catch((err) => {
+                dispatch(setUserError(err))
                 console.warn(err);
-                // dispatch(setRegistrationFailed());
-            });
+            })
+            .finally(() => {
+                dispatch(setUserRequest(false))
+            })
     }
 }
 
 export const onLogin = (body) => {
     return async function (dispatch) {
+        dispatch(setUserRequest(true))
         loginRequest(body)
             .then(checkResponse)
             .then((res) => {
@@ -81,83 +62,92 @@ export const onLogin = (body) => {
                 const refreshToken = res.refreshToken;
                 setCookie('accessToken', accessToken);
                 setCookie('refreshToken', refreshToken);
-                // localStorage.setItem('refreshToken', refreshToken);
                 dispatch(setUser(res));
-
             })
             .catch((err) => {
+                dispatch(setUserError(err))
                 console.warn(err);
-                // dispatch(setLoginFailed());
-            });
+            })
+            .finally(() => {
+                dispatch(setUserRequest(false))
+            })
     };
 };
 
 export const onLogout = () => {
     return async function (dispatch) {
+        dispatch(setLogoutRequest(true))
         logoutRequest()
             .then(checkResponse)
             .then((res) => {
                 dispatch(setLogoutUser());
                 deleteCookie('refreshToken');
-                // localStorage.removeItem('refreshToken');
+                deleteCookie('accessToken');
             })
             .catch((err) => {
+                dispatch(setLogoutError(err))
                 console.warn(err);
-            });
+            })
+            .finally(() => {
+                dispatch(setLogoutRequest(false))
+            })
     };
 };
 
 export const onReset = (body) => {
     return async function (dispatch) {
+        dispatch(setResetRequest(true))
         resetRequest(body)
             .then(checkResponse)
             .then((res) => {
-                dispatch(setResetRequest(true))
                 if (res.success) {
                     dispatch(setResetConfirmed(res.success))
                 }
-                dispatch(setResetRequest(false))
             })
             .catch((err) => {
-                dispatch(setResetRequest(true))
                 dispatch(setResetError(err))
+                console.warn(err);
+            })
+            .finally(() => {
                 dispatch(setResetRequest(false))
-            });
+            })
     };
 };
 
 export const onResetPassword = (body) => {
     return async function (dispatch) {
+        dispatch(setChangePasswordRequest(true))
         resetPasswordRequest(body)
             .then(checkResponse)
             .then((res) => {
-                dispatch(setChangePasswordRequest(true))
                 if (res.success) {
                     dispatch(setChangePasswordConfirmed(res.success))
                 }
-                dispatch(setChangePasswordRequest(false))
             })
             .catch((err) => {
-                dispatch(setChangePasswordRequest(true))
                 dispatch(setChangePasswordError(err))
+                console.warn(err);
+            })
+            .finally(() => {
                 dispatch(setChangePasswordRequest(false))
-            });
+            })
     };
 };
 
-export const onEditUser = (user) => {
+export const onUpdateUser = (user) => {
     return async function (dispatch) {
+        dispatch(setUpdateUserRequest(true))
         editRequest(user)
             .then(checkResponse)
             .then((res) => {
-                dispatch(setEditUserRequest(true))
-                dispatch(setEditUser(res))
-                dispatch(setEditUserRequest(false))
+                dispatch(setUpdateUser(res))
             })
             .catch((err) => {
-                dispatch(setEditUserRequest(true))
-                dispatch(setEditUserError(err))
-                dispatch(setEditUserRequest(false))
-            });
+                dispatch(setUpdateUserError(err))
+                console.warn(err);
+            })
+            .finally(() => {
+                dispatch(setUpdateUserRequest(false))
+            })
     };
 };

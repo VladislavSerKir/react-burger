@@ -65,3 +65,18 @@
   font-size: 48px;
   line-height: 36px;
 }
+
+.burgerConstructor__text {
+  display: flex;
+  justify-content: end;
+}
+
+.burgerConstructor__link {
+  text-decoration: none;
+  transition: all 0.3s;
+}
+
+.burgerConstructor__link:hover {
+  opacity: 0.7;
+  transition: all 0.3s;
+}
