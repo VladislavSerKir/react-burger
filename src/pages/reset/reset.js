@@ -1,38 +1,26 @@
-import { useState } from 'react';
 import { Button, EmailInput } from '@ya.praktikum/react-developer-burger-ui-components'
 import resetStyles from './reset.module.css';
 import { Link, Redirect, useLocation } from 'react-router-dom';
-import { onReset } from '../../utils/api';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import Spinner from '../spinner/spinner';
+import { useForm } from '../../hooks/useForm';
 
 export const Reset = () => {
+
     const isAuthChecked = useSelector(store => store.user.isAuthChecked);
     const resetRequest = useSelector(store => store.user.resetRequest)
     const user = useSelector(store => store.user.userData.name);
     const { state } = useLocation()
     const store = useSelector(store => store);
-    const dispatch = useDispatch();
-    const [userData, setUserData] = useState({
-        email: ''
-    });
+
+    const userData = {
+        email: '',
+    }
+
+    const { values, handleChange, handleReset } = useForm(userData);
 
     if (store.user.resetRequestConfirmed) {
         return <Redirect to={{ pathname: '/reset-password' }} />
-    }
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setUserData({
-            ...userData,
-            [name]: value
-        })
-    }
-
-    const handleReset = (event) => {
-        event.preventDefault();
-        console.log('сброс пароля', userData.email);
-        dispatch(onReset(userData))
     }
 
     if (isAuthChecked && user) {
@@ -59,7 +47,7 @@ export const Reset = () => {
                 <EmailInput
                     extraClass={`mb-6`}
                     onChange={handleChange}
-                    value={userData.email}
+                    value={values.email}
                     name={'email'}
                     isIcon={false}
                 />

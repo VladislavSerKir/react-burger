@@ -11,6 +11,7 @@ import { setOrderNumber, setPlaceOrderRequest, setStatusSuccess } from '../../se
 import { setOpenOrderModal } from '../../services/reducers/modalReducer';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import Spinner from '../../pages/spinner/spinner';
+import { v4 as uuidv4 } from 'uuid';
 
 function BurgerConstructor({ onDropHandler }) {
 
@@ -25,13 +26,17 @@ function BurgerConstructor({ onDropHandler }) {
 
     const [{ isHover }, dropTarget] = useDrop({
         accept: 'ingredient',
-        drop(ingredient) {
-            onDropHandler(ingredient);
+        drop: (ingredient) => {
+            let index = uuidv4()
+            let mutatedIngredient = { index, ...ingredient }
+            onDropHandler(mutatedIngredient);
+            return { mutatedIngredient }
         },
         collect: monitor => ({
-            isHover: monitor.isOver()
+            isHover: monitor.isOver(),
         }),
     })
+
     const hoverDrop = isHover ? burgerConstructorStyles.burgerConstructorHover : burgerConstructorStyles.burgerConstructor;
     const isActive = (burgerConstructor.bun && user.length ? true : false)
 
@@ -103,7 +108,7 @@ function BurgerConstructor({ onDropHandler }) {
                 </div>
             }
             <ul className={`${burgerConstructorStyles.burgerConstructor__listitem} `}>
-                {burgerConstructor.ingredients.map((position, index) => <Ingredient key={index} id={position._id} position={position} index={index} />)}
+                {burgerConstructor.ingredients.map((position, index) => <Ingredient key={position.index} id={position.index} position={position} index={index} />)}
             </ul>
             {
                 burgerConstructor?.bun &&

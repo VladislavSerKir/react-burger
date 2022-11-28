@@ -41,8 +41,7 @@ export const Ingredient = ({ position, index, id }) => {
                 return;
             }
             const hoverBoundingRect = refWithin.current?.getBoundingClientRect();
-            const hoverMiddleY =
-                (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+            const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
             const clientOffset = monitor.getClientOffset();
             const hoverClientY = clientOffset.y - hoverBoundingRect.top;
             if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
@@ -59,7 +58,7 @@ export const Ingredient = ({ position, index, id }) => {
     const [, dragWithin] = useDrag({
         type: 'ingredientConstructor',
         item: () => {
-            return { id, index };
+            return { id, index, position };
         },
     });
 

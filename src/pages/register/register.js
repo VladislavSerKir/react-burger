@@ -1,40 +1,24 @@
-import React, { useState } from 'react';
 import { Button, EmailInput, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components'
 import registerStyles from './register.module.css';
 import { Link, Redirect, useLocation } from 'react-router-dom';
-import { onRegister } from '../../utils/api';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import Spinner from '../spinner/spinner';
+import { useForm } from '../../hooks/useForm';
 
 export const Register = () => {
+
     const isAuthChecked = useSelector(store => store.user.isAuthChecked);
     const registerRequest = useSelector(store => store.user.registerRequest)
     const user = useSelector(store => store.user.userData.name);
     const { state } = useLocation()
-    const dispatch = useDispatch();
-    const [userData, setUserData] = useState({
+
+    const userData = {
         name: '',
         email: '',
         password: ''
-    });
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setUserData({
-            ...userData,
-            [name]: value
-        })
     }
 
-    const handleRegister = (event) => {
-        event.preventDefault();
-        dispatch(onRegister(userData));
-        setUserData({
-            name: '',
-            email: '',
-            password: ''
-        })
-    }
+    const { values, handleChange, handleRegister } = useForm(userData);
 
     if (registerRequest) {
         return (
@@ -61,7 +45,7 @@ export const Register = () => {
                     type={'text'}
                     placeholder={'Имя'}
                     onChange={handleChange}
-                    value={userData.name}
+                    value={values.name}
                     name={'name'}
                     error={false}
                     errorText={'Ошибка'}
@@ -71,14 +55,14 @@ export const Register = () => {
                 <EmailInput
                     extraClass={`mb-6`}
                     onChange={handleChange}
-                    value={userData.email}
+                    value={values.email}
                     name={'email'}
                     isIcon={false}
                 />
                 <PasswordInput
                     extraClass={`mb-6`}
                     onChange={handleChange}
-                    value={userData.password}
+                    value={values.password}
                     name={'password'}
                 />
                 <Button

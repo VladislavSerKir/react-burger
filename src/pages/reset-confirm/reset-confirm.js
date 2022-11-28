@@ -1,39 +1,27 @@
 import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components'
 import resetConfirmStyles from './reset-confirm.module.css';
 import { Link, Redirect, useLocation } from 'react-router-dom';
-import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { onResetPassword } from '../../utils/api';
+import { useSelector } from 'react-redux';
 import Spinner from '../spinner/spinner';
+import { useForm } from '../../hooks/useForm';
 
 export const ResetConfirm = () => {
+
     const isAuthChecked = useSelector(store => store.user.isAuthChecked);
     const user = useSelector(store => store.user.userData.name);
     const changePasswordRequest = useSelector(store => store.user.changePasswordRequest)
     const { state } = useLocation()
     const store = useSelector(store => store);
-    const dispatch = useDispatch();
-    const [userData, setUserData] = useState({
+
+    const userData = {
         password: '',
         token: ''
-    });
+    }
+
+    const { values, handleChange, handleResetPassword } = useForm(userData);
 
     if (store.user.changePasswordConfirmed) {
         return <Redirect to={{ pathname: '/profile' }} />
-    }
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setUserData({
-            ...userData,
-            [name]: value
-        })
-    }
-
-    const handleResetPassword = (event) => {
-        event.preventDefault();
-        console.log('подтвердить сброс пароля');
-        dispatch(onResetPassword(userData))
     }
 
     if (isAuthChecked && user) {
@@ -60,7 +48,7 @@ export const ResetConfirm = () => {
                 <PasswordInput
                     extraClass={`mb-6`}
                     onChange={handleChange}
-                    value={userData.password}
+                    value={values.password}
                     name={'password'}
                     placeholder={'Введите новый пароль'}
                 />
@@ -68,7 +56,7 @@ export const ResetConfirm = () => {
                     type={'text'}
                     placeholder={'Введите код из письма'}
                     onChange={handleChange}
-                    value={userData.token}
+                    value={values.token}
                     name={'token'}
                     error={false}
                     errorText={'Ошибка'}

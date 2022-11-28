@@ -16,11 +16,10 @@ function Card({ cardData }) {
 
     const [, dragRef] = useDrag({
         type: "ingredient",
-        item: cardData
+        item: cardData,
     });
 
     const getCardsData = (cardData) => {
-        console.log(cardData)
         dispatch(getCardData(cardData))
         dispatch(openIngredient())
     }
