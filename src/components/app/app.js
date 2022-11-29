@@ -17,6 +17,7 @@ import { ProtectedRoute } from '../protected-route/protected-route';
 import { NotFound } from '../../pages/not-found/not-found';
 import Spinner from '../../pages/spinner/spinner';
 import { checkAuth } from '../../services/reducers/userReducer';
+import { closeAllModals } from '../../services/reducers/modalReducer';
 
 function App() {
     const location = useLocation();
@@ -32,6 +33,10 @@ function App() {
     React.useEffect(() => {
         dispatch(checkAuth());
     }, []);
+
+    const handleCloseModals = () => {
+        dispatch(closeAllModals())
+    }
 
     return (
         <div className={appStyles.body} >
@@ -66,14 +71,18 @@ function App() {
             {background &&
                 (<>
                     <Route path='/ingredients/:id' >
-                        <Modal>
-                            {state.data.ingredients.length && <IngredientDetails />}
-                        </Modal>
+                        {state.modal.ingredientDetails.isOpened &&
+                            (<>
+                                <Modal onClose={handleCloseModals}>
+                                    {state.data.ingredients.length && <IngredientDetails />}
+                                </Modal>
+                            </>)
+                        }
                     </Route >
                     <ProtectedRoute path='/order'>
                         {state.modal.orderDetails.isOpened &&
                             (<>
-                                <Modal>
+                                <Modal onClose={handleCloseModals}>
                                     <OrderDetails />
                                 </Modal>
                             </>)
