@@ -7,7 +7,7 @@ import OrderDetails from '../order-details/order-details';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import { getAllIngredients } from '../../services/reducers/dataReducer';
 import { Constructor } from '../../pages/constructor/constructor';
-import { Redirect, Route, Switch, useLocation } from 'react-router-dom';
+import { Redirect, Route, Switch, useHistory, useLocation } from 'react-router-dom';
 import { Login } from '../../pages/login/login';
 import { Register } from '../../pages/register/register';
 import { Reset } from '../../pages/reset/reset';
@@ -17,12 +17,13 @@ import { ProtectedRoute } from '../protected-route/protected-route';
 import { NotFound } from '../../pages/not-found/not-found';
 import Spinner from '../../pages/spinner/spinner';
 import { checkAuth } from '../../services/reducers/userReducer';
-import { closeAllModals } from '../../services/reducers/modalReducer';
 
 function App() {
+
     const location = useLocation();
     const state = useSelector(store => store)
     const dispatch = useDispatch();
+    const history = useHistory();
 
     const background = location.state?.background;
 
@@ -35,7 +36,7 @@ function App() {
     }, []);
 
     const handleCloseModals = () => {
-        dispatch(closeAllModals())
+        history.goBack()
     }
 
     return (
@@ -71,25 +72,22 @@ function App() {
             {background &&
                 (<>
                     <Route path='/ingredients/:id' >
-                        {state.modal.ingredientDetails.isOpened &&
-                            (<>
-                                <Modal onClose={handleCloseModals}>
-                                    {state.data.ingredients.length && <IngredientDetails />}
-                                </Modal>
-                            </>)
-                        }
+                        <Modal onClose={handleCloseModals} >
+                            {state.data.ingredients.length && <IngredientDetails />}
+                        </Modal>
                     </Route >
                     <ProtectedRoute path='/order'>
-                        {state.modal.orderDetails.isOpened &&
+                        {state.burgerConstructor.orderNumber &&
                             (<>
-                                <Modal onClose={handleCloseModals}>
+                                <Modal onClose={handleCloseModals} >
                                     <OrderDetails />
                                 </Modal>
                             </>)
                         }
                     </ProtectedRoute>
                 </>
-                )}
+                )
+            }
         </div >
     );
 }
