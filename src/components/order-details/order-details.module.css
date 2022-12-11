@@ -1,15 +1,13 @@
 .order {
-    display: flex;
-    flex-direction: column;
+    /* display: flex;
+    flex-direction: column; */
     align-items: center;
-    width: 100%;
+    /* width: 100%; */
     flex-wrap: wrap;
     position: relative;
-}
-
-.order__title {
-    max-width: 520px;
-    text-shadow: 0px 0px 16px rgba(51, 51, 255, 0.25), 0px 0px 8px rgba(51, 51, 255, 0.25), 0px 4px 32px rgba(51, 51, 255, 0.5);
+    z-index: 8;
+    margin: 0 auto;
+    width: 720px;
 }
 
 .order__closeButton {
@@ -27,6 +25,103 @@
     cursor: pointer;
 }
 
-.order__descriptionReady {
-    color: #8585AD;
+
+.orderHeader {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
+
+.ingredientImageBlock {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+}
+
+.ingredientTotal, .orderTotal {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.orderIngredients {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 0 32px 0 0;
+    position: relative;
+    max-height: 312px;
+    overflow-y: scroll;
+}
+
+.ingredientElement {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    /* gap: 16px; */
+    align-items: center;
+    border-radius: 50%;
+    /* width: 64px; */
+    height: 64px;
+    object-fit: cover;
+    list-style: none;
+
+}
+
+.ingredientImage {
+    width: 64px;
+    height: 64px;
+    object-fit: cover;
+    border: double 2px transparent;
+    background-image: linear-gradient(rgba(19, 19, 22, 1), rgba(19, 19, 22, 1)), linear-gradient(63.18deg, #801ab3, #4c4cff);
+    border-image-slice: 20;
+    border-radius: 50%;
+    background-clip: content-box, border-box;
+}
+
+.ingredientName {
+    width: auto;
+}
+
+.orderIngredients::-webkit-scrollbar {
+    width: 8px;
+    /* ширина scrollbar */
+}
+
+.orderIngredients::-webkit-scrollbar-track {
+    background: #2F2F37;
+    /* цвет дорожки */
+}
+
+.orderIngredients::-webkit-scrollbar-thumb {
+    background-color: #8585AD;
+    /* цвет плашки */
+}
+
+/* .orderIngredientElement {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    align-items: center;
+    height: 64px;
+    --b: 2px;
+    position: relative;
+}
+
+.orderIngredientElement:before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--c, linear-gradient(63.18deg, #801ab3, #4c4cff));
+    padding: var(--b);
+    border-radius: 50%;
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+} */

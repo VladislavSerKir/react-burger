@@ -1,7 +1,7 @@
 .modal {
     border-radius: 40px;
     background: #1C1C21;
-    z-index: 1;
+    z-index: 8;
     position: absolute;
     overflow: hidden;
     top: 50%;
@@ -17,7 +17,7 @@
     position: absolute;
     top: 60px;
     right: 40px;
-    z-index: 2;
+    z-index: 9;
 }
 
 .modal__closeButton:hover {

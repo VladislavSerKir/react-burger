@@ -8,6 +8,10 @@
     margin-right: auto;
 }
 
+.orders {
+    margin-top: 40px;
+}
+
 .menu {
     width: 320px;
     display: flex;
@@ -15,7 +19,7 @@
 }
 
 .content {
-    max-width: 480px;
+    width: 100%;
 }
 
 .link {

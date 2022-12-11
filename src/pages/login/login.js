@@ -1,21 +1,34 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Button, EmailInput, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components'
 import loginStyles from './login.module.css';
-import { Link, Redirect, useLocation } from 'react-router-dom';
+import { Link, Redirect, useHistory, useLocation } from 'react-router-dom';
 import Spinner from '../spinner/spinner';
 import { useForm } from '../../hooks/useForm';
+import { useEffect } from 'react';
+import { setResetUserError } from '../../services/reducers/userReducer';
 
 export const Login = () => {
 
+    const history = useHistory();
+    const dispatch = useDispatch();
     const isAuthChecked = useSelector(store => store.user.isAuthChecked);
     const userRequest = useSelector(store => store.user.userRequest)
     const user = useSelector(store => store.user.userData.name);
+    const userError = useSelector(store => store.user.userError);
     const { state } = useLocation()
+
+    const userErrorCode = userError?.slice(userError.length - 3, userError.length)
 
     const userData = {
         email: '',
         password: ''
     }
+
+    useEffect(() => {
+        return history.listen((location) => {
+            dispatch(setResetUserError())
+        })
+    }, [history])
 
     const { values, handleChange, handleLogin } = useForm(userData);
 
@@ -53,6 +66,7 @@ export const Login = () => {
                     value={values.password}
                     name={'password'}
                 />
+                {userError && (<p className={`mb-4 text text_type_main-default ${loginStyles.textError}`}>{userErrorCode === '403' ? 'Сессия истекла' : 'Неправильный логин или пароль'} </p>)}
                 <Button
                     htmlType='submit'
                     type="primary"

@@ -9,6 +9,7 @@ export const ProfileData = () => {
 
     const store = useSelector(store => store);
     const updateRequest = useSelector(store => store.user.updateRequest)
+    const userUpdated = useSelector(store => store.user.userUpdated)
 
     const userData = {
         name: store.user.userData.name,
@@ -35,7 +36,7 @@ export const ProfileData = () => {
             name='edit-data'
             action='#'
             onSubmit={handleUpdateUser}
-            className={`mt-30 ${profileDataStyles.profileData}`}
+            className={`mt-20 ${profileDataStyles.profileData}`}
         >
             <Input
                 type={'text'}
@@ -83,6 +84,10 @@ export const ProfileData = () => {
                     Сохранить
                 </Button>
             </div>
+
+            {
+                userUpdated && (<p className={`mt-5 text text_color_inactive text_type_main-default ${profileDataStyles.statusChange}`}>Изменения сохранены</p>)
+            }
 
         </form >
     )

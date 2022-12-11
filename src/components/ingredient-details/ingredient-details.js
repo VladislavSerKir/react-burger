@@ -7,13 +7,13 @@ function IngredientDetails() {
     const { id } = useParams();
     const ingredients = useSelector(store => store.data.ingredients);
 
-    const ingredient = ingredients.find(item => {
+    const ingredientMatch = ingredients.find(item => {
         return item._id === id
     })
 
-    const { image_large, name, calories, carbohydrates, fat, proteins } = ingredient;
+    const { image_large, name, calories, carbohydrates, fat, proteins } = ingredientMatch;
 
-    if (!ingredient) {
+    if (!ingredientMatch) {
         return (<Spinner />)
     } else {
         return (

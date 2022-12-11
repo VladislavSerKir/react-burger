@@ -7,11 +7,12 @@ import { checkResponse } from '../../utils/api';
 import burgerConstructorStyles from './burger-constructor.module.css';
 import { placeOrderRequest } from '../../utils/utils';
 import { Ingredient } from '../ingredient/ingredient';
-import { setOrderNumber, setPlaceOrderRequest, setStatusSuccess } from '../../services/reducers/constructorReducer';
+import { setOrderNumber, setPlaceOrderRequest, setResetOrderNumber, setStatusSuccess } from '../../services/reducers/constructorReducer';
 import { setOpenOrderModal } from '../../services/reducers/modalReducer';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import Spinner from '../../pages/spinner/spinner';
 import { v4 as uuidv4 } from 'uuid';
+import { ModalOverlay } from '../modal-overlay/modal-overlay';
 
 function BurgerConstructor({ onDropHandler }) {
 
@@ -47,6 +48,7 @@ function BurgerConstructor({ onDropHandler }) {
 
     const placeOrder = () => {
         return async function (dispatch) {
+            dispatch(setResetOrderNumber())
             dispatch(setPlaceOrderRequest(true))
             return placeOrderRequest(cart)
                 .then(checkResponse)

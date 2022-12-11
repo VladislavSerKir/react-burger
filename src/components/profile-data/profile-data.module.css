@@ -3,6 +3,7 @@
     flex-direction: column;
     justify-content: center;
     position: relative;
+    max-width: 480px;
 }
 
 .profileButtons {
@@ -10,4 +11,9 @@
     flex-direction: row;
     justify-content: end;
     align-items: center;
+}
+
+.statusChange {
+    display: flex;
+    justify-content: end;
 }

@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import appStyles from './app.module.css';
 import AppHeader from '../app-header/app-header';
 import Modal from '../modal/modal';
-import OrderDetails from '../order-details/order-details';
+import OrderBrief from '../order-brief/order-brief';
 import IngredientDetails from '../ingredient-details/ingredient-details';
-import { getAllIngredients } from '../../services/reducers/dataReducer';
+import { getAllIngredients, setWebsocketConnectionStart } from '../../services/reducers/dataReducer';
 import { Constructor } from '../../pages/constructor/constructor';
 import { Redirect, Route, Switch, useHistory, useLocation } from 'react-router-dom';
 import { Login } from '../../pages/login/login';
@@ -17,6 +17,8 @@ import { ProtectedRoute } from '../protected-route/protected-route';
 import { NotFound } from '../../pages/not-found/not-found';
 import Spinner from '../../pages/spinner/spinner';
 import { checkAuth } from '../../services/reducers/userReducer';
+import { Feed } from '../../pages/feed/feed';
+import OrderDetails from '../order-details/order-details';
 
 function App() {
 
@@ -24,12 +26,21 @@ function App() {
     const state = useSelector(store => store)
     const dispatch = useDispatch();
     const history = useHistory();
+    const userOrders = useSelector(store => store.data.userOrders);
+    const orders = useSelector(store => store.data.orders)
 
     const background = location.state?.background;
 
     React.useEffect(() => {
         dispatch(getAllIngredients());
     }, []);
+
+    React.useEffect(() => {
+        dispatch(setWebsocketConnectionStart())
+    }, [])
+    // state.data.orders.map(order => { return console.log(order); });
+    // console.log(state.data.orders?.orders);
+
 
     React.useEffect(() => {
         dispatch(checkAuth());
@@ -49,6 +60,10 @@ function App() {
                 <ProtectedRoute path='/profile'>
                     <Profile />
                 </ProtectedRoute>
+                <ProtectedRoute path='/profile/orders/:id'>
+                    {/* {state.data.userOrders?.orders && <OrderDetails />} */}
+                    {!state.data.userOrders?.orders && !state.data.orders?.orders ? <Spinner /> : <OrderDetails />}
+                </ProtectedRoute>
                 <Route path='/login' exact>
                     {!state.user.userData.name && state.user.isAuthChecked && state.user.userRequest ? <Spinner /> : <Login />}
                 </Route>
@@ -64,6 +79,13 @@ function App() {
                 <Route path='/ingredients/:id' >
                     {state.data.ingredients.length && <IngredientDetails ingredients={state.data.ingredients} />}
                 </Route>
+                <Route path='/feed/:id' >
+                    {/* {state.data.orders?.orders && <OrderDetails />} */}
+                    {!state.data.orders?.orders && !state.data.userOrders?.orders ? <Spinner /> : <OrderDetails />}
+                </Route>
+                <Route path='/feed' >
+                    <Feed />
+                </Route>
                 <Route path="*">
                     <NotFound />
                 </Route>
@@ -76,14 +98,28 @@ function App() {
                             {state.data.ingredients.length && <IngredientDetails />}
                         </Modal>
                     </Route >
+                    <Route path='/feed/:id' >
+                        <Modal onClose={handleCloseModals} >
+                            {/* {state.data.orders?.orders && <OrderDetails />} */}
+                            {!state.data.orders?.orders && !state.data.userOrders?.orders ? <Spinner /> : <OrderDetails />}
+                        </Modal>
+                    </Route >
                     <ProtectedRoute path='/order'>
                         {state.burgerConstructor.orderNumber &&
                             (<>
                                 <Modal onClose={handleCloseModals} >
-                                    <OrderDetails />
+                                    <OrderBrief />
                                 </Modal>
                             </>)
                         }
+                    </ProtectedRoute>
+                    {/* <ProtectedRoute path='/profile/orders/:id' children={<Modal onClose={handleCloseModals} > <OrderDetails /></Modal>}>
+                    </ProtectedRoute> */}
+                    <ProtectedRoute path='/profile/orders/:id'>
+                        <Modal onClose={handleCloseModals} >
+                            {/* {state.data.userOrders?.orders && <OrderDetails />} */}
+                            {!state.data.userOrders?.orders && !state.data.orders?.orders ? <Spinner /> : <OrderDetails />}
+                        </Modal>
                     </ProtectedRoute>
                 </>
                 )

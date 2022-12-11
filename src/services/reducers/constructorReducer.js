@@ -37,6 +37,9 @@ export const constructorSlice = createSlice({
             state.bun = null;
             state.success = true;
         },
+        setResetOrderNumber: (state, action) => {
+            state.orderNumber = null;
+        },
         setStatusSuccess: (state, action) => {
             state.orderError = action.payload;
             state.success = false;
@@ -45,5 +48,5 @@ export const constructorSlice = createSlice({
     },
 })
 
-export const { addIngredient, removeIngredient, moveIngredient, setPlaceOrderRequest, setOrderNumber, setStatusSuccess } = constructorSlice.actions;
+export const { addIngredient, removeIngredient, moveIngredient, setPlaceOrderRequest, setOrderNumber, setResetOrderNumber, setStatusSuccess } = constructorSlice.actions;
 export const constructorReducer = constructorSlice.reducer;

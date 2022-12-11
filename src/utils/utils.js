@@ -3,15 +3,19 @@ import { checkResponse } from "./api";
 import { onRefreshToken } from "./api";
 
 export const BASE_URL = `https://norma.nomoreparties.space/api`;
+export const ORDERS_WSS = `wss://norma.nomoreparties.space/orders/all`;
+export const USER_ORDERS_WSS = `wss://norma.nomoreparties.space/orders`;
+
 
 export const placeOrderRequest = async (cart) => {
     return fetch(`${BASE_URL}/orders`, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json;charset=utf-8'
+            'Content-Type': 'application/json;charset=utf-8',
+            Authorization: 'Bearer ' + getCookie('accessToken'),
         },
         body: JSON.stringify({
-            "ingredients": cart
+            "ingredients": cart,
         })
     })
 }

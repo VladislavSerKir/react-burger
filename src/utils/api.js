@@ -2,6 +2,7 @@ import { registerRequest, loginRequest, logoutRequest, resetRequest, editRequest
 import { setCookie, deleteCookie } from "./cookie";
 import { setUser, setLogoutUser, setUpdateUser, setUpdateUserRequest, setUpdateUserError, setResetRequest, setResetConfirmed, setResetError, setChangePasswordRequest, setChangePasswordConfirmed, setChangePasswordError, setUserRequest, setUserError, setLogoutRequest, setLogoutError } from "../services/reducers/userReducer";
 import { refreshTokenRequest } from "./utils";
+import { setRemoveUserOrders } from "../services/reducers/dataReducer";
 
 export const checkResponse = (res) => {
     if (res.ok) {
@@ -60,9 +61,9 @@ export const onLogin = (body) => {
             .then((res) => {
                 const accessToken = res.accessToken.split('Bearer ')[1];
                 const refreshToken = res.refreshToken;
+                dispatch(setUser(res));
                 setCookie('accessToken', accessToken);
                 setCookie('refreshToken', refreshToken);
-                dispatch(setUser(res));
             })
             .catch((err) => {
                 dispatch(setUserError(err))
@@ -80,6 +81,7 @@ export const onLogout = () => {
         logoutRequest()
             .then(checkResponse)
             .then((res) => {
+                // dispatch(setRemoveUserOrders())
                 dispatch(setLogoutUser());
                 deleteCookie('refreshToken');
                 deleteCookie('accessToken');
