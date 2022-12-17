@@ -6,7 +6,6 @@ export const BASE_URL = `https://norma.nomoreparties.space/api`;
 export const ORDERS_WSS = `wss://norma.nomoreparties.space/orders/all`;
 export const USER_ORDERS_WSS = `wss://norma.nomoreparties.space/orders`;
 
-
 export const placeOrderRequest = async (cart) => {
     return fetch(`${BASE_URL}/orders`, {
         method: 'POST',

@@ -5,7 +5,6 @@ export const OrdersSummary = ({ orders }) => {
 
     const totalOrders = orders?.total;
     const totalOrdersToday = orders?.totalToday
-    // console.log(orders?.orders);
 
     const readyOrders = useCallback(() => {
         return orders?.orders.filter(order => order.status === 'done').map(order => order.number)
@@ -14,8 +13,6 @@ export const OrdersSummary = ({ orders }) => {
     const notReadyOrders = useCallback(() => {
         return orders?.orders.filter(order => order.status !== 'done').map(order => order.number)
     }, [orders?.orders]);
-
-    // console.log(readyOrders());
 
     return (
         <div className={` ${ordersSummaryStyles.ordersSummaryContainer}`}>

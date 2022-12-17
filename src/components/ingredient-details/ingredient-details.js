@@ -5,17 +5,15 @@ import Spinner from '../../pages/spinner/spinner';
 
 function IngredientDetails() {
     const { id } = useParams();
-    const ingredients = useSelector(store => store.data.ingredients);
+    const ingredients = useSelector(store => store.data?.ingredients);
 
-    const ingredientMatch = ingredients.find(item => {
+    const ingredientMatch = ingredients?.find(item => {
         return item._id === id
     })
 
     const { image_large, name, calories, carbohydrates, fat, proteins } = ingredientMatch;
 
-    if (!ingredientMatch) {
-        return (<Spinner />)
-    } else {
+    if (ingredientMatch) {
         return (
             <div className={`pl-10 pr-10 ${ingredientDetailsStyles.ingredient}`}>
                 <div className={`mt-10 ${ingredientDetailsStyles.ingredient__header}`}>
@@ -43,6 +41,8 @@ function IngredientDetails() {
                 </ul>
             </div>
         );
+    } else {
+        return (<Spinner />)
     }
 }
 

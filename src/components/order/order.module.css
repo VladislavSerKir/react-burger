@@ -57,13 +57,13 @@
 }
 
 .orderIngredientElement {
+    position: absolute;
+    /* position: relative; */
     flex-grow: 1;
     width: 64px;
     height: 64px;
     display: flex;
     flex-direction: column;
-    position: relative;
-
     border: double 2px transparent;
     background-image: linear-gradient(rgba(19, 19, 22, 1), rgba(19, 19, 22, 1)), linear-gradient(63.18deg, #801ab3, #4c4cff);
     border-image-slice: 20;

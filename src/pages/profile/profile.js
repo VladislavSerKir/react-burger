@@ -1,4 +1,4 @@
-import { NavLink, Route, Switch, useHistory, useLocation } from 'react-router-dom';
+import { NavLink, Route, Switch, useLocation } from 'react-router-dom';
 import profileStyle from './profile.module.css';
 import { useRouteMatch } from 'react-router-dom';
 import { ProfileData } from '../../components/profile-data/profile-data';
@@ -7,20 +7,22 @@ import { onLogout } from '../../utils/api';
 import { useDispatch } from 'react-redux';
 import Spinner from '../spinner/spinner';
 import { OrdersFeed } from '../../components/orders-feed/orders-feed';
-import { ProtectedRoute } from '../../components/protected-route/protected-route';
-import OrderDetails from '../../components/order-details/order-details';
-import Modal from '../../components/modal/modal';
+import { useEffect } from 'react';
+import { setWebsocketConnection } from '../../services/reducers/dataReducer';
+import { USER_ORDERS_WSS } from '../../utils/utils';
 
 export const Profile = () => {
 
-    const state = useSelector(store => store)
+    useEffect(() => {
+        // dispatch(setWebsocketConnection(`wss://norma.nomoreparties.space/orders`))
+        dispatch(setWebsocketConnection(USER_ORDERS_WSS))
+    }, [])
+
     const logoutRequest = useSelector(store => store.user.logoutRequest);
-    const userOrders = useSelector(store => store.data?.userOrders)
+    const orders = useSelector(store => store.data?.orders)
     const dispatch = useDispatch();
     const { url } = useRouteMatch();
     const location = useLocation();
-    const background = location.state?.background;
-    const history = useHistory();
 
     const onLogoutHandler = (e) => {
         e.preventDefault();
@@ -31,10 +33,6 @@ export const Profile = () => {
         return (
             <Spinner />
         );
-    }
-
-    const handleCloseModals = () => {
-        history.goBack()
     }
 
     return (
@@ -54,8 +52,18 @@ export const Profile = () => {
                     Выход
                 </button>
 
-                <p className={`mt-20 text text_color_inactive text_type_main-default ${profileStyle.text}`}>В этом разделе вы можете изменить свои персональные данные
-                </p>
+                {
+                    location.pathname === `${url}` &&
+                    <p className={`mt-20 text text_color_inactive text_type_main-default ${profileStyle.text}`}>В этом разделе вы можете изменить свои персональные данные
+                    </p>
+                }
+
+                {
+                    location.pathname.startsWith(`${url}/orders`) &&
+                    <p className={`mt-20 text text_color_inactive text_type_main-default ${profileStyle.text}`}>В этом разделе вы можете просмотреть свою историю заказов
+                    </p>
+                }
+
             </nav >
             <article className={`mt-10 ${profileStyle.content}`}>
                 <Switch>
@@ -63,26 +71,11 @@ export const Profile = () => {
                         <ProfileData />
                     </Route>
                     <Route path={`${url}/orders`} exact>
-                        <OrdersFeed className={`mt-10 ${profileStyle.orders}`} orders={userOrders} />
+                        {!orders ? <Spinner /> :
+                            <OrdersFeed className={`mt-10 ${profileStyle.orders}`} orders={orders} />
+                        }
                     </Route>
-                    {/* <ProtectedRoute path='/profile/orders/:id'>
-                        <Modal onClose={handleCloseModals} >
-                            {state.data.orders?.orders && <OrderDetails />}
-                        </Modal>
-                    </ProtectedRoute> */}
                 </Switch>
-
-                {/* {background &&
-                    (<>
-                        <ProtectedRoute path='/profile/orders/:id'>
-                            <Modal onClose={handleCloseModals} >
-                                {userOrders && <OrderDetails orders={userOrders} />}
-                            </Modal>
-                        </ProtectedRoute>
-                    </>
-                    )
-                } */}
-
             </article >
         </div>
     )

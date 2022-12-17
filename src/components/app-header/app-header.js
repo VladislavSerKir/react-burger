@@ -16,8 +16,8 @@ function AppHeader() {
                         <p className={`text text_type_main-default ml-2`} style={pathname !== '/' ? { color: '#8585AD' } : null}>Конструктор</p>
                     </NavLink>
                     <NavLink to='/feed' className={`pl-5 pr-5 pt-4 pb-4 mt-4 mb-4 ${appHeaderStyles.header__button}`} activeClassName={appHeaderStyles.active}>
-                        <ListIcon type={pathname === '/feed' ? "primary" : "secondary"} />
-                        <p className={`text text_type_main-default ml-2`} style={pathname !== '/feed' ? { color: '#8585AD' } : null}>Лента заказов</p>
+                        <ListIcon type={pathname.startsWith('/feed') ? "primary" : "secondary"} />
+                        <p className={`text text_type_main-default ml-2`} style={!pathname.startsWith('/feed') ? { color: '#8585AD' } : null}>Лента заказов</p>
                     </NavLink>
                 </div>
                 <Link to='/'>

@@ -14,8 +14,7 @@ const dataState = {
     wsStart: false,
     wsConnectionStatus: true,
     wsError: null,
-    orders: null,
-    userOrders: null
+    orders: null
 };
 
 export const getAllIngredients = createAsyncThunk(
@@ -59,9 +58,9 @@ export const dataSlice = createSlice({
         toggleIngredientsTab: (state, action) => {
             state.ingredientsCurrentTab = action.payload;
         },
-        setWebsocketConnectionStart: (state, action) => {
-            state.wsStart = true;
-        },
+        // setWebsocketConnectionStart: (state, action) => {
+        //     state.wsStart = true;
+        // },
         setWebsocketConnection: (state, action) => {
             state.wsConnectionStatus = action.payload;
         },
@@ -70,15 +69,9 @@ export const dataSlice = createSlice({
         },
         setWebsocketGetOrders: (state, action) => {
             state.orders = action.payload
-        },
-        setWebsocketGetUserOrders: (state, action) => {
-            state.userOrders = action.payload
-        },
-        setRemoveUserOrders: (state, action) => {
-            state.userOrders = null
         }
     },
 })
 
-export const { setIngredients, setIngredientsRequest, loadDataFail, getCardData, toggleIngredientsTab, setWebsocketConnectionStart, setWebsocketConnection, setWebsocketConnectionError, setWebsocketGetOrders, setWebsocketGetUserOrders, setRemoveUserOrders } = dataSlice.actions
+export const { setIngredients, setIngredientsRequest, loadDataFail, getCardData, toggleIngredientsTab, setWebsocketConnectionStart, setWebsocketConnection, setWebsocketConnectionError, setWebsocketGetOrders, setWebsocketGetUserOrders } = dataSlice.actions
 export const dataReducer = dataSlice.reducer

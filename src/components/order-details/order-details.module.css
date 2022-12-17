@@ -98,30 +98,3 @@
     background-color: #8585AD;
     /* цвет плашки */
 }
-
-/* .orderIngredientElement {
-    display: flex;
-    flex-direction: row;
-    gap: 16px;
-    align-items: center;
-    height: 64px;
-    --b: 2px;
-    position: relative;
-}
-
-.orderIngredientElement:before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: var(--c, linear-gradient(63.18deg, #801ab3, #4c4cff));
-    padding: var(--b);
-    border-radius: 50%;
-    -webkit-mask:
-        linear-gradient(#fff 0 0) content-box,
-        linear-gradient(#fff 0 0);
-    mask:
-        linear-gradient(#fff 0 0) content-box,
-        linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-} */
