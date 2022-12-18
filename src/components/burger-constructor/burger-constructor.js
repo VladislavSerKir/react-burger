@@ -12,7 +12,6 @@ import { setOpenOrderModal } from '../../services/reducers/modalReducer';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import Spinner from '../../pages/spinner/spinner';
 import { v4 as uuidv4 } from 'uuid';
-import { ModalOverlay } from '../modal-overlay/modal-overlay';
 
 function BurgerConstructor({ onDropHandler }) {
 

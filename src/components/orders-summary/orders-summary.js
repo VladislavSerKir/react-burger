@@ -1,17 +1,19 @@
 import { useCallback } from 'react';
+import { useSelector } from 'react-redux';
 import ordersSummaryStyles from './orders-summary.module.css';
 
-export const OrdersSummary = ({ orders }) => {
+export const OrdersSummary = () => {
 
+    const orders = useSelector(store => store.data?.orders)
     const totalOrders = orders?.total;
     const totalOrdersToday = orders?.totalToday
 
     const readyOrders = useCallback(() => {
-        return orders?.orders.filter(order => order.status === 'done').map(order => order.number)
+        return orders?.orders?.filter(order => order.status === 'done').map(order => order.number)
     }, [orders?.orders]);
 
     const notReadyOrders = useCallback(() => {
-        return orders?.orders.filter(order => order.status !== 'done').map(order => order.number)
+        return orders?.orders?.filter(order => order.status !== 'done').map(order => order.number)
     }, [orders?.orders]);
 
     return (

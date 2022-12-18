@@ -13,19 +13,17 @@ export const Feed = () => {
     const orders = useSelector(store => store.data?.orders)
 
     useEffect(() => {
-        // dispatch(setWebsocketConnection(`wss://norma.nomoreparties.space/orders/all`))
         dispatch(setWebsocketConnection(ORDERS_WSS))
     }, [])
 
     return (
-        <section className={` ${feedStyles.feed}`}>
+        <section className={`${feedStyles.feed}`}>
             <h3 className={`mt-10 mb-5 text text_type_main-large ${feedStyles.title}`}>Лента заказов</h3>
             <div className={` ${feedStyles.feedContainer}`}>
                 {!orders ? <Spinner /> : (
                     <>
-                        <OrdersFeed className={` ${feedStyles.ordersFeed}`} orders={orders} />
-                        {/* <OrdersFeed className={` ${feedStyles.ordersFeed}`} /> */}
-                        <OrdersSummary className={` ${feedStyles.ordersSummary}`} orders={orders} />
+                        <OrdersFeed className={`${feedStyles.ordersFeed}`} />
+                        <OrdersSummary className={`${feedStyles.ordersSummary}`} orders={orders} />
                     </>
                 )}
             </div>

@@ -5,7 +5,7 @@ import AppHeader from '../app-header/app-header';
 import Modal from '../modal/modal';
 import OrderBrief from '../order-brief/order-brief';
 import IngredientDetails from '../ingredient-details/ingredient-details';
-import { getAllIngredients, setWebsocketConnection, setWebsocketConnectionStart } from '../../services/reducers/dataReducer';
+import { getAllIngredients, setWebsocketConnection, setWebsocketOffline } from '../../services/reducers/dataReducer';
 import { Constructor } from '../../pages/constructor/constructor';
 import { Redirect, Route, Switch, useHistory, useLocation } from 'react-router-dom';
 import { Login } from '../../pages/login/login';
@@ -42,7 +42,13 @@ function App() {
     }
 
     React.useEffect(() => {
-        location.pathname.startsWith('/profile') ? dispatch(setWebsocketConnection(`wss://norma.nomoreparties.space/orders`)) : dispatch(setWebsocketConnection(`wss://norma.nomoreparties.space/orders/all`));
+        if (location.pathname.startsWith('/profile') && !background) {
+            dispatch(setWebsocketConnection(`wss://norma.nomoreparties.space/orders`))
+        } else if ((location.pathname.startsWith('/feed')) && !background) {
+            dispatch(setWebsocketConnection(`wss://norma.nomoreparties.space/orders/all`))
+        } else if (!location.pathname.startsWith('/profile') && !location.pathname.startsWith('/feed')) {
+            dispatch(setWebsocketOffline())
+        }
     }, [location.pathname]);
 
     return (
@@ -53,8 +59,6 @@ function App() {
                     <Constructor />
                 </Route>
                 <ProtectedRoute path='/profile/orders/:id'>
-                    {/* {state.data.userOrders?.orders && <OrderDetails />} */}
-                    {/* {state.data.orders?.orders && <OrderDetails />} */}
                     <OrderDetails />
                 </ProtectedRoute>
                 <ProtectedRoute path='/profile' >
@@ -76,7 +80,6 @@ function App() {
                     {state.data.ingredients.length && <IngredientDetails ingredients={state.data.ingredients} />}
                 </Route>
                 <Route path='/feed/:id' >
-                    {/* {state.data.orders?.orders ? <OrderDetails /> : <Spinner />} */}
                     <OrderDetails />
                 </Route>
                 <Route path='/feed' >
@@ -92,23 +95,20 @@ function App() {
                     <Route path='/ingredients/:id' >
                         <Modal onClose={handleCloseModals} >
                             {state.data.ingredients.length && <IngredientDetails />}
-                            {/* <IngredientDetails /> */}
                         </Modal>
                     </Route >
                     <Route path='/feed/:id' >
                         <Modal onClose={handleCloseModals} >
-                            {/* {state.data.orders?.orders && <OrderDetails />} */}
-                            {/* {state.data.orders?.orders ? <OrderDetails /> : <Spinner />} */}
                             <OrderDetails />
                         </Modal>
                     </Route >
                     <ProtectedRoute path='/order'>
                         {state.burgerConstructor.orderNumber &&
-                            (<>
+                            (
                                 <Modal onClose={handleCloseModals} >
                                     <OrderBrief />
                                 </Modal>
-                            </>)
+                            )
                         }
                     </ProtectedRoute>
                     <ProtectedRoute path='/profile/orders/:id'>

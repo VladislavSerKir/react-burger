@@ -35,5 +35,4 @@ CardsGroup.propTypes = {
     data: PropTypes.arrayOf(PropTypes.shape(ingredientType))
 }
 
-
 export default CardsGroup;

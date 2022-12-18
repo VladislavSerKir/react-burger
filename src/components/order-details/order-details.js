@@ -14,7 +14,7 @@ function OrderDetails() {
 
     let orderMatch = null;
 
-    orderMatch = orders?.find(item => item._id === id)
+    orderMatch = orders?.find(order => order._id === id)
 
     const returnIngredientsPrice = useCallback(() => {
         const arrOfIngredientsPrice = orderMatch?.ingredients?.map(ingredient => ingredients.find(item => item._id === ingredient).price);

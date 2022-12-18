@@ -1,8 +1,5 @@
 .order {
-    /* display: flex;
-    flex-direction: column; */
     align-items: center;
-    /* width: 100%; */
     flex-wrap: wrap;
     position: relative;
     z-index: 8;
@@ -59,14 +56,11 @@
     display: flex;
     justify-content: space-between;
     flex-direction: row;
-    /* gap: 16px; */
     align-items: center;
     border-radius: 50%;
-    /* width: 64px; */
     height: 64px;
     object-fit: cover;
     list-style: none;
-
 }
 
 .ingredientImage {

@@ -1,32 +1,32 @@
 import { getCookie } from '../../utils/cookie';
-import { setWebsocketConnectionError, setWebsocketConnection, setWebsocketGetOrders, setWebsocketGetUserOrders } from '../reducers/dataReducer';
+import { setWebsocketConnectionError, setWebsocketGetOrders, setWebsocketOpen, setWebsocketClose } from '../reducers/dataReducer';
 
 export const socketMiddleware = () => {
     return store => {
         let socket = null;
         let url = '';
 
-        // socket = new WebSocket(ORDERS_WSS);
-        // userSocket = new WebSocket(`${USER_ORDERS_WSS}?token=${getCookie('accessToken')}`);
-
         return next => action => {
             const { type, payload } = action;
             const { dispatch } = store;
 
-            const token = getCookie('accessToken');
+            const accessToken = getCookie('accessToken');
 
             if (type === 'data/setWebsocketConnection') {
                 url = payload;
 
-                socket = token
-                    ? new WebSocket(`${url}?token=${token}`)
+                socket = accessToken
+                    ? new WebSocket(`${url}?token=${accessToken}`)
                     : new WebSocket(`${url}`);
             }
-            // console.log(url, socket, type);
+
+            if (type === 'data/setWebsocketOffline') {
+                socket = null;
+            }
 
             if (socket) {
                 socket.onopen = event => {
-                    // dispatch(setWebsocketConnection(true))
+                    dispatch(setWebsocketOpen(true))
                 };
                 socket.onerror = event => {
                     dispatch(setWebsocketConnectionError(event))
@@ -37,7 +37,7 @@ export const socketMiddleware = () => {
                     dispatch(setWebsocketGetOrders(parsedData))
                 };
                 socket.onclose = event => {
-                    // dispatch(setWebsocketConnection(false))
+                    dispatch(setWebsocketClose(event.code.toString()))
                 };
             }
 

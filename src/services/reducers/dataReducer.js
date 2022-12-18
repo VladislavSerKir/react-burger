@@ -11,7 +11,8 @@ const dataState = {
     ingredientDetails: {
         ingredient: null
     },
-    wsStart: false,
+    wsOpen: null,
+    wsClose: null,
     wsConnectionStatus: true,
     wsError: null,
     orders: null
@@ -58,11 +59,19 @@ export const dataSlice = createSlice({
         toggleIngredientsTab: (state, action) => {
             state.ingredientsCurrentTab = action.payload;
         },
-        // setWebsocketConnectionStart: (state, action) => {
-        //     state.wsStart = true;
-        // },
+        setWebsocketOpen: (state, action) => {
+            state.wsOpen = action.payload;
+            state.wsError = null;
+        },
+        setWebsocketClose: (state, action) => {
+            state.wsClose = action.payload;
+            state.wsError = null;
+        },
         setWebsocketConnection: (state, action) => {
-            state.wsConnectionStatus = action.payload;
+            state.wsConnectionStatus = true;
+        },
+        setWebsocketOffline: (state, action) => {
+            state.wsConnectionStatus = false;
         },
         setWebsocketConnectionError: (state, action) => {
             state.wsError = action.payload;
@@ -73,5 +82,5 @@ export const dataSlice = createSlice({
     },
 })
 
-export const { setIngredients, setIngredientsRequest, loadDataFail, getCardData, toggleIngredientsTab, setWebsocketConnectionStart, setWebsocketConnection, setWebsocketConnectionError, setWebsocketGetOrders, setWebsocketGetUserOrders } = dataSlice.actions
+export const { setIngredients, setIngredientsRequest, loadDataFail, getCardData, toggleIngredientsTab, setWebsocketOpen, setWebsocketClose, setWebsocketConnection, setWebsocketOffline, setWebsocketConnectionError, setWebsocketGetOrders, setWebsocketGetUserOrders } = dataSlice.actions
 export const dataReducer = dataSlice.reducer

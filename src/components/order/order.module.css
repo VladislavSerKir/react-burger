@@ -33,14 +33,6 @@
     flex-wrap: wrap;
 }
 
-/* .orderIngredientElement {
-    border-radius: 50%;
-    width: 64px;
-    height: 64px;
-    object-fit: cover;
-    list-style: none;
-} */
-
 .orderIngredientImage {
     width: 64px;
     height: 64px;
@@ -58,7 +50,6 @@
 
 .orderIngredientElement {
     position: absolute;
-    /* position: relative; */
     flex-grow: 1;
     width: 64px;
     height: 64px;
@@ -70,20 +61,3 @@
     border-radius: 50%;
     background-clip: content-box, border-box;
 }
-
-/* .orderIngredientElement:before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: var(--c, linear-gradient(63.18deg, #801ab3, #4c4cff));
-    padding: var(--b);
-    border-radius: 50%;
-    -webkit-mask:
-        linear-gradient(#fff 0 0) content-box,
-        linear-gradient(#fff 0 0);
-    mask:
-        linear-gradient(#fff 0 0) content-box,
-        linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-} */

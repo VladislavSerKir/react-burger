@@ -14,7 +14,6 @@ import { USER_ORDERS_WSS } from '../../utils/utils';
 export const Profile = () => {
 
     useEffect(() => {
-        // dispatch(setWebsocketConnection(`wss://norma.nomoreparties.space/orders`))
         dispatch(setWebsocketConnection(USER_ORDERS_WSS))
     }, [])
 
