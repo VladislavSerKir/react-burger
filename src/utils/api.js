@@ -1,7 +1,8 @@
-import { registerRequest, loginRequest, logoutRequest, resetRequest, editRequest, resetPasswordRequest } from "./utils";
+import { registerRequest, loginRequest, logoutRequest, resetRequest, editRequest, resetPasswordRequest, getOrderRequest } from "./utils";
 import { setCookie, deleteCookie } from "./cookie";
 import { setUser, setLogoutUser, setUpdateUser, setUpdateUserRequest, setUpdateUserError, setResetRequest, setResetConfirmed, setResetError, setChangePasswordRequest, setChangePasswordConfirmed, setChangePasswordError, setUserRequest, setUserError, setLogoutRequest, setLogoutError } from "../services/reducers/userReducer";
 import { refreshTokenRequest } from "./utils";
+import { setFetchOrder, setFetchOrderError, setFetchOrderRequest } from "../services/reducers/dataReducer";
 
 export const checkResponse = (res) => {
     if (res.ok) {
@@ -148,6 +149,24 @@ export const onUpdateUser = (user) => {
             })
             .finally(() => {
                 dispatch(setUpdateUserRequest(false))
+            })
+    };
+};
+
+export const onFetchOrder = (number) => {
+    return async function (dispatch) {
+        dispatch(setFetchOrderRequest(true))
+        getOrderRequest(number)
+            .then(checkResponse)
+            .then((res) => {
+                dispatch(setFetchOrder(res))
+            })
+            .catch((err) => {
+                dispatch(setFetchOrderError(err))
+                console.warn(err);
+            })
+            .finally(() => {
+                dispatch(setFetchOrderRequest(false))
             })
     };
 };

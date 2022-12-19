@@ -3,8 +3,7 @@ import { checkResponse } from "./api";
 import { onRefreshToken } from "./api";
 
 export const BASE_URL = `https://norma.nomoreparties.space/api`;
-export const ORDERS_WSS = `wss://norma.nomoreparties.space/orders/all`;
-export const USER_ORDERS_WSS = `wss://norma.nomoreparties.space/orders`;
+export const BASE_WSS = `wss://norma.nomoreparties.space`;
 
 export const placeOrderRequest = async (cart) => {
     return fetch(`${BASE_URL}/orders`, {
@@ -140,5 +139,18 @@ export const editRequest = async ({ email, name, password }) => {
             name: name,
             password: password
         }),
+    })
+}
+
+export const getOrderRequest = async (number) => {
+    return fetch(`${BASE_URL}/orders/${number}`, {
+        method: 'GET',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+            "Content-Type": "application/json;charset=utf-8",
+        },
+        redirect: 'follow',
+        referrerPolicy: 'no-referrer',
     })
 }

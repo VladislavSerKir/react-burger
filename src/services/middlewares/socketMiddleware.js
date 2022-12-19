@@ -1,7 +1,4 @@
-import { getCookie } from '../../utils/cookie';
-import { setWebsocketConnectionError, setWebsocketGetOrders, setWebsocketOpen, setWebsocketClose } from '../reducers/dataReducer';
-
-export const socketMiddleware = () => {
+export const socketMiddleware = (wsActions) => {
     return store => {
         let socket = null;
         let url = '';
@@ -9,35 +6,31 @@ export const socketMiddleware = () => {
         return next => action => {
             const { type, payload } = action;
             const { dispatch } = store;
+            const { wsConnection, wsOffline, wsOpen, wsError, wsMessage, wsClose } = wsActions;
 
-            const accessToken = getCookie('accessToken');
-
-            if (type === 'data/setWebsocketConnection') {
+            if (type === wsConnection) {
                 url = payload;
-
-                socket = accessToken
-                    ? new WebSocket(`${url}?token=${accessToken}`)
-                    : new WebSocket(`${url}`);
+                socket = new WebSocket(`${url}`);
             }
 
-            if (type === 'data/setWebsocketOffline') {
+            if (type === wsOffline) {
                 socket = null;
             }
 
             if (socket) {
                 socket.onopen = event => {
-                    dispatch(setWebsocketOpen(true))
+                    dispatch({ type: wsOpen, payload: true });
                 };
                 socket.onerror = event => {
-                    dispatch(setWebsocketConnectionError(event))
+                    dispatch({ type: wsError, payload: event });
                 };
                 socket.onmessage = event => {
                     const { data } = event;
                     const parsedData = JSON.parse(data);
-                    dispatch(setWebsocketGetOrders(parsedData))
+                    dispatch({ type: wsMessage, payload: parsedData });
                 };
                 socket.onclose = event => {
-                    dispatch(setWebsocketClose(event.code.toString()))
+                    dispatch({ type: wsClose, payload: event.code.toString() });
                 };
             }
 

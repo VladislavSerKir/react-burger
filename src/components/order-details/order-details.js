@@ -1,20 +1,31 @@
 import orderDetailsStyles from './order-details.module.css';
-import { useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLocation, useParams } from 'react-router-dom';
 import Spinner from '../../pages/spinner/spinner';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useCallback } from 'react';
-import { v4 as uuidv4 } from 'uuid';
+import { useCallback, useEffect } from 'react';
+import { onFetchOrder } from '../../utils/api';
 
 function OrderDetails() {
 
     const { id } = useParams();
+    const dispatch = useDispatch();
     const ingredients = useSelector(store => store.data.ingredients);
     const orders = useSelector(store => store.data.orders?.orders);
+    const location = useLocation();
+    const background = location.state?.background;
 
     let orderMatch = null;
 
-    orderMatch = orders?.find(order => order._id === id)
+    useEffect(() => {
+        if (location.pathname.startsWith('/profile') && !background) {
+            dispatch(onFetchOrder(id))
+        } else if ((location.pathname.startsWith('/feed')) && !background) {
+            dispatch(onFetchOrder(id))
+        }
+    }, [location.pathname]);
+
+    orderMatch = orders?.find(order => order.number.toString() === id)
 
     const returnIngredientsPrice = useCallback(() => {
         const arrOfIngredientsPrice = orderMatch?.ingredients?.map(ingredient => ingredients.find(item => item._id === ingredient).price);
@@ -50,7 +61,7 @@ function OrderDetails() {
                 <ul className={` ${orderDetailsStyles.orderIngredients}`}>
                     {
                         returnIngredients().map((ingredient, index) => {
-                            return <li key={uuidv4()} className={`${orderDetailsStyles.ingredientElement}`} >
+                            return <li key={ingredient._id} className={`${orderDetailsStyles.ingredientElement}`} >
                                 <div className={`${orderDetailsStyles.ingredientImageBlock}`}>
                                     <img src={ingredient?.image} alt={ingredient?.name} className={`${orderDetailsStyles.ingredientImage}`} />
                                     <p className={`text_type_main-small ${orderDetailsStyles.ingredientName}`}>{ingredient?.name}</p>

@@ -15,6 +15,8 @@ const dataState = {
     wsClose: null,
     wsConnectionStatus: true,
     wsError: null,
+    fetchError: null,
+    fetchRequest: false,
     orders: null
 };
 
@@ -72,15 +74,25 @@ export const dataSlice = createSlice({
         },
         setWebsocketOffline: (state, action) => {
             state.wsConnectionStatus = false;
+            state.orders = null;
         },
         setWebsocketConnectionError: (state, action) => {
             state.wsError = action.payload;
         },
         setWebsocketGetOrders: (state, action) => {
-            state.orders = action.payload
+            state.orders = action.payload;
+        },
+        setFetchOrder: (state, action) => {
+            state.orders = action.payload;
+        },
+        setFetchOrderRequest: (state, action) => {
+            state.fetchRequest = action.payload;
+        },
+        setFetchOrderError: (state, action) => {
+            state.fetchError = action.payload;
         }
     },
 })
 
-export const { setIngredients, setIngredientsRequest, loadDataFail, getCardData, toggleIngredientsTab, setWebsocketOpen, setWebsocketClose, setWebsocketConnection, setWebsocketOffline, setWebsocketConnectionError, setWebsocketGetOrders, setWebsocketGetUserOrders } = dataSlice.actions
+export const { setIngredients, setIngredientsRequest, loadDataFail, getCardData, toggleIngredientsTab, setWebsocketOpen, setWebsocketClose, setWebsocketConnection, setWebsocketOffline, setWebsocketConnectionError, setWebsocketGetOrders, setWebsocketGetUserOrders, setFetchOrder, setFetchOrderRequest, setFetchOrderError } = dataSlice.actions
 export const dataReducer = dataSlice.reducer

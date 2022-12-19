@@ -8,20 +8,25 @@ import { useDispatch } from 'react-redux';
 import Spinner from '../spinner/spinner';
 import { OrdersFeed } from '../../components/orders-feed/orders-feed';
 import { useEffect } from 'react';
-import { setWebsocketConnection } from '../../services/reducers/dataReducer';
-import { USER_ORDERS_WSS } from '../../utils/utils';
+import { setWebsocketConnection, setWebsocketOffline } from '../../services/reducers/dataReducer';
+import { BASE_WSS } from '../../utils/utils';
+import { getCookie } from '../../utils/cookie';
 
 export const Profile = () => {
-
-    useEffect(() => {
-        dispatch(setWebsocketConnection(USER_ORDERS_WSS))
-    }, [])
 
     const logoutRequest = useSelector(store => store.user.logoutRequest);
     const orders = useSelector(store => store.data?.orders)
     const dispatch = useDispatch();
     const { url } = useRouteMatch();
     const location = useLocation();
+    const accessToken = getCookie('accessToken');
+
+    useEffect(() => {
+        dispatch(setWebsocketConnection(`${BASE_WSS}/orders?token=${accessToken}`))
+        return () => {
+            dispatch(setWebsocketOffline())
+        }
+    }, [location.pathname])
 
     const onLogoutHandler = (e) => {
         e.preventDefault();

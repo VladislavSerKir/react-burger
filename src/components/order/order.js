@@ -1,7 +1,6 @@
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useCallback } from 'react';
 import orderStyles from './order.module.css';
-import { v4 as uuidv4 } from 'uuid';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import Spinner from '../../pages/spinner/spinner';
@@ -12,7 +11,6 @@ export const Order = ({ orderInfo, ingredients }) => {
     const location = useLocation();
 
     const returnIngredientsPrice = useCallback(() => {
-
         const arrOfIngredientsPrice = orderInfo?.ingredients?.map(ingredient => ingredients?.find(item => item._id === ingredient)?.price);
         return arrOfIngredientsPrice.reduce((acc, item) => { return acc += item }, 0)
     }, [orderInfo?.ingredients])
@@ -53,7 +51,7 @@ export const Order = ({ orderInfo, ingredients }) => {
                                 } else if (index === 5) {
 
                                     return <li
-                                        key={uuidv4()}
+                                        key={ingredient._id}
                                         style={{ zIndex: 6 - index, left: offset + 'px' }}
                                         className={`${orderStyles.orderIngredientElement}`}
                                     >
@@ -69,7 +67,7 @@ export const Order = ({ orderInfo, ingredients }) => {
                                     </li>
                                 } else {
                                     return <li
-                                        key={uuidv4()}
+                                        key={ingredient._id}
                                         style={{ zIndex: 6 - index, left: offset + 'px' }}
                                         className={`${orderStyles.orderIngredientElement}`}
                                     >

@@ -5,7 +5,7 @@ import AppHeader from '../app-header/app-header';
 import Modal from '../modal/modal';
 import OrderBrief from '../order-brief/order-brief';
 import IngredientDetails from '../ingredient-details/ingredient-details';
-import { getAllIngredients, setWebsocketConnection, setWebsocketOffline } from '../../services/reducers/dataReducer';
+import { getAllIngredients } from '../../services/reducers/dataReducer';
 import { Constructor } from '../../pages/constructor/constructor';
 import { Redirect, Route, Switch, useHistory, useLocation } from 'react-router-dom';
 import { Login } from '../../pages/login/login';
@@ -40,16 +40,6 @@ function App() {
     const handleCloseModals = () => {
         history.goBack()
     }
-
-    React.useEffect(() => {
-        if (location.pathname.startsWith('/profile') && !background) {
-            dispatch(setWebsocketConnection(`wss://norma.nomoreparties.space/orders`))
-        } else if ((location.pathname.startsWith('/feed')) && !background) {
-            dispatch(setWebsocketConnection(`wss://norma.nomoreparties.space/orders/all`))
-        } else if (!location.pathname.startsWith('/profile') && !location.pathname.startsWith('/feed')) {
-            dispatch(setWebsocketOffline())
-        }
-    }, [location.pathname]);
 
     return (
         <div className={appStyles.body} >

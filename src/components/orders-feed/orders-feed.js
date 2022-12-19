@@ -16,7 +16,7 @@ export const OrdersFeed = () => {
                 {
                     orders?.orders?.map(order => (
                         <Link className={`text text_type_main-small ${ordersFeedStyles.order__link}`} key={order._id} to={{
-                            pathname: location.pathname.startsWith('/profile') ? `/profile/orders/${order._id}` : `/feed/${order._id}`,
+                            pathname: location.pathname.startsWith('/profile') ? `/profile/orders/${order.number}` : `/feed/${order.number}`,
                             state: { background: location }
                         }}>
                             <Order key={order._id} orderInfo={order} ingredients={ingredients} />
