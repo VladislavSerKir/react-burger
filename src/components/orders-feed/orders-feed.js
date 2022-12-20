@@ -7,19 +7,19 @@ import ordersFeedStyles from './orders-feed.module.css';
 export const OrdersFeed = () => {
 
     const location = useLocation();
-    const ingredients = useSelector(store => store.data?.ingredients)
-    const orders = useSelector(store => store.data?.orders)
+    const ingredients = useSelector(store => store.data?.ingredients);
+    const orders = useSelector(store => store.data?.orders);
 
     if (orders && ingredients) {
         return (
             <ul className={` ${ordersFeedStyles.list}`}>
                 {
                     orders?.orders?.map(order => (
-                        <Link className={`text text_type_main-small ${ordersFeedStyles.order__link}`} key={order._id} to={{
+                        <Link className={`text text_type_main-small ${ordersFeedStyles.order__link}`} key={order.number} to={{
                             pathname: location.pathname.startsWith('/profile') ? `/profile/orders/${order.number}` : `/feed/${order.number}`,
                             state: { background: location }
                         }}>
-                            <Order key={order._id} orderInfo={order} ingredients={ingredients} />
+                            <Order orderInfo={order} />
                         </Link>
                     ))
                 }

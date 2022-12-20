@@ -4,7 +4,7 @@ import { useLocation, useParams } from 'react-router-dom';
 import Spinner from '../../pages/spinner/spinner';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useCallback, useEffect } from 'react';
-import { onFetchOrder } from '../../utils/api';
+import { onFetchOrder } from '../../services/actions/actions';
 
 function OrderDetails() {
 

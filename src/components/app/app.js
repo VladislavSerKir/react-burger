@@ -5,7 +5,7 @@ import AppHeader from '../app-header/app-header';
 import Modal from '../modal/modal';
 import OrderBrief from '../order-brief/order-brief';
 import IngredientDetails from '../ingredient-details/ingredient-details';
-import { getAllIngredients } from '../../services/reducers/dataReducer';
+import { getAllIngredients } from '../../services/actions/actions';
 import { Constructor } from '../../pages/constructor/constructor';
 import { Redirect, Route, Switch, useHistory, useLocation } from 'react-router-dom';
 import { Login } from '../../pages/login/login';
@@ -16,7 +16,7 @@ import { Profile } from '../../pages/profile/profile';
 import { ProtectedRoute } from '../protected-route/protected-route';
 import { NotFound } from '../../pages/not-found/not-found';
 import Spinner from '../../pages/spinner/spinner';
-import { checkAuth } from '../../services/reducers/userReducer';
+import { checkAuth } from '../../services/actions/actions';
 import { Feed } from '../../pages/feed/feed';
 import OrderDetails from '../order-details/order-details';
 

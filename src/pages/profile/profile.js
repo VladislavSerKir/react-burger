@@ -1,9 +1,9 @@
-import { NavLink, Route, Switch, useLocation } from 'react-router-dom';
+import { Link, NavLink, Route, Switch, useLocation } from 'react-router-dom';
 import profileStyle from './profile.module.css';
 import { useRouteMatch } from 'react-router-dom';
 import { ProfileData } from '../../components/profile-data/profile-data';
 import { useSelector } from 'react-redux';
-import { onLogout } from '../../utils/api';
+import { onLogout } from '../../services/actions/actions';
 import { useDispatch } from 'react-redux';
 import Spinner from '../spinner/spinner';
 import { OrdersFeed } from '../../components/orders-feed/orders-feed';
@@ -75,8 +75,19 @@ export const Profile = () => {
                         <ProfileData />
                     </Route>
                     <Route path={`${url}/orders`} exact>
-                        {!orders ? <Spinner /> :
-                            <OrdersFeed className={`mt-10 ${profileStyle.orders}`} orders={orders} />
+                        {!orders ?
+                            <Spinner />
+                            :
+                            orders && orders.orders.length === 0
+                                ?
+                                <>
+                                    <p className={`mt-20 text text_color_inactive text_type_main-large ${profileStyle.textNoOrders}`}>Нет заказов</p>
+                                    <Link to={`/`} className={`mt-10 text text_type_main-medium ${profileStyle.createOrder}`} >
+                                        Создать первый заказ
+                                    </Link>
+                                </>
+                                :
+                                <OrdersFeed className={`mt-10 ${profileStyle.orders}`} />
                         }
                     </Route>
                 </Switch>

@@ -18,7 +18,7 @@ export const Login = () => {
     const { state } = useLocation();
     const location = useLocation();
 
-    const userErrorCode = userError?.slice(userError.length - 3, userError.length)
+    const userErrorCode = userError?.slice(userError?.length - 3, userError?.length)
 
     const userData = {
         email: '',
@@ -71,7 +71,7 @@ export const Login = () => {
                 {userError && (<p className={`mb-4 text text_type_main-default ${loginStyles.textError}`}>{userErrorCode === '403' ? 'Сессия истекла' : 'Неправильный логин или пароль'} </p>)
                 }
 
-                {!user && location.state.from.pathname.startsWith('/profile/orders') && (<p className={`mb-4 text text_type_main-default ${loginStyles.textError}`}>Войдите чтобы посмотреть заказы пользователя</p>)
+                {!user && location.state?.from.pathname.startsWith('/profile/orders') && (<p className={`mb-4 text text_type_main-default ${loginStyles.textError}`}>Войдите чтобы посмотреть заказы пользователя</p>)
                 }
 
                 <Button

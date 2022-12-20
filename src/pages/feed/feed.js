@@ -28,7 +28,7 @@ export const Feed = () => {
                 {!orders ? <Spinner /> : (
                     <>
                         <OrdersFeed className={`${feedStyles.ordersFeed}`} />
-                        <OrdersSummary className={`${feedStyles.ordersSummary}`} orders={orders} />
+                        <OrdersSummary className={`${feedStyles.ordersSummary}`} />
                     </>
                 )}
             </div>

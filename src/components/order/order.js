@@ -5,13 +5,20 @@ import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import Spinner from '../../pages/spinner/spinner';
 
-export const Order = ({ orderInfo, ingredients }) => {
+export const Order = ({ orderInfo }) => {
 
+    const ingredients = useSelector(store => store.data?.ingredients);
     const user = useSelector(state => state.user.userData.name);
     const location = useLocation();
 
     const returnIngredientsPrice = useCallback(() => {
-        const arrOfIngredientsPrice = orderInfo?.ingredients?.map(ingredient => ingredients?.find(item => item._id === ingredient)?.price);
+        const arrOfIngredientsPrice = orderInfo?.ingredients?.map(ingredient => {
+            if (ingredient !== null) {
+                return ingredients?.find(item => item?._id === ingredient)?.price
+            } else {
+                return 0
+            }
+        })
         return arrOfIngredientsPrice.reduce((acc, item) => { return acc += item }, 0)
     }, [orderInfo?.ingredients])
 
@@ -43,15 +50,15 @@ export const Order = ({ orderInfo, ingredients }) => {
 
                 <div className={`mb-6 ${orderStyles.orderContent}`}>
                     <ul className={` ${orderStyles.orderIngredients}`}>
+
                         {
                             returnIngredients().map((ingredient, index) => {
                                 offset = offset + 45;
                                 if (index > 5) {
                                     return null
                                 } else if (index === 5) {
-
                                     return <li
-                                        key={ingredient._id}
+                                        key={index}
                                         style={{ zIndex: 6 - index, left: offset + 'px' }}
                                         className={`${orderStyles.orderIngredientElement}`}
                                     >
@@ -67,7 +74,7 @@ export const Order = ({ orderInfo, ingredients }) => {
                                     </li>
                                 } else {
                                     return <li
-                                        key={ingredient._id}
+                                        key={index}
                                         style={{ zIndex: 6 - index, left: offset + 'px' }}
                                         className={`${orderStyles.orderIngredientElement}`}
                                     >
@@ -87,7 +94,7 @@ export const Order = ({ orderInfo, ingredients }) => {
                         <CurrencyIcon type="primary" />
                     </div>
                 </div>
-            </li>
+            </li >
         )
     } else {
         return (

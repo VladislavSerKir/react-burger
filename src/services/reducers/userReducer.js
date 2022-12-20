@@ -1,6 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { getCookie } from '../../utils/cookie';
-import { userRequest } from '../../utils/utils';
+import { createSlice } from '@reduxjs/toolkit';
 
 const userState = {
     isAuthChecked: false,
@@ -26,35 +24,6 @@ const userState = {
     changePasswordConfirmed: false,
     changePasswordError: null
 };
-
-export const checkAuth = createAsyncThunk(
-    'user/checkAuth',
-    async function (_, { dispatch }) {
-        if (getCookie('accessToken')) {
-            dispatch(getUser())
-            dispatch(setAuthChecked(true))
-        } else {
-            dispatch(setAuthChecked(true))
-        }
-    }
-);
-
-export const getUser = createAsyncThunk(
-    'user/getUser',
-    async function (_, { dispatch }) {
-        dispatch(setUserRequest(true))
-        return userRequest()
-            .then((user) => {
-                dispatch(setUser(user))
-            })
-            .catch((err) => {
-                dispatch(setUserError(err))
-            })
-            .finally(() => {
-                dispatch(setUserRequest(false))
-            })
-    }
-);
 
 export const userSlice = createSlice({
     name: 'user',

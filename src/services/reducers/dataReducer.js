@@ -1,6 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { BASE_URL } from '../../utils/utils';
-import { checkResponse } from '../../utils/api';
+import { createSlice } from '@reduxjs/toolkit'
 
 const dataState = {
     ingredients: [],
@@ -19,25 +17,6 @@ const dataState = {
     fetchRequest: false,
     orders: null
 };
-
-export const getAllIngredients = createAsyncThunk(
-    'data',
-    async function (_, { dispatch }) {
-        dispatch(setIngredientsRequest(true))
-        return fetch(`${BASE_URL}/ingredients`)
-            .then(checkResponse)
-            .then((data) => {
-                dispatch(setIngredients(data))
-            })
-            .catch((error) => {
-                dispatch(loadDataFail(error))
-                console.warn(error)
-            })
-            .finally(() => {
-                dispatch(setIngredientsRequest(false))
-            })
-    }
-);
 
 export const dataSlice = createSlice({
     name: 'data',

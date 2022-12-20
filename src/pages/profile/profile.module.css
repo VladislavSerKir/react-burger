@@ -57,3 +57,23 @@
     opacity: 0.7;
     transition: all 0.3s;
 }
+
+.textNoOrders {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.createOrder {
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 1;
+    transition: all 0.3s;
+}
+
+.createOrder:hover {
+    opacity: 0.7;
+    transition: all 0.3s;
+}

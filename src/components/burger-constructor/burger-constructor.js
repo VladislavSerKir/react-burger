@@ -3,12 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useDrop } from 'react-dnd';
 import PropTypes from 'prop-types';
 import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components'
-import { checkResponse } from '../../utils/api';
+import { onPlaceOrder } from '../../services/actions/actions';
 import burgerConstructorStyles from './burger-constructor.module.css';
-import { placeOrderRequest } from '../../utils/utils';
 import { Ingredient } from '../ingredient/ingredient';
-import { setOrderNumber, setPlaceOrderRequest, setResetOrderNumber, setStatusSuccess } from '../../services/reducers/constructorReducer';
-import { setOpenOrderModal } from '../../services/reducers/modalReducer';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import Spinner from '../../pages/spinner/spinner';
 import { v4 as uuidv4 } from 'uuid';
@@ -21,7 +18,6 @@ function BurgerConstructor({ onDropHandler }) {
     const orderRequest = useSelector(store => store.burgerConstructor.orderRequest)
     const location = useLocation();
     const history = useHistory();
-    const { ingredients } = store.burgerConstructor;
     const { burgerConstructor } = store;
 
     const [{ isHover }, dropTarget] = useDrop({
@@ -45,28 +41,6 @@ function BurgerConstructor({ onDropHandler }) {
             return [burgerConstructor?.bun?._id, ...burgerConstructor.ingredients?.map((item) => item?._id), burgerConstructor?.bun._id]
     }, [burgerConstructor.bun, burgerConstructor.ingredients])
 
-    const placeOrder = () => {
-        return async function (dispatch) {
-            dispatch(setResetOrderNumber())
-            dispatch(setPlaceOrderRequest(true))
-            return placeOrderRequest(cart)
-                .then(checkResponse)
-                .then((data) => {
-                    dispatch(setOrderNumber(data))
-                })
-                .then(() => {
-                    dispatch(setOpenOrderModal())
-                })
-                .catch((error) => {
-                    dispatch(setStatusSuccess(error))
-                    console.warn(error)
-                })
-                .finally(() => {
-                    dispatch(setPlaceOrderRequest(false))
-                })
-        }
-    }
-
     const total = useMemo(() => {
         return (burgerConstructor?.bun?.price * 2) + burgerConstructor?.ingredients?.reduce((accum, item) => {
             return accum += item?.price
@@ -78,7 +52,7 @@ function BurgerConstructor({ onDropHandler }) {
             history.push('/login')
         } else {
             event.preventDefault();
-            dispatch(placeOrder(ingredients))
+            dispatch(onPlaceOrder(cart))
             history.push({
                 pathname: '/order',
                 state: {

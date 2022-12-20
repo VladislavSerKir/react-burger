@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { onLogin, onRegister, onReset, onResetPassword, onUpdateUser } from "../utils/api";
+import { onLogin, onRegister, onReset, onResetPassword, onUpdateUser } from '../services/actions/actions';
 
 export function useForm(inputValues) {
 
