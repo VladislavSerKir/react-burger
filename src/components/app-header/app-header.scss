@@ -1,0 +1,39 @@
+.header {
+    background-color: #1C1C21;
+    margin: 0 auto;
+
+    &__nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 0;
+        max-width: 1280px;
+        margin: 0 auto;
+    }
+
+    &__group {
+        display: flex;
+        gap: 8px;
+        justify-content: start;
+    }
+
+    &__button {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        transition: all 0.3s;
+
+        &:hover {
+            opacity: 0.7;
+            transition: all 0.3s;
+        }
+
+        &-text {
+            color: rgba(133, 133, 173, 1);
+        }
+
+        &_type_active {
+            color: rgba(242, 242, 243, 1);
+        }
+    }
+}

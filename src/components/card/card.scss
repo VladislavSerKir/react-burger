@@ -1,0 +1,32 @@
+.card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 272px;
+    position: relative;
+    transition: all 0.3s;
+    text-decoration: none;
+
+    &:hover {
+        cursor: pointer;
+        opacity: 0.7;
+        transition: all 0.3s;
+    }
+
+    &__price {
+        display: flex;
+    }
+
+    &__description {
+        max-width: 220px;
+        text-align: center;
+    }
+
+    &__count {
+        font-family: 'Iceland';
+        font-weight: 400;
+        font-size: 28px;
+        line-height: 24px;
+        color: #F2F2F3;
+    }
+}

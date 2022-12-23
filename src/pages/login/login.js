@@ -1,6 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, EmailInput, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components'
-import loginStyles from './login.module.css';
 import { Link, Redirect, useHistory, useLocation } from 'react-router-dom';
 import Spinner from '../spinner/spinner';
 import { useForm } from '../../hooks/useForm';
@@ -46,14 +45,16 @@ export const Login = () => {
     }
 
     return (
-        <div className={`${loginStyles.login}`}>
+        // <div className={`${loginStyles.login}`}>
+        <div className={`login`}>
+
             <form
                 name='login'
                 action='#'
                 onSubmit={handleLogin}
-                className={`${loginStyles.form}`}
+                className={`login__form`}
             >
-                <h3 className={`mb-6 text text_type_main-medium ${loginStyles.text}`} >Вход</h3>
+                <h3 className={`mb-6 text text_type_main-medium`} >Вход</h3>
                 <EmailInput
                     extraClass={`mb-6`}
                     onChange={handleChange}
@@ -68,10 +69,10 @@ export const Login = () => {
                     name={'password'}
                 />
 
-                {userError && (<p className={`mb-4 text text_type_main-default ${loginStyles.textError}`}>{userErrorCode === '403' ? 'Сессия истекла' : 'Неправильный логин или пароль'} </p>)
+                {userError && (<p className={`mb-4 text text_type_main-default login__error`}>{userErrorCode === '403' ? 'Сессия истекла' : 'Неправильный логин или пароль'} </p>)
                 }
 
-                {!user && location.state?.from.pathname.startsWith('/profile/orders') && (<p className={`mb-4 text text_type_main-default ${loginStyles.textError}`}>Войдите чтобы посмотреть заказы пользователя</p>)
+                {!user && location.state?.from.pathname.startsWith('/profile/orders') && (<p className={`mb-4 text text_type_main-default login__error`}>Войдите чтобы посмотреть заказы пользователя</p>)
                 }
 
                 <Button
@@ -82,16 +83,16 @@ export const Login = () => {
                 >
                     Войти
                 </Button>
-                <p className={`mb-4 text text_color_inactive text_type_main-default ${loginStyles.text}`}>Вы — новый пользователь? &nbsp;
+                <p className={`mb-4 text text_color_inactive text_type_main-default`}>Вы — новый пользователь? &nbsp;
                     <span>
-                        <Link to='/register' className={`text text_type_main-default ${loginStyles.link}`}>
+                        <Link to='/register' className={`text text_type_main-default login__link`}>
                             Зарегистрироваться
                         </Link>
                     </span>
                 </p>
-                <p className={`text text_color_inactive text_type_main-default ${loginStyles.text}`}>Забыли пароль? &nbsp;
+                <p className={`text text_color_inactive text_type_main-default`}>Забыли пароль? &nbsp;
                     <span>
-                        <Link to='/forgot-password' className={`text text_type_main-default ${loginStyles.link}`}>
+                        <Link to='/forgot-password' className={`text text_type_main-default login__link`}>
                             Восстановить пароль
                         </Link>
                     </span>

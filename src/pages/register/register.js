@@ -1,5 +1,4 @@
 import { Button, EmailInput, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components'
-import registerStyles from './register.module.css';
 import { Link, Redirect, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Spinner from '../spinner/spinner';
@@ -33,14 +32,14 @@ export const Register = () => {
     }
 
     return (
-        <div className={`${registerStyles.register} `}>
+        <div className={`register`}>
             <form
                 name='register'
                 action='#'
                 onSubmit={handleRegister}
-                className={`${registerStyles.form}`}
+                className={`register__form`}
             >
-                <h3 className={`mb-6 text text_type_main-medium ${registerStyles.text}`} >Регистрация</h3>
+                <h3 className={`mb-6 text text_type_main-medium`} >Регистрация</h3>
                 <Input
                     type={'text'}
                     placeholder={'Имя'}
@@ -74,9 +73,9 @@ export const Register = () => {
                     Зарегистрироваться
                 </Button>
 
-                <p className={`mb-4 text text_color_inactive text_type_main-default ${registerStyles.text}`}>Уже зарегистрированы? &nbsp;
+                <p className={`mb-4 text text_color_inactive text_type_main-default`}>Уже зарегистрированы? &nbsp;
                     <span>
-                        <Link to='/login' className={`text text_type_main-default ${registerStyles.link}`}>
+                        <Link to='/login' className={`text text_type_main-default register__link`}>
                             Войти
                         </Link>
                     </span>

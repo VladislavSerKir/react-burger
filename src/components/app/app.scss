@@ -1,0 +1,16 @@
+.body {
+    background-color: #131316;
+    height: 100vh;
+
+    &::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: #2F2F37;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: #8585AD;
+    }
+}

@@ -2,7 +2,6 @@ import React from 'react';
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useDispatch } from 'react-redux';
-import constructorStyle from './constructor.module.css';
 import BurgerIngredients from '../../components/burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../../components/burger-constructor/burger-constructor';
 import { addIngredient } from '../../services/reducers/constructorReducer';
@@ -15,12 +14,12 @@ export const Constructor = () => {
     }
 
     return (
-        <main className={constructorStyle.main}>
+        <main className={`constructor`}>
             <DndProvider backend={HTML5Backend}>
-                <BurgerIngredients className={constructorStyle.column} />
+                <BurgerIngredients className={`constructor__column`} />
                 <BurgerConstructor
                     onDropHandler={handleDrop}
-                    className={constructorStyle.column} />
+                    className={`constructor__column`} />
             </DndProvider>
         </main>
     )

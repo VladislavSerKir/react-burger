@@ -4,7 +4,6 @@ import { useDrop } from 'react-dnd';
 import PropTypes from 'prop-types';
 import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import { onPlaceOrder } from '../../services/actions/actions';
-import burgerConstructorStyles from './burger-constructor.module.css';
 import { Ingredient } from '../ingredient/ingredient';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import Spinner from '../../pages/spinner/spinner';
@@ -33,7 +32,7 @@ function BurgerConstructor({ onDropHandler }) {
         }),
     })
 
-    const hoverDrop = isHover ? burgerConstructorStyles.burgerConstructorHover : burgerConstructorStyles.burgerConstructor;
+    const hoverDrop = isHover ? `burger-constructor__hover` : `burger-constructor`;
     const isActive = (burgerConstructor.bun && user.length ? true : false)
 
     const cart = useMemo(() => {
@@ -72,7 +71,7 @@ function BurgerConstructor({ onDropHandler }) {
         <form ref={dropTarget} name='order' action='#' onSubmit={handlePlaceOrder} className={`mt-25 ml-4 ${hoverDrop} `}>
             {
                 burgerConstructor?.bun &&
-                <div className={`mb-4 pr-2 ${burgerConstructorStyles.burgerConstructor__item} `}>
+                <div className={`mb-4 pr-2 burger-constructor__item`}>
                     <ConstructorElement
                         type="top"
                         isLocked={true}
@@ -82,12 +81,12 @@ function BurgerConstructor({ onDropHandler }) {
                     />
                 </div>
             }
-            <ul className={`${burgerConstructorStyles.burgerConstructor__listitem} `}>
+            <ul className={`burger-constructor__list`}>
                 {burgerConstructor.ingredients.map((position, index) => <Ingredient key={position.index} id={position.index} position={position} index={index} />)}
             </ul>
             {
                 burgerConstructor?.bun &&
-                <div className={`mt-4 pr-2 ${burgerConstructorStyles.burgerConstructor__item} `}>
+                <div className={`mt-4 pr-2 burger-constructor__item`}>
                     <ConstructorElement
                         type="bottom"
                         isLocked={true}
@@ -97,10 +96,10 @@ function BurgerConstructor({ onDropHandler }) {
                     />
                 </div>
             }
-            <div className={`mt-10 pb-10 ${burgerConstructorStyles.burgerConstructor__checkout} `}>
+            <div className={`mt-10 pb-10 burger-constructor__checkout`}>
                 {burgerConstructor?.bun && burgerConstructor?.ingredients &&
-                    <div className={`${burgerConstructorStyles.burgerConstructor__total} `}>
-                        <p className={`mr-2 text text_type_main - large ${burgerConstructorStyles.burgerConstructor__ordersum} `}>{total}</p>
+                    <div className={`burger-constructor__total`}>
+                        <p className={`mr-2 text text_type_main - large burger-constructor__order-sum`}>{total}</p>
                         <CurrencyIcon type="primary" />
                     </div>
                 }
@@ -114,9 +113,9 @@ function BurgerConstructor({ onDropHandler }) {
                 </Button>
             </div>
             {!user &&
-                <p className={`text text_type_main-default text_color_inactive ${burgerConstructorStyles.burgerConstructor__text}`}>Для того чтобы оформить заказ нужно&nbsp;
+                <p className={`text text_type_main-default text_color_inactive burger-constructor__text`}>Для того чтобы оформить заказ нужно&nbsp;
                     <Link
-                        className={`text text_type_main-default ${burgerConstructorStyles.burgerConstructor__link}`}
+                        className={`text text_type_main-default burger-constructor__link`}
                         to={{
                             pathname: `/login`,
                         }}>
@@ -126,7 +125,7 @@ function BurgerConstructor({ onDropHandler }) {
             }
 
             {!burgerConstructor.bun &&
-                <p className={`mt-5 text text_type_main-default text_color_inactive ${burgerConstructorStyles.burgerConstructor__text}`}>Добавьте булку
+                <p className={`mt-5 text text_type_main-default text_color_inactive burger-constructor__text`}>Добавьте булку
                 </p>
             }
 

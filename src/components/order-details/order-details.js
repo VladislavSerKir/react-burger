@@ -1,4 +1,3 @@
-import orderDetailsStyles from './order-details.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useParams } from 'react-router-dom';
 import Spinner from '../../pages/spinner/spinner';
@@ -49,24 +48,24 @@ function OrderDetails() {
 
     if (orderMatch) {
         return (
-            <div className={`pl-10 pr-10 pb-10 ${orderDetailsStyles.order}`}>
-                <p className={`mt-15 mb-10 text text_type_digits-default ${orderDetailsStyles.orderNumber}`}>
+            <div className={`pl-10 pr-10 pb-10 order-details`}>
+                <p className={`mt-15 mb-10 text text_type_digits-default`}>
                     {`#${orderMatch.number}`}
                 </p>
-                <p className={`text text_type_main-medium ${orderDetailsStyles.orderName}`}>{`${orderMatch.name}`}</p>
-                <p className={`mt-2 mb-15 text text_type_main-small ${orderDetailsStyles.orderStatus} ${orderMatch.status === 'done' ? 'text_color_success' : null}`}>
+                <p className={`text text_type_main-medium`}>{`${orderMatch.name}`}</p>
+                <p className={`mt-2 mb-15 text text_type_main-small ${orderMatch.status === 'done' ? 'text_color_success' : null}`}>
                     {`${orderMatch.status === 'done' ? 'Выполнен' : 'Готовится'}`}
                 </p>
-                <p className={`mb-6 text text_type_main-medium ${orderDetailsStyles.orderName}`}>Состав:</p>
-                <ul className={` ${orderDetailsStyles.orderIngredients}`}>
+                <p className={`mb-6 text text_type_main-medium`}>Состав:</p>
+                <ul className={`order-details__list`}>
                     {
                         returnIngredients().map((ingredient, index) => {
-                            return <li key={ingredient._id} className={`${orderDetailsStyles.ingredientElement}`} >
-                                <div className={`${orderDetailsStyles.ingredientImageBlock}`}>
-                                    <img src={ingredient?.image} alt={ingredient?.name} className={`${orderDetailsStyles.ingredientImage}`} />
-                                    <p className={`text_type_main-small ${orderDetailsStyles.ingredientName}`}>{ingredient?.name}</p>
+                            return <li key={ingredient._id} className={`order-details__item`} >
+                                <div className={`order-details__item-block`}>
+                                    <img src={ingredient?.image} alt={ingredient?.name} className={`order-details__item-image`} />
+                                    <p className={`text_type_main-small order-details__item-name`}>{ingredient?.name}</p>
                                 </div>
-                                <div className={`${orderDetailsStyles.ingredientTotal}`}>
+                                <div className={`order-details__total`}>
                                     <p className={`mr-2 text text_type_digits-default`}>{`${returnIngredientsQuantity(ingredient?._id)} x ${ingredient?.price}`}</p>
                                     <CurrencyIcon type="primary" />
                                 </div>
@@ -75,11 +74,11 @@ function OrderDetails() {
                     }
                 </ul>
 
-                <div className={`mt-10 ${orderDetailsStyles.orderHeader}`}>
-                    <p className={`text text_color_inactive text_type_main-default ${orderDetailsStyles.orderNumber}`}>
+                <div className={`mt-10 order-details__footer`}>
+                    <p className={`text text_color_inactive text_type_main-default`}>
                         <FormattedDate date={new Date(orderMatch.createdAt)} /> i-GMT+3
                     </p>
-                    <div className={`${orderDetailsStyles.orderTotal}`}>
+                    <div className={`order-details__total`}>
                         <p className={`mr-2 text text_type_digits-default`}>{returnIngredientsPrice()}</p>
                         <CurrencyIcon type="primary" />
                     </div>

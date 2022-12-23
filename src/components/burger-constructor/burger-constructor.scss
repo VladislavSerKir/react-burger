@@ -1,0 +1,75 @@
+.burger-constructor {
+    width: 100%;
+    opacity: 1;
+    transition: all 0.3s;
+
+    &__hover {
+        width: 100%;
+        opacity: 0.3;
+        transition: all 0.3s;
+    }
+
+    &__item {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        justify-content: end;
+        margin-right: 8px;
+    }
+
+    &__list {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        list-style: none;
+        padding: 0;
+        overflow-y: scroll;
+
+        &::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        &::-webkit-scrollbar-track {
+            background: #2F2F37;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background-color: #8585AD;
+        }
+    }
+
+    &__checkout {
+        display: flex;
+        gap: 40px;
+        justify-content: end;
+    }
+
+    &__total {
+        display: flex;
+        align-items: center;
+        font-family: 'Iceland';
+        font-weight: 400;
+    }
+
+    &__order-sum {
+        font-family: 'Iceland';
+        font-weight: 400;
+        font-size: 48px;
+        line-height: 36px;
+    }
+
+    &__text {
+        display: flex;
+        justify-content: end;
+    }
+
+    &__link {
+        text-decoration: none;
+        transition: all 0.3s;
+
+        &:hover {
+            opacity: 0.7;
+            transition: all 0.3s;
+        }
+    }
+}

@@ -1,5 +1,4 @@
 import { Link, NavLink, Route, Switch, useLocation } from 'react-router-dom';
-import profileStyle from './profile.module.css';
 import { useRouteMatch } from 'react-router-dom';
 import { ProfileData } from '../../components/profile-data/profile-data';
 import { useSelector } from 'react-redux';
@@ -40,17 +39,17 @@ export const Profile = () => {
     }
 
     return (
-        <div className={`${profileStyle.profile}`}>
-            <nav className={`mt-30 ${profileStyle.menu}`}>
-                <NavLink to={`${url}`} exact className={`text text_type_main-medium ${profileStyle.link}`} activeClassName={profileStyle.link_active}>
+        <div className={`profile`}>
+            <nav className={`mt-30 profile__menu`}>
+                <NavLink to={`${url}`} exact className={`text text_type_main-medium profile__link`} activeClassName={`profile__link_type_active`}>
                     Профиль
                 </NavLink>
-                <NavLink to={`${url}/orders`} className={`text text_type_main-medium ${profileStyle.link}`} activeClassName={profileStyle.link_active}>
+                <NavLink to={`${url}/orders`} className={`text text_type_main-medium profile__link`} activeClassName={`profile__link_type_active`}>
                     История заказов
                 </NavLink>
                 <button
                     type="button"
-                    className={`text text_type_main-medium text_color_inactive from global ${profileStyle.button}`}
+                    className={`text text_type_main-medium text_color_inactive from global profile__button`}
                     onClick={onLogoutHandler}
                 >
                     Выход
@@ -58,18 +57,18 @@ export const Profile = () => {
 
                 {
                     location.pathname === `${url}` &&
-                    <p className={`mt-20 text text_color_inactive text_type_main-default ${profileStyle.text}`}>В этом разделе вы можете изменить свои персональные данные
+                    <p className={`mt-20 text text_color_inactive text_type_main-default profile__text`}>В этом разделе вы можете изменить свои персональные данные
                     </p>
                 }
 
                 {
                     location.pathname.startsWith(`${url}/orders`) &&
-                    <p className={`mt-20 text text_color_inactive text_type_main-default ${profileStyle.text}`}>В этом разделе вы можете просмотреть свою историю заказов
+                    <p className={`mt-20 text text_color_inactive text_type_main-default profile__text`}>В этом разделе вы можете просмотреть свою историю заказов
                     </p>
                 }
 
             </nav >
-            <article className={`mt-10 ${profileStyle.content}`}>
+            <article className={`mt-10 profile__content`}>
                 <Switch>
                     <Route path={`${url}`} exact>
                         <ProfileData />
@@ -81,13 +80,13 @@ export const Profile = () => {
                             orders && orders.orders.length === 0
                                 ?
                                 <>
-                                    <p className={`mt-20 text text_color_inactive text_type_main-large ${profileStyle.textNoOrders}`}>Нет заказов</p>
-                                    <Link to={`/`} className={`mt-10 text text_type_main-medium ${profileStyle.createOrder}`} >
+                                    <p className={`mt-20 text text_color_inactive text_type_main-large profile__text-order`}>Нет заказов</p>
+                                    <Link to={`/`} className={`mt-10 text text_type_main-medium profile__link-order`} >
                                         Создать первый заказ
                                     </Link>
                                 </>
                                 :
-                                <OrdersFeed className={`mt-10 ${profileStyle.orders}`} />
+                                <OrdersFeed className={`mt-10 profile__orders`} />
                         }
                     </Route>
                 </Switch>

@@ -1,6 +1,5 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import appStyles from './app.module.css';
 import AppHeader from '../app-header/app-header';
 import Modal from '../modal/modal';
 import OrderBrief from '../order-brief/order-brief';
@@ -19,6 +18,7 @@ import Spinner from '../../pages/spinner/spinner';
 import { checkAuth } from '../../services/actions/actions';
 import { Feed } from '../../pages/feed/feed';
 import OrderDetails from '../order-details/order-details';
+import '../../pages/index';
 
 function App() {
 
@@ -42,7 +42,7 @@ function App() {
     }
 
     return (
-        <div className={appStyles.body} >
+        <div className={`body`} >
             <AppHeader />
             <Switch location={background || location}>
                 <Route path='/' exact>

@@ -1,6 +1,5 @@
 import { useCallback } from 'react';
 import { useSelector } from 'react-redux';
-import ordersSummaryStyles from './orders-summary.module.css';
 
 export const OrdersSummary = () => {
 
@@ -17,28 +16,28 @@ export const OrdersSummary = () => {
     }, [orders?.orders]);
 
     return (
-        <div className={` ${ordersSummaryStyles.ordersSummaryContainer}`}>
-            <article className={`mb-15 ${ordersSummaryStyles.ordersBoard}`}>
-                <div className={` ${ordersSummaryStyles.board}`}>
-                    <p className={`mb-6 text text_type_main-medium ${ordersSummaryStyles.boardTitle}`}> Готовы:</p>
-                    <ul className={` ${ordersSummaryStyles.boardList}`}>
+        <div className={`orders-summary`}>
+            <article className={`mb-15 orders-summary__container`}>
+                <div className={`orders-summary__board`}>
+                    <p className={`mb-6 text text_type_main-medium`}> Готовы:</p>
+                    <ul className={`orders-summary__board-list`}>
                         {
                             readyOrders()?.map((order, index) => {
                                 if (index < 20) {
-                                    return (<li key={order} className={`text text_type_digits-default text_color_success ${ordersSummaryStyles.boardItem}`}>{order}</li>)
+                                    return (<li key={order} className={`text text_type_digits-default text_color_success orders-summary__board-item`}>{order}</li>)
                                 }
                             }
                             )
                         }
                     </ul>
                 </div>
-                <div className={` ${ordersSummaryStyles.board}`}>
-                    <p className={`mb-6 text text_type_main-medium ${ordersSummaryStyles.boardTitle}`}> В работе:</p>
-                    <ul className={` ${ordersSummaryStyles.boardList}`}>
+                <div className={`orders-summary__board`}>
+                    <p className={`mb-6 text text_type_main-medium`}> В работе:</p>
+                    <ul className={`orders-summary__board-list`}>
                         {
                             notReadyOrders()?.map((order, index) => {
                                 if (index < 20) {
-                                    return (<li key={order} className={`text text_type_digits-default ${ordersSummaryStyles.boardItem}`}>{order}</li>)
+                                    return (<li key={order} className={`text text_type_digits-default orders-summary__board-item`}>{order}</li>)
                                 }
                             }
                             )
@@ -47,9 +46,9 @@ export const OrdersSummary = () => {
                 </div>
             </article>
             <p className={`text text_type_main-medium`}>Выполнено за все время:</p>
-            <p className={`mb-15 text text_type_digits-large ${ordersSummaryStyles.ordersNumber}`} >{totalOrders}</p>
+            <p className={`mb-15 text text_type_digits-large orders-summary__number`} >{totalOrders}</p>
             <p className={`text text_type_main-medium`}>Выполнено за сегодня:</p>
-            <p className={`mb-15 text text_type_digits-large ${ordersSummaryStyles.ordersNumber}`} >{totalOrdersToday}</p>
+            <p className={`mb-15 text text_type_digits-large orders-summary__number`} >{totalOrdersToday}</p>
         </div>
     )
 }

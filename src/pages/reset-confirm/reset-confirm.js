@@ -1,5 +1,4 @@
 import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components'
-import resetConfirmStyles from './reset-confirm.module.css';
 import { Link, Redirect, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Spinner from '../spinner/spinner';
@@ -37,14 +36,14 @@ export const ResetConfirm = () => {
     }
 
     return (
-        <div className={`${resetConfirmStyles.resetConfirm} `}>
+        <div className={`reset-confirm`}>
             <form
                 name='register'
                 action='#'
                 onSubmit={handleResetPassword}
-                className={`${resetConfirmStyles.form}`}
+                className={`reset-confirm__form`}
             >
-                <h3 className={`mb-6 text text_type_main-medium ${resetConfirmStyles.text}`} >Восстановление пароля</h3>
+                <h3 className={`mb-6 text text_type_main-medium`} >Восстановление пароля</h3>
                 <PasswordInput
                     extraClass={`mb-6`}
                     onChange={handleChange}
@@ -71,9 +70,9 @@ export const ResetConfirm = () => {
                 >
                     Сохранить
                 </Button>
-                <p className={`mb-4 text text_color_inactive text_type_main-default ${resetConfirmStyles.text}`}>Вспомнили пароль? &nbsp;
+                <p className={`mb-4 text text_color_inactive text_type_main-default`}>Вспомнили пароль? &nbsp;
                     <span>
-                        <Link to='/login' className={`text text_type_main-default ${resetConfirmStyles.link}`}>
+                        <Link to='/login' className={`text text_type_main-default reset-confirm__link`}>
                             Войти
                         </Link>
                     </span>

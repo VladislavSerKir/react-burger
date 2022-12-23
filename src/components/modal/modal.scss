@@ -11,17 +11,17 @@
     flex-direction: column;
     width: 720px;
     transition: all 0.3s;
-}
 
-.modal__closeButton {
-    position: absolute;
-    top: 60px;
-    right: 40px;
-    z-index: 9;
-}
+    &__button_type_close {
+        position: absolute;
+        top: 60px;
+        right: 40px;
+        z-index: 9;
 
-.modal__closeButton:hover {
-    opacity: 0.3;
-    transition: all 0.3s;
-    cursor: pointer;
+        &:hover {
+            opacity: 0.3;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+    }
 }
