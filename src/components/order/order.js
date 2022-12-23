@@ -1,6 +1,5 @@
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useCallback } from 'react';
-import orderStyles from './order.module.css';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import Spinner from '../../pages/spinner/spinner';
@@ -33,23 +32,23 @@ export const Order = ({ orderInfo }) => {
 
     if (orderInfo && ingredients) {
         return (
-            <li className={`pl-6 pr-6 pb-6 mr-2 ${orderStyles.order}`}>
-                <div className={`mt-6 ${orderStyles.orderHeader}`}>
-                    <p className={`text text_type_digits-default ${orderStyles.orderNumber}`}>
+            <li className={`pl-6 pr-6 pb-6 mr-2 order`}>
+                <div className={`mt-6 order__header`}>
+                    <p className={`text text_type_digits-default`}>
                         {`#${orderInfo?.number}`}
                     </p>
-                    <p className={`text text_color_inactive text_type_main-default ${orderStyles.orderNumber}`}>
+                    <p className={`text text_color_inactive text_type_main-default`}>
                         <FormattedDate date={new Date(orderInfo?.createdAt)} /> i-GMT+3
                     </p>
                 </div>
-                <p className={`text text_type_main-medium ${orderStyles.orderName}`}>{`${orderInfo?.name}`}</p>
+                <p className={`text text_type_main-medium`}>{`${orderInfo?.name}`}</p>
 
                 {
-                    user && location.pathname === '/profile/orders' && (<p className={`text text_type_main-small ${orderStyles.orderStatus} ${orderInfo?.status === 'done' ? 'text_color_success' : null}`}>{`${orderInfo?.status === 'done' ? 'Выполнен' : 'Готовится'}`}</p>)
+                    user && location.pathname === '/profile/orders' && (<p className={`text text_type_main-small ${orderInfo?.status === 'done' ? 'text_color_success' : null}`}>{`${orderInfo?.status === 'done' ? 'Выполнен' : 'Готовится'}`}</p>)
                 }
 
-                <div className={`mb-6 ${orderStyles.orderContent}`}>
-                    <ul className={` ${orderStyles.orderIngredients}`}>
+                <div className={`mb-6 order__content`}>
+                    <ul className={`order__ingredients`}>
 
                         {
                             returnIngredients().map((ingredient, index) => {
@@ -60,15 +59,15 @@ export const Order = ({ orderInfo }) => {
                                     return <li
                                         key={index}
                                         style={{ zIndex: 6 - index, left: offset + 'px' }}
-                                        className={`${orderStyles.orderIngredientElement}`}
+                                        className={`order__ingredient`}
                                     >
                                         <img
                                             src={ingredient?.image}
                                             alt={ingredient?.name}
                                             style={{ zIndex: 6 - index, opacity: 0.4 }}
-                                            className={`${orderStyles.orderIngredientImage}`}
+                                            className={`order__ingredient-image`}
                                         />
-                                        <p className={`text  ${orderStyles.orderIngredientCounter}`} style={{ zIndex: 6 }}>
+                                        <p className={`text order__ingredient-counter`} style={{ zIndex: 6 }}>
                                             {`+${returnIngredients().length - index}`}
                                         </p>
                                     </li>
@@ -76,20 +75,20 @@ export const Order = ({ orderInfo }) => {
                                     return <li
                                         key={index}
                                         style={{ zIndex: 6 - index, left: offset + 'px' }}
-                                        className={`${orderStyles.orderIngredientElement}`}
+                                        className={`order__ingredient`}
                                     >
                                         <img
                                             src={ingredient?.image}
                                             alt={ingredient?.name}
                                             style={{ zIndex: 6 - index }}
-                                            className={`${orderStyles.orderIngredientImage}`}
+                                            className={`order__ingredient-image`}
                                         />
                                     </li>
                                 }
                             })
                         }
                     </ul>
-                    <div className={`pt-5 ${orderStyles.orderTotal}`}>
+                    <div className={`pt-5 order__total`}>
                         <p className={`mr-2 text text_type_digits-default`}>{returnIngredientsPrice()}</p>
                         <CurrencyIcon type="primary" />
                     </div>

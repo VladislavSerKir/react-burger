@@ -1,0 +1,26 @@
+import '../pages/login/login.scss';
+import '../pages/register/register.scss';
+import '../pages/reset/reset.scss';
+import '../pages/profile/profile.scss';
+import '../pages/not-found/not-found.scss';
+import '../pages/reset-confirm/reset-confirm.scss';
+import '../pages/feed/feed.scss';
+import '../pages/constructor/constructor.scss';
+import '../pages/spinner/spinner.scss';
+
+import '../components/app/app.scss';
+import '../components/app-header/app-header.scss';
+import '../components/burger-constructor/burger-constructor.scss';
+import '../components/burger-ingredients/burger-ingredients.scss';
+import '../components/card/card.scss';
+import '../components/cards-group/cards-group.scss';
+import '../components/ingredient/ingredient.scss';
+import '../components/ingredient-details/ingredient-details.scss';
+import '../components/modal/modal.scss';
+import '../components/modal-overlay/modal-overlay.scss';
+import '../components/order/order.scss';
+import '../components/profile-data/profile-data.scss';
+import '../components/orders-summary/orders-summary.scss';
+import '../components/orders-feed/orders-feed.scss';
+import '../components/order-brief/order-brief.scss';
+import '../components/order-details/order-details.scss';

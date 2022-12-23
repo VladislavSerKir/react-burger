@@ -1,7 +1,6 @@
 import { Button, EmailInput, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import profileDataStyles from './profile-data.module.css';
 import Spinner from '../../pages/spinner/spinner';
 import { useForm } from '../../hooks/useForm';
 
@@ -36,7 +35,7 @@ export const ProfileData = () => {
             name='edit-data'
             action='#'
             onSubmit={handleUpdateUser}
-            className={`mt-20 ${profileDataStyles.profileData}`}
+            className={`mt-20 profile-data`}
         >
             <Input
                 type={'text'}
@@ -65,7 +64,7 @@ export const ProfileData = () => {
                 name={'password'}
                 icon="EditIcon"
             />
-            <div className={`${profileDataStyles.profileButtons}`}>
+            <div className={`profile-data__buttons`}>
                 <Button
                     htmlType='button'
                     type="secondary"
@@ -86,7 +85,7 @@ export const ProfileData = () => {
             </div>
 
             {
-                userUpdated && (<p className={`mt-5 text text_color_inactive text_type_main-default ${profileDataStyles.statusChange}`}>Изменения сохранены</p>)
+                userUpdated && (<p className={`mt-5 text text_color_inactive text_type_main-default profile-data__status`}>Изменения сохранены</p>)
             }
 
         </form >

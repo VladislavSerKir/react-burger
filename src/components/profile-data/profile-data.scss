@@ -1,0 +1,19 @@
+.profile-data {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    max-width: 480px;
+
+    &__buttons {
+        display: flex;
+        flex-direction: row;
+        justify-content: end;
+        align-items: center;
+    }
+
+    &__status {
+        display: flex;
+        justify-content: end;
+    }
+}

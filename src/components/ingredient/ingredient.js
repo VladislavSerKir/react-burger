@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useDrag, useDrop } from 'react-dnd';
 import PropTypes from 'prop-types';
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import ingredientStyle from './ingredient.module.css';
 import { removeIngredient, moveIngredient } from '../../services/reducers/constructorReducer';
 import { ingredientType } from '../../utils/types';
 
@@ -69,7 +68,7 @@ export const Ingredient = ({ position, index, id }) => {
             ref={refWithin}
             data-handler-id={handlerId}
             draggable
-            className={`${ingredientStyle.ingredient} `}>
+            className={`ingredient`}>
             <DragIcon type="primary" />
             <ConstructorElement
                 isLocked={false}

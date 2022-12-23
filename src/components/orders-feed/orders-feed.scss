@@ -1,0 +1,33 @@
+.orders-feed {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    width: 100%;
+    gap: 16px;
+    height: 68vh;
+    overflow-y: scroll;
+
+    &__link {
+        list-style-type: none;
+        text-decoration: none;
+        color: #F2F2F3;
+        transition: all 0.3s;
+
+        &:hover {
+            opacity: 0.8;
+            transition: all 0.3s;
+        }
+    }
+
+    &::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: #2F2F37;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: #8585AD;
+    }
+}

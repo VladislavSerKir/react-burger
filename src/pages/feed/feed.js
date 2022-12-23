@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { OrdersFeed } from '../../components/orders-feed/orders-feed';
 import { OrdersSummary } from '../../components/orders-summary/orders-summary';
 import { setWebsocketConnection, setWebsocketOffline } from '../../services/reducers/dataReducer';
-import feedStyles from './feed.module.css';
 import { BASE_WSS } from '../../utils/utils';
 import Spinner from '../spinner/spinner';
 import { useLocation } from 'react-router-dom';
@@ -22,13 +21,13 @@ export const Feed = () => {
     }, [location.pathname])
 
     return (
-        <section className={`${feedStyles.feed}`}>
-            <h3 className={`mt-10 mb-5 text text_type_main-large ${feedStyles.title}`}>Лента заказов</h3>
-            <div className={` ${feedStyles.feedContainer}`}>
+        <section className={`feed`}>
+            <h3 className={`mt-10 mb-5 text text_type_main-large feed__title`}>Лента заказов</h3>
+            <div className={`feed__container`}>
                 {!orders ? <Spinner /> : (
                     <>
-                        <OrdersFeed className={`${feedStyles.ordersFeed}`} />
-                        <OrdersSummary className={`${feedStyles.ordersSummary}`} />
+                        <OrdersFeed className={`feed__orders`} />
+                        <OrdersSummary className={`feed__summary`} />
                     </>
                 )}
             </div>

@@ -1,7 +1,6 @@
 import React from 'react';
 import { useInView } from 'react-intersection-observer';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
-import burgerIngredientsStyles from './burger-ingredients.module.css';
 import CardsGroup from '../cards-group/cards-group';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleIngredientsTab } from '../../services/reducers/dataReducer';
@@ -53,9 +52,9 @@ const BurgerIngredients = () => {
     }, [ingredients])
 
     return (
-        <section className={burgerIngredientsStyles.ingredients}>
-            <h1 className={`text text_type_main-large mt-10 mb-5 ${burgerIngredientsStyles.ingredients__title}`}>Соберите бургер</h1>
-            <div className={`mb-10 ${burgerIngredientsStyles.ingredients__switcher}`}>
+        <section className={`ingredients`}>
+            <h1 className={`text text_type_main-large mt-10 mb-5`}>Соберите бургер</h1>
+            <div className={`mb-10 ingredients__switcher`}>
                 <Tab
                     value="bun"
                     active={ingredientsCurrentTab === 'bun'}
@@ -78,7 +77,7 @@ const BurgerIngredients = () => {
                     Начинки
                 </Tab>
             </div>
-            <div className={`${burgerIngredientsStyles.ingredients__content}`}>
+            <div className={`ingredients__content`}>
                 {/* группы карточек по категориям */}
                 <CardsGroup
                     ref={bunsRef}

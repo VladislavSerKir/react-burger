@@ -1,0 +1,15 @@
+.cards {
+    &__list {
+        list-style-type: none;
+        display: flex;
+        flex-wrap: wrap;
+        padding: 0;
+        gap: 24px;
+    }
+
+    &__link {
+        list-style-type: none;
+        text-decoration: none;
+        color: #F2F2F3;
+    }
+}

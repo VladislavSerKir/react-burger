@@ -1,5 +1,5 @@
 import { Button, EmailInput } from '@ya.praktikum/react-developer-burger-ui-components'
-import resetStyles from './reset.module.css';
+// import resetStyles from './reset.module.css';
 import { Link, Redirect, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Spinner from '../spinner/spinner';
@@ -36,14 +36,14 @@ export const Reset = () => {
     }
 
     return (
-        <div className={`${resetStyles.reset} `}>
+        <div className={`reset`}>
             <form
                 name='register'
                 action='#'
                 onSubmit={handleReset}
-                className={`${resetStyles.form}`}
+                className={`reset__form`}
             >
-                <h3 className={`mb-6 text text_type_main-medium ${resetStyles.text}`} >Сброс пароля</h3>
+                <h3 className={`mb-6 text text_type_main-medium`} >Сброс пароля</h3>
                 <EmailInput
                     extraClass={`mb-6`}
                     onChange={handleChange}
@@ -60,9 +60,9 @@ export const Reset = () => {
                     Восстановить
                 </Button>
 
-                <p className={`mb-4 text text_color_inactive text_type_main-default ${resetStyles.text}`}>Вспомнили пароль? &nbsp;
+                <p className={`mb-4 text text_color_inactive text_type_main-default`}>Вспомнили пароль? &nbsp;
                     <span>
-                        <Link to='/login' className={`text text_type_main-default ${resetStyles.link}`}>
+                        <Link to='/login' className={`text text_type_main-default reset__link`}>
                             Войти
                         </Link>
                     </span>
