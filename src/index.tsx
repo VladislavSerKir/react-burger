@@ -4,10 +4,10 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import './index.css';
 import App from './components/app/app';
-import createStore from './services/index';
+import store from './services/index';
 
 
-const store = createStore()
+// const store = createStore()
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -15,7 +15,7 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
+    <Provider store={store()}>
       <BrowserRouter>
         <App />
       </BrowserRouter>
