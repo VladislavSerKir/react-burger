@@ -1,5 +1,4 @@
 import orderAcceptedImg from '../../images/graphics.svg';
-// import { useSelector } from 'react-redux';
 import { useTypedSelector } from '../../services/types';
 import { FC } from 'react';
 

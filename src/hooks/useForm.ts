@@ -5,8 +5,6 @@ import { useTypedDispatch } from "../services/types";
 import { TUser } from "../services/types";
 
 export interface IInputValuesProps {
-    // inputValues: TInputValues
-
     name?: string,
     email?: string,
     password?: string,
@@ -27,8 +25,6 @@ type TEventTarget = {
     }
 }
 
-// export const useForm: FC<TUser> = (inputValues) => {
-
 export const useForm = (inputValues: TUser) => {
 
     const store = useTypedSelector(store => store);
@@ -45,10 +41,6 @@ export const useForm = (inputValues: TUser) => {
 
     const handleResetForm = () => {
         setValues({
-            // name: store.user.userData.name,
-            // email: store.user.userData.email,
-            // password: ''
-
             name: store.user.userData.name,
             email: store.user.userData.email,
             password: '',
@@ -64,9 +56,6 @@ export const useForm = (inputValues: TUser) => {
         }
         dispatch(onLogin(values));
         setValues({
-            // email: '',
-            // password: ''
-
             name: '',
             email: '',
             password: '',
@@ -78,10 +67,6 @@ export const useForm = (inputValues: TUser) => {
         event.preventDefault();
         dispatch(onRegister(values));
         setValues({
-            // name: '',
-            // email: '',
-            // password: ''
-
             name: '',
             email: '',
             password: '',
@@ -104,8 +89,6 @@ export const useForm = (inputValues: TUser) => {
         if (values.name) {
             dispatch(onUpdateUser(values))
             setValues({
-                // password: ''
-
                 name: '',
                 email: '',
                 password: '',

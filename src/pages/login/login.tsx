@@ -1,4 +1,3 @@
-// import { useDispatch, useSelector } from 'react-redux';
 import { Button, EmailInput, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Link, Redirect, useHistory, useLocation } from 'react-router-dom';
 import Spinner from '../spinner/spinner';
@@ -8,7 +7,6 @@ import { setResetUserError } from '../../services/reducers/userReducer';
 import { useTypedSelector } from '../../services/types';
 import { useTypedDispatch } from '../../services/types';
 import { IUseLocation } from '../../types';
-// import { TInputValues } from '../../hooks/useForm';
 
 export const Login: FC = () => {
 
@@ -24,9 +22,6 @@ export const Login: FC = () => {
     const userErrorCode = userError?.slice(userError?.length - 3, userError?.length)
 
     const userData = {
-        // email: '',
-        // password: ''
-
         name: '',
         email: '',
         password: '',

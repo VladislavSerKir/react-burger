@@ -6,7 +6,6 @@ import { TUser } from "../services/types";
 export const BASE_URL = `https://norma.nomoreparties.space/api`;
 export const BASE_WSS = `wss://norma.nomoreparties.space`;
 
-// export const placeOrderRequest: (cart: Array<string>) => object = async (cart) => {
 export const placeOrderRequest = async (cart: Array<string>) => {
 
     return fetch(`${BASE_URL}/orders`, {

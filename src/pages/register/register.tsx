@@ -3,7 +3,7 @@ import { Link, Redirect, useLocation } from 'react-router-dom';
 import Spinner from '../spinner/spinner';
 import { useForm } from '../../hooks/useForm';
 import { FC } from 'react';
-import { TUser, useTypedSelector } from '../../services/types';
+import { useTypedSelector } from '../../services/types';
 import { IUseLocation } from '../../types';
 
 export const Register: FC = () => {
@@ -14,10 +14,6 @@ export const Register: FC = () => {
     const { state } = useLocation<IUseLocation>()
 
     const userData = {
-        // name: '',
-        // email: '',
-        // password: ''
-
         name: '',
         email: '',
         password: '',

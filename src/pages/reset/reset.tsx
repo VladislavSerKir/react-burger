@@ -15,8 +15,6 @@ export const Reset: FC = () => {
     const store = useTypedSelector(store => store);
 
     const userData = {
-        // email: '',
-
         name: '',
         email: '',
         password: '',

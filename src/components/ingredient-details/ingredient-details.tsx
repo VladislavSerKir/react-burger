@@ -12,9 +12,7 @@ export const IngredientDetails: FC = () => {
         return item._id === id
     })
 
-    // if (ingredientMatch) {
     const { image_large, name, calories, carbohydrates, fat, proteins } = ingredientMatch || {};
-    // }
 
     if (ingredientMatch) {
         return (

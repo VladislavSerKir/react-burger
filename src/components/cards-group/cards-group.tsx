@@ -5,7 +5,6 @@ import { IUseLocation } from '../../types';
 import { TIngredient } from '../../services/types';
 
 type TCardsGroupProps = {
-    // props: Array<TIngredient>
     titleId: string
     title: string
     data: Array<TIngredient> | undefined

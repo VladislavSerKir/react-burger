@@ -12,11 +12,6 @@ interface IIngredientProps {
     id?: string
 }
 
-type THover = {
-    index: number,
-    id: string
-}
-
 export const Ingredient: FC<IIngredientProps> = ({ position, index, id }) => {
 
     const ref = useRef<HTMLLIElement>(null);
@@ -83,8 +78,6 @@ export const Ingredient: FC<IIngredientProps> = ({ position, index, id }) => {
     return (
         <li
             ref={ref}
-            // data-handler-id={handlerId}
-            // draggable
             className={`ingredient`}>
             <DragIcon type="primary" />
             <ConstructorElement
@@ -93,7 +86,6 @@ export const Ingredient: FC<IIngredientProps> = ({ position, index, id }) => {
                 price={position?.price}
                 thumbnail={position?.image}
                 handleClose={(event) => handleDeleteIngredient(event, position)}
-            // handleClose={handleDeleteIngredient}
             />
         </li>
     )

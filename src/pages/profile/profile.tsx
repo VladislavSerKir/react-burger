@@ -52,8 +52,6 @@ export const Profile: FC = () => {
                     type="button"
                     className={`text text_type_main-medium text_color_inactive from global profile__button`}
                     onClick={onLogoutHandler}
-                // onClick={(e) => onLogoutHandler(e)}
-
                 >
                     Выход
                 </button>

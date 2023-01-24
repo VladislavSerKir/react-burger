@@ -7,7 +7,6 @@ import { useTypedSelector } from '../../services/types';
 import { useTypedDispatch } from '../../services/types';
 import { IUseLocation } from '../../types';
 import { IUseParams } from '../../types';
-import { TIngredient } from '../../services/types';
 import { TOrder } from '../../services/types';
 
 const OrderDetails: FC = () => {

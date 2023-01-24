@@ -7,7 +7,6 @@ import { setOpenOrderModal } from "../reducers/modalReducer";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { checkResponse } from "../../utils/api";
 import { TIngredient, TUser } from "../types";
-// import { IInputValuesProps } from "../../hooks/useForm";
 
 export interface IIngredients {
     success: boolean,

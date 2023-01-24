@@ -1,6 +1,5 @@
 import { Button, EmailInput, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useEffect } from 'react';
-// import { useSelector } from 'react-redux';
 import Spinner from '../../pages/spinner/spinner';
 import { useForm } from '../../hooks/useForm';
 import { useTypedSelector } from '../../services/types';
@@ -12,10 +11,6 @@ export const ProfileData = () => {
     const userUpdated = useTypedSelector(store => store.user.userUpdated)
 
     const userData = {
-        // name: store.user.userData.name,
-        // email: store.user.userData.email,
-        // password: ''
-
         name: store.user.userData.name,
         email: store.user.userData.email,
         password: '',

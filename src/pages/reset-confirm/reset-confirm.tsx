@@ -15,9 +15,6 @@ export const ResetConfirm: FC = () => {
     const store = useTypedSelector(store => store);
 
     const userData = {
-        // password: '',
-        // token: ''
-
         name: '',
         email: '',
         password: '',

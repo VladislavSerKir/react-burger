@@ -6,9 +6,6 @@ import './index.css';
 import App from './components/app/app';
 import store from './services/index';
 
-
-// const store = createStore()
-
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );

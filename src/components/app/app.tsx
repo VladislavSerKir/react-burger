@@ -50,17 +50,8 @@ const App = () => {
                 <Route path='/' exact>
                     <Constructor />
                 </Route>
-
-                {/* <ProtectedRoute path='/profile/orders/:id'>
-                    <OrderDetails />
-                </ProtectedRoute>
-                <ProtectedRoute path='/profile' >
-                    <Profile />
-                </ProtectedRoute> */}
-
                 <ProtectedRoute path='/profile/orders/:id' children={<OrderDetails />} />
                 <ProtectedRoute path='/profile' children={<Profile />} />
-
                 <Route path='/login' exact>
                     {!state.user.userData.name && state.user.isAuthChecked && state.user.userRequest ? <Spinner /> : <Login />}
                 </Route>
