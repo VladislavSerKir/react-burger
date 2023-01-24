@@ -8,12 +8,31 @@ export type RootState = ReturnType<typeof rootReducer>
 export const useTypedDispatch = () => useDispatch<AppThunkDispatch>();
 export const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector;
 
-export type AppThunk = ThunkAction<void, RootState, null, Action<string>>
-export type AppThunkDispatch = ThunkDispatch<RootState, any, Action<string>>;
+export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, Action<string>>
+export type AppThunkDispatch = ThunkDispatch<RootState, never, Action<string>>;
 
 export interface IResponse {
     success: boolean,
     [key: string]: any
+}
+
+export type TwsActions = {
+    wsConnection: string,
+    wsOffline: string,
+    wsOpen: string,
+    wsError: string,
+    wsMessage: string,
+    wsClose: string
+}
+
+export type TError = {
+    success: boolean;
+    message?: string
+}
+
+export type TRefreshData = {
+    success: boolean;
+    accessToken: string
 }
 
 export type TUser = {
@@ -22,6 +41,13 @@ export type TUser = {
     password: string,
     token: string
 }
+
+// export type TUser = {
+//     email?: string | undefined,
+//     name?: string | undefined,
+//     password?: string | undefined,
+//     token?: string | undefined
+// }
 
 // export type TIngredient = {
 //     _id?: string;
@@ -51,7 +77,7 @@ export type TIngredient = {
     image_mobile: string;
     image_large: string;
     __v?: number;
-    index?: string | undefined
+    index?: string
 }
 
 export type TOrders = {

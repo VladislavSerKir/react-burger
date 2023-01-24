@@ -23,11 +23,11 @@ const BurgerConstructor: FC<IBurgerConstructorProps> = ({ onDropHandler }) => {
     const orderRequest = useTypedSelector(store => store.burgerConstructor.orderRequest)
     const location = useLocation<IUseLocation>();
     const history = useHistory();
-    const { burgerConstructor } = store;
+    const { burgerConstructor } = store || {} || undefined;
 
     const [{ isHover }, dropTarget] = useDrop({
         accept: 'ingredient',
-        drop: (ingredient) => {
+        drop: (ingredient: TIngredient) => {
             let index = uuidv4()
             let mutatedIngredient = { index, ...ingredient }
             onDropHandler(mutatedIngredient);
@@ -41,18 +41,21 @@ const BurgerConstructor: FC<IBurgerConstructorProps> = ({ onDropHandler }) => {
     const hoverDrop = isHover ? `burger-constructor__hover` : `burger-constructor`;
     const isActive = (burgerConstructor.bun && user.length ? true : false)
 
-    const cart: string[] | undefined = useMemo(() => {
+    const cart = useMemo(() => {
         if (burgerConstructor.bun && burgerConstructor.ingredients)
             return [burgerConstructor?.bun?._id, ...burgerConstructor.ingredients?.map((item) => item?._id), burgerConstructor?.bun._id]
     }, [burgerConstructor.bun, burgerConstructor.ingredients])
 
     const total = useMemo(() => {
-        return (burgerConstructor?.bun?.price! * 2) + burgerConstructor?.ingredients?.reduce<Record<number, any>>((accum: number, item: TIngredient) => {
-            if (item) {
-                accum += item?.price
-            }
-            return accum
-        }, 0)
+        if (burgerConstructor.bun && burgerConstructor.ingredients) {
+            return burgerConstructor?.bun.price * 2 + Array.from(burgerConstructor?.ingredients).reduce((accum: number, item: TIngredient) => {
+                if (item) {
+                    accum += item.price;
+                }
+                return accum;
+            }, 0)
+        }
+
     }, [burgerConstructor])
 
     const handlePlaceOrder = (event: React.FormEvent<HTMLFormElement>) => {
@@ -60,7 +63,7 @@ const BurgerConstructor: FC<IBurgerConstructorProps> = ({ onDropHandler }) => {
             history.push('/login')
         } else {
             event.preventDefault();
-            dispatch(onPlaceOrder(cart))
+            dispatch(onPlaceOrder(cart as string[]))
             history.push({
                 pathname: '/order',
                 state: {

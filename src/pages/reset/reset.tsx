@@ -15,7 +15,12 @@ export const Reset: FC = () => {
     const store = useTypedSelector(store => store);
 
     const userData = {
+        // email: '',
+
+        name: '',
         email: '',
+        password: '',
+        token: ''
     }
 
     const { values, handleChange, handleReset } = useForm(userData);

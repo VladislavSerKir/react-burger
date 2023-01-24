@@ -12,9 +12,14 @@ export const ProfileData = () => {
     const userUpdated = useTypedSelector(store => store.user.userUpdated)
 
     const userData = {
+        // name: store.user.userData.name,
+        // email: store.user.userData.email,
+        // password: ''
+
         name: store.user.userData.name,
         email: store.user.userData.email,
-        password: ''
+        password: '',
+        token: ''
     }
 
     const { values, handleChange, isFormEdited, handleResetForm, handleUpdateUser } = useForm(userData);

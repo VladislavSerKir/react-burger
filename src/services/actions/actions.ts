@@ -6,7 +6,13 @@ import { setOrderNumber, setPlaceOrderRequest, setResetOrderNumber, setStatusSuc
 import { setOpenOrderModal } from "../reducers/modalReducer";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { checkResponse } from "../../utils/api";
-import { TUser } from "../types";
+import { TIngredient, TUser } from "../types";
+// import { IInputValuesProps } from "../../hooks/useForm";
+
+export interface IIngredients {
+    success: boolean,
+    data: TIngredient[]
+}
 
 export const getAllIngredients = createAsyncThunk(
     'data/getAllIngredients',
@@ -30,7 +36,7 @@ export const getAllIngredients = createAsyncThunk(
 export const checkAuth = createAsyncThunk(
     'user/checkAuth',
     async function (_, { dispatch }) {
-        if (getCookie('accessToken')) {
+        if (getCookie('accessToken') !== null) {
             dispatch(getUser())
             dispatch(setAuthChecked(true))
         } else {
@@ -65,8 +71,8 @@ export const onRegister = createAsyncThunk(
             .then((res) => {
                 const accessToken = res.accessToken.split('Bearer ')[1];
                 const refreshToken = res.refreshToken;
-                setCookie('accessToken', accessToken);
-                setCookie('refreshToken', refreshToken);
+                setCookie('accessToken', accessToken, null);
+                setCookie('refreshToken', refreshToken, null);
                 dispatch(setUser(res));
             })
             .catch((err) => {
@@ -89,8 +95,8 @@ export const onLogin = createAsyncThunk(
                 const accessToken = res.accessToken.split('Bearer ')[1];
                 const refreshToken = res.refreshToken;
                 dispatch(setUser(res));
-                setCookie('accessToken', accessToken);
-                setCookie('refreshToken', refreshToken);
+                setCookie('accessToken', accessToken, null);
+                setCookie('refreshToken', refreshToken, null);
             })
             .catch((err) => {
                 dispatch(setUserError(err))
@@ -109,7 +115,7 @@ export const onLogout = createAsyncThunk(
         logoutRequest()
             .then(checkResponse)
             .then((res) => {
-                dispatch(setLogoutUser(null));
+                dispatch(setLogoutUser());
                 deleteCookie('refreshToken');
                 deleteCookie('accessToken');
             })
@@ -205,8 +211,8 @@ export const onFetchOrder = createAsyncThunk(
 
 export const onPlaceOrder = createAsyncThunk(
     'user/onPlaceOrder',
-    async function (cart: string[] | undefined, { dispatch }) {
-        dispatch(setResetOrderNumber(null))
+    async function (cart: string[], { dispatch }) {
+        dispatch(setResetOrderNumber())
         dispatch(setPlaceOrderRequest(true))
         return placeOrderRequest(cart)
             .then(checkResponse)
@@ -214,7 +220,7 @@ export const onPlaceOrder = createAsyncThunk(
                 dispatch(setOrderNumber(data))
             })
             .then(() => {
-                dispatch(setOpenOrderModal(null))
+                dispatch(setOpenOrderModal())
             })
             .catch((error) => {
                 dispatch(setStatusSuccess(error))

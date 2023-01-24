@@ -1,19 +1,19 @@
 import { FC } from 'react';
 import { useParams } from 'react-router-dom';
 import Spinner from '../../pages/spinner/spinner';
-import { TIngredient, useTypedSelector } from '../../services/types';
+import { useTypedSelector } from '../../services/types';
 import { IUseParams } from '../../types';
 
 export const IngredientDetails: FC = () => {
     const { id } = useParams<IUseParams>();
     const ingredients = useTypedSelector(store => store.data?.ingredients);
 
-    const ingredientMatch: TIngredient | undefined = ingredients?.find(item => {
+    const ingredientMatch = ingredients?.find(item => {
         return item._id === id
     })
 
     // if (ingredientMatch) {
-    const { image_large, name, calories, carbohydrates, fat, proteins } = ingredientMatch;
+    const { image_large, name, calories, carbohydrates, fat, proteins } = ingredientMatch || {};
     // }
 
     if (ingredientMatch) {

@@ -8,8 +8,9 @@ import { setResetUserError } from '../../services/reducers/userReducer';
 import { useTypedSelector } from '../../services/types';
 import { useTypedDispatch } from '../../services/types';
 import { IUseLocation } from '../../types';
+// import { TInputValues } from '../../hooks/useForm';
 
-export const Login = () => {
+export const Login: FC = () => {
 
     const history = useHistory();
     const dispatch = useTypedDispatch();
@@ -22,9 +23,14 @@ export const Login = () => {
 
     const userErrorCode = userError?.slice(userError?.length - 3, userError?.length)
 
-    const userData: { email: string, password: string } = {
+    const userData = {
+        // email: '',
+        // password: ''
+
+        name: '',
         email: '',
-        password: ''
+        password: '',
+        token: ''
     }
 
     useEffect(() => {

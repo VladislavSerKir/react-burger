@@ -1,30 +1,49 @@
+import { TError, TRefreshData } from "../services/types";
 import { setCookie } from "./cookie";
 import { refreshTokenRequest } from "./utils";
-import { IResponse } from "../services/types";
 
-export const checkResponse = (res: IResponse) => {
+export const checkResponse = (res: Response) => {
     if (res.ok) {
         return res.json();
     }
     return Promise.reject(`Ошибка ${res.status}`);
 }
 
-export const onRefreshToken = async (url, options) => {
-    try {
-        const res = await fetch(url, options);
-        return await checkResponse(res);
-    } catch (error) {
-        if (error.message === "jwt expired") {
-            const refreshData = await refreshTokenRequest();
-            if (!refreshData.success) {
-                Promise.reject(refreshData);
+export const onRefreshToken = async (url: string, options: RequestInit) => {
+
+    // try {
+    //     const res = await fetch(url, options);
+    //     return await checkResponse(res);
+    // } catch (error: TError) {
+    //     if (error.message === "jwt expired") {
+    //         const refreshData = await refreshTokenRequest();
+    //         if (!refreshData.success) {
+    //             Promise.reject(refreshData);
+    //         }
+    //         setCookie("accessToken", refreshData.accessToken, null);
+    //         (options.headers as { [key: string]: string }).authorization = refreshData.accessToken;
+    //         const res = await fetch(url, options);
+    //         return await checkResponse(res);
+    //     } else {
+    //         return Promise.reject(error);
+    //     }
+    // }
+
+    return fetch(url, options)
+        .then(checkResponse)
+        .catch(async (error: TError) => {
+            if (error.message === "jwt expired") {
+                const refreshData: TRefreshData = await refreshTokenRequest();
+                if (!refreshData.success) {
+                    Promise.reject(refreshData);
+                }
+                setCookie("accessToken", refreshData.accessToken, null);
+                (options.headers as { [key: string]: string }).authorization = refreshData.accessToken;
+                const res = await fetch(url, options);
+                return await checkResponse(res);
+            } else {
+                return Promise.reject(error);
             }
-            setCookie("accessToken", refreshData.accessToken,);
-            options.headers.authorization = refreshData.accessToken;
-            const res = await fetch(url, options);
-            return await checkResponse(res);
-        } else {
-            return Promise.reject(error);
-        }
-    }
+        })
+
 }

@@ -38,7 +38,7 @@ export const constructorSlice = createSlice({
             state.bun = null;
             state.success = true;
         },
-        setResetOrderNumber: (state, action) => {
+        setResetOrderNumber: (state) => {
             state.orderNumber = null;
         },
         setStatusSuccess: (state, action) => {

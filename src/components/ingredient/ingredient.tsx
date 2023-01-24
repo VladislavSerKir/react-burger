@@ -1,5 +1,5 @@
-import React, { useRef, useCallback, FC } from 'react';
-import { useDrag, useDrop } from 'react-dnd';
+import React, { useRef, useCallback, FC, } from 'react';
+import { useDrag, useDrop, DropTargetMonitor, XYCoord } from 'react-dnd';
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { removeIngredient, moveIngredient } from '../../services/reducers/constructorReducer';
 import { useTypedSelector } from '../../services/types';
@@ -9,46 +9,54 @@ import { TIngredient } from '../../services/types';
 interface IIngredientProps {
     position: TIngredient,
     index: number,
-    id: string | undefined
+    id?: string
+}
+
+type THover = {
+    index: number,
+    id: string
 }
 
 export const Ingredient: FC<IIngredientProps> = ({ position, index, id }) => {
 
-    const refWithin = useRef(null);
+    const ref = useRef<HTMLLIElement>(null);
     const dispatch = useTypedDispatch();
     const { burgerConstructor } = useTypedSelector(store => store);
 
-    const handleDeleteIngredient = (event: React.ChangeEvent<HTMLInputElement>, ingredient: never) => {
+    const handleDeleteIngredient = (event: React.ChangeEvent<HTMLInputElement>, ingredient: TIngredient) => {
         event.preventDefault();
-        const index = burgerConstructor.ingredients.indexOf(ingredient)
+
+        const index = Array.from(burgerConstructor.ingredients).indexOf(ingredient);
         dispatch(removeIngredient(index))
     }
 
-    const changeTargetPlace = useCallback((dragIndex: number, hoverIndex: number | string) => {
+    const changeTargetPlace = useCallback((dragIndex: number, hoverIndex: number) => {
         dispatch(moveIngredient({ dragIndex, hoverIndex }))
     }, [dispatch])
 
 
-    const [{ handlerId }, dropWithin] = useDrop({
+    const [, drop] = useDrop({
         accept: 'ingredientConstructor',
         collect(monitor) {
             return {
                 handlerId: monitor.getHandlerId(),
             }
         },
-        hover(item, monitor) {
-            if (!refWithin.current) {
+        hover(item: any,
+            monitor: DropTargetMonitor) {
+            if (!ref.current) {
                 return;
             }
+
             const dragIndex = item.index;
             const hoverIndex = index;
             if (dragIndex === hoverIndex) {
                 return;
             }
-            const hoverBoundingRect = refWithin.current?.getBoundingClientRect();
+            const hoverBoundingRect = ref.current?.getBoundingClientRect() || { bottom: 0, top: 0 };
             const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
             const clientOffset = monitor.getClientOffset();
-            const hoverClientY = clientOffset!.y - hoverBoundingRect.top;
+            const hoverClientY = (clientOffset as XYCoord).y - hoverBoundingRect.top;
             if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
                 return;
             }
@@ -60,20 +68,23 @@ export const Ingredient: FC<IIngredientProps> = ({ position, index, id }) => {
         }
     });
 
-    const [, dragWithin] = useDrag({
+    const [, drag] = useDrag({
         type: 'ingredientConstructor',
         item: () => {
             return { id, index, position };
         },
+        collect: (monitor) => ({
+            isDrag: monitor.isDragging(),
+        }),
     });
 
-    dragWithin(dropWithin(refWithin));
+    drag(drop(ref));
 
     return (
         <li
-            ref={refWithin}
-            data-handler-id={handlerId}
-            draggable
+            ref={ref}
+            // data-handler-id={handlerId}
+            // draggable
             className={`ingredient`}>
             <DragIcon type="primary" />
             <ConstructorElement
@@ -83,7 +94,6 @@ export const Ingredient: FC<IIngredientProps> = ({ position, index, id }) => {
                 thumbnail={position?.image}
                 handleClose={(event) => handleDeleteIngredient(event, position)}
             // handleClose={handleDeleteIngredient}
-
             />
         </li>
     )

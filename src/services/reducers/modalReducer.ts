@@ -14,14 +14,14 @@ export const modalSlice = createSlice({
     name: 'modal',
     initialState: modalState,
     reducers: {
-        closeAllModals: (state, action) => {
+        closeAllModals: (state) => {
             state.ingredientDetails.isOpened = false;
             state.orderDetails.isOpened = false
         },
-        openIngredient: (state, action) => {
+        openIngredient: (state) => {
             state.ingredientDetails.isOpened = true;
         },
-        setOpenOrderModal: (state, action) => {
+        setOpenOrderModal: (state) => {
             state.orderDetails.isOpened = true
         },
     },

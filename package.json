@@ -9,6 +9,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "@types/node": "^16.11.60",
+    "@types/react-dnd": "^3.0.2",
     "@ya.praktikum/react-developer-burger-ui-components": "^1.13.4",
     "csstype": "^3.1.1",
     "immutability-helper": "^3.1.1",

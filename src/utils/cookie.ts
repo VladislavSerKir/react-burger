@@ -1,11 +1,11 @@
-export const getCookie: (name: string) => void = (name) => {
+export const getCookie: (name: string) => string | undefined = (name) => {
     const matches = document.cookie.match(
         new RegExp('(?:^|; )' + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + '=([^;]*)')
     );
     return matches ? decodeURIComponent(matches[1]) : undefined;
 }
 
-export const setCookie: (name: string, value: string | number | boolean, props: { [key: string]: any }) => void = (name, value, props) => {
+export const setCookie: (name: string, value: string | number | boolean, props: { [key: string]: any } | null) => void = (name, value, props) => {
     props = {
         path: '/',
         ...props

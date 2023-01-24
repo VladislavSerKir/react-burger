@@ -32,12 +32,17 @@ const OrderDetails: FC = () => {
     orderMatch = orders?.find(order => order.number.toString() === id)
 
     const returnIngredientsPrice = useCallback(() => {
-        const arrOfIngredientsPrice = orderMatch?.ingredients?.map(ingredient => ingredients.find(item => item._id === ingredient).price);
+        const arrOfIngredientsPrice = orderMatch?.ingredients?.map(ingredient => ingredients?.find(item => item._id === ingredient)?.price);
 
-        return arrOfIngredientsPrice?.reduce((acc, item) => { return acc += item }, 0)
+        return arrOfIngredientsPrice?.reduce((acc: number, item: number | undefined) => {
+            if (item) {
+                acc += item
+            }
+            return acc
+        }, 0)
     }, [orderMatch?.ingredients])
 
-    const returnIngredientsQuantity = useCallback((id: string) => {
+    const returnIngredientsQuantity = useCallback((id: string | undefined) => {
         let ingredientsQuantity = 0
         orderMatch?.ingredients.map(ingredientId => {
             if (ingredientId === id) ingredientsQuantity++

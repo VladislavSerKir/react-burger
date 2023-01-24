@@ -6,7 +6,9 @@ import { TUser } from "../services/types";
 export const BASE_URL = `https://norma.nomoreparties.space/api`;
 export const BASE_WSS = `wss://norma.nomoreparties.space`;
 
-export const placeOrderRequest: (cart: Array<string>) => object = async (cart) => {
+// export const placeOrderRequest: (cart: Array<string>) => object = async (cart) => {
+export const placeOrderRequest = async (cart: Array<string>) => {
+
     return fetch(`${BASE_URL}/orders`, {
         method: 'POST',
         headers: {
@@ -40,7 +42,7 @@ export const refreshTokenRequest = async () => {
         .then(checkResponse);
 };
 
-export const registerRequest: ({ email, password, name }: TUser) => object = ({ email, password, name }) => {
+export const registerRequest = ({ email, password, name }: TUser) => {
     return fetch(`${BASE_URL}/auth/register`, {
         method: 'POST',
         cache: 'no-cache',
@@ -58,7 +60,7 @@ export const registerRequest: ({ email, password, name }: TUser) => object = ({ 
     })
 }
 
-export const loginRequest: ({ email, password }: TUser) => object = async ({ email, password }) => {
+export const loginRequest = async ({ email, password }: TUser) => {
     return fetch(`${BASE_URL}/auth/login`, {
         method: 'POST',
         cache: 'no-cache',
@@ -91,7 +93,7 @@ export const logoutRequest = async () => {
     })
 }
 
-export const resetRequest: ({ email }: TUser) => object = async ({ email }) => {
+export const resetRequest = async ({ email }: TUser) => {
     return fetch(`${BASE_URL}/password-reset`, {
         method: 'POST',
         cache: 'no-cache',
@@ -107,7 +109,7 @@ export const resetRequest: ({ email }: TUser) => object = async ({ email }) => {
     })
 }
 
-export const resetPasswordRequest: ({ password, token }: TUser) => object = async ({ password, token }) => {
+export const resetPasswordRequest = async ({ password, token }: TUser) => {
     return fetch(`${BASE_URL}/password-reset/reset`, {
         method: 'POST',
         cache: 'no-cache',
@@ -124,7 +126,7 @@ export const resetPasswordRequest: ({ password, token }: TUser) => object = asyn
     })
 }
 
-export const editRequest: ({ email, name, password }: TUser) => object = async ({ email, name, password }) => {
+export const editRequest = async ({ email, name, password }: TUser) => {
     return fetch(`${BASE_URL}/auth/user`, {
         method: 'PATCH',
         cache: 'no-cache',
@@ -143,7 +145,7 @@ export const editRequest: ({ email, name, password }: TUser) => object = async (
     })
 }
 
-export const getOrderRequest: (number: string) => object = async (number) => {
+export const getOrderRequest = async (number: string) => {
     return fetch(`${BASE_URL}/orders/${number}`, {
         method: 'GET',
         cache: 'no-cache',

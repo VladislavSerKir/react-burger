@@ -44,7 +44,7 @@ export const userSlice = createSlice({
         setUserError: (state, action) => {
             state.userError = action.payload
         },
-        setResetUserError: (state, action) => {
+        setResetUserError: (state) => {
             state.userError = null
         },
         setRegisterRequest: (state, action) => {
@@ -88,7 +88,7 @@ export const userSlice = createSlice({
         setChangePasswordError: (state, action) => {
             state.changePasswordError = action.payload
         },
-        setLogoutUser: (state, action) => {
+        setLogoutUser: (state) => {
             state.userData.email = '';
             state.userData.name = '';
             state.userUpdated = false;
