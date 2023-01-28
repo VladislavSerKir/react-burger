@@ -1,3 +1,5 @@
+import { TSetCookieProps } from "../types";
+
 export const getCookie: (name: string) => string | undefined = (name) => {
     const matches = document.cookie.match(
         new RegExp('(?:^|; )' + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + '=([^;]*)')
@@ -5,11 +7,11 @@ export const getCookie: (name: string) => string | undefined = (name) => {
     return matches ? decodeURIComponent(matches[1]) : undefined;
 }
 
-export const setCookie: (name: string, value: string | number | boolean, props: { [key: string]: any } | null) => void = (name, value, props) => {
+export const setCookie: (name: string, value: string | number | boolean, props: TSetCookieProps) => void = (name, value, props) => {
     props = {
         path: '/',
         ...props
-    };
+    } || {};
 
     let exp = props.expires;
     if (typeof exp == 'number' && exp) {

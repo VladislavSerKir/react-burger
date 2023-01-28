@@ -17,15 +17,18 @@ export const socketMiddleware = (wsActions: TwsActions): Middleware<{}, RootStat
             }
 
             if (type === wsOffline) {
-                socket = null;
+                if (socket) {
+                    socket.close(1000, `Websocket closed`)
+                    socket = null;
+                }
             }
 
             if (socket) {
                 socket.onopen = event => {
-                    dispatch({ type: wsOpen, payload: true });
+                    dispatch({ type: wsOpen });
                 };
                 socket.onerror = event => {
-                    dispatch({ type: wsError, payload: event });
+                    dispatch({ type: wsError });
                 };
                 socket.onmessage = event => {
                     const { data } = event;

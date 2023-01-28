@@ -3,27 +3,7 @@ import { onLogin, onRegister, onReset, onResetPassword, onUpdateUser } from '../
 import { useTypedSelector } from "../services/types";
 import { useTypedDispatch } from "../services/types";
 import { TUser } from "../services/types";
-
-export interface IInputValuesProps {
-    name?: string,
-    email?: string,
-    password?: string,
-    token?: string
-}
-
-export type TInputValues = {
-    name: string,
-    email: string,
-    password: string,
-    token: string
-}
-
-type TEventTarget = {
-    target: {
-        value: string,
-        name: string
-    }
-}
+import { TEventTarget } from "./types";
 
 export const useForm = (inputValues: TUser) => {
 

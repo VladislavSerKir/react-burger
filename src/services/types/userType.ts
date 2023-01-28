@@ -1,21 +1,23 @@
+import { TError } from "."
+
 export type TUserState = {
     isAuthChecked: boolean,
     userData: { name: string, email: string },
     userUpdated: boolean,
-    registerError: null | string,
+    registerError: null | undefined | TError,
     registerRequest: boolean,
-    loginError: null | string,
+    loginError: null | undefined | TError,
     loginRequest: boolean,
-    logoutError: null | string,
+    logoutError: null | undefined | TError,
     logoutRequest: boolean,
-    updateError: null | string,
+    updateError: null | undefined | TError,
     updateRequest: boolean,
-    userError: null | string,
+    userError: null | undefined | TError,
     userRequest: boolean,
     resetRequest: boolean,
     resetRequestConfirmed: boolean,
-    resetRequestError: null | string,
+    resetRequestError: null | undefined | TError,
     changePasswordRequest: boolean,
     changePasswordConfirmed: boolean,
-    changePasswordError: null | string
+    changePasswordError: null | undefined | TError,
 }

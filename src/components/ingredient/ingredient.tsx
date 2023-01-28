@@ -5,6 +5,7 @@ import { removeIngredient, moveIngredient } from '../../services/reducers/constr
 import { useTypedSelector } from '../../services/types';
 import { useTypedDispatch } from '../../services/types';
 import { TIngredient } from '../../services/types';
+import { TItem } from './types';
 
 interface IIngredientProps {
     position: TIngredient,
@@ -18,9 +19,7 @@ export const Ingredient: FC<IIngredientProps> = ({ position, index, id }) => {
     const dispatch = useTypedDispatch();
     const { burgerConstructor } = useTypedSelector(store => store);
 
-    const handleDeleteIngredient = (event: React.ChangeEvent<HTMLInputElement>, ingredient: TIngredient) => {
-        event.preventDefault();
-
+    const handleDeleteIngredient = (ingredient: TIngredient) => {
         const index = Array.from(burgerConstructor.ingredients).indexOf(ingredient);
         dispatch(removeIngredient(index))
     }
@@ -30,14 +29,15 @@ export const Ingredient: FC<IIngredientProps> = ({ position, index, id }) => {
     }, [dispatch])
 
 
-    const [, drop] = useDrop({
+    const [, drop] = useDrop<TItem, unknown, { item: TItem, handlerId: string | symbol | null }>({
         accept: 'ingredientConstructor',
         collect(monitor) {
             return {
+                item: monitor.getItem(),
                 handlerId: monitor.getHandlerId(),
             }
         },
-        hover(item: any,
+        hover(item: TItem,
             monitor: DropTargetMonitor) {
             if (!ref.current) {
                 return;
@@ -85,7 +85,7 @@ export const Ingredient: FC<IIngredientProps> = ({ position, index, id }) => {
                 text={position?.name}
                 price={position?.price}
                 thumbnail={position?.image}
-                handleClose={(event) => handleDeleteIngredient(event, position)}
+                handleClose={() => handleDeleteIngredient(position)}
             />
         </li>
     )

@@ -11,11 +11,6 @@ export const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector;
 export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, Action<string>>
 export type AppThunkDispatch = ThunkDispatch<RootState, never, Action<string>>;
 
-export interface IResponse {
-    success: boolean,
-    [key: string]: any
-}
-
 export type TwsActions = {
     wsConnection: string,
     wsOffline: string,
@@ -25,9 +20,20 @@ export type TwsActions = {
     wsClose: string
 }
 
+export type TRefreshToken = {
+    success: boolean,
+    refreshToken?: string,
+    accessToken?: string
+}
+
+export type TUserEditResponse = {
+    user: TUser,
+} & TRefreshToken
+
 export type TError = {
-    success: boolean;
+    success?: boolean;
     message?: string
+    status?: number
 }
 
 export type TRefreshData = {

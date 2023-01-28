@@ -13,13 +13,13 @@ export const Login: FC = () => {
     const history = useHistory();
     const dispatch = useTypedDispatch();
     const isAuthChecked = useTypedSelector(store => store.user.isAuthChecked);
-    const userRequest = useTypedSelector(store => store.user.userRequest)
+    const loginRequest = useTypedSelector(store => store.user.loginRequest)
     const user = useTypedSelector(store => store.user.userData.name);
     const userError = useTypedSelector(store => store.user.userError);
     const { state } = useLocation<IUseLocation>();
     const location = useLocation<IUseLocation>();
 
-    const userErrorCode = userError?.slice(userError?.length - 3, userError?.length)
+    const userErrorCode = userError?.message?.slice(userError?.message.length - 3, userError?.message?.length)
 
     const userData = {
         name: '',
@@ -42,7 +42,7 @@ export const Login: FC = () => {
         );
     }
 
-    if (userRequest) {
+    if (loginRequest) {
         return (
             <Spinner />
         );

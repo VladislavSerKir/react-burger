@@ -1,5 +1,7 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { TConstructorState } from '../types/constructorType';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { onPlaceOrder } from '../actions/actions';
+import { TIngredient } from '../types';
+import { TConstructorState, TDrag } from '../types/constructorType';
 
 const constructorState: TConstructorState = {
     bun: null,
@@ -14,40 +16,42 @@ export const constructorSlice = createSlice({
     name: 'constructor',
     initialState: constructorState,
     reducers: {
-        addIngredient: (state, action) => {
+        addIngredient: (state, action: PayloadAction<TIngredient>) => {
             if (action.payload.type === 'bun') {
                 state.bun = action.payload;
             } else {
                 state.ingredients = [action.payload, ...state.ingredients];
             }
         },
-        moveIngredient: (state, action) => {
+        moveIngredient: (state, action: PayloadAction<TDrag>) => {
             const ingredients = [...state.ingredients];
             ingredients.splice(action.payload.hoverIndex, 0, ingredients.splice(action.payload.dragIndex, 1)[0]);
             state.ingredients = ingredients
         },
-        removeIngredient: (state, action) => {
+        removeIngredient: (state, action: PayloadAction<number>) => {
             state.ingredients = [...state.ingredients].filter((item, index) => index !== action.payload);
         },
-        setPlaceOrderRequest: (state, action) => {
-            state.orderRequest = action.payload
-        },
-        setOrderNumber: (state, action) => {
+    },
+
+    extraReducers: (builder) => {
+        builder.addCase(onPlaceOrder.pending, (state) => {
+            state.orderRequest = true
+        })
+        builder.addCase(onPlaceOrder.fulfilled, (state, action) => {
             state.orderNumber = action.payload.order.number;
             state.ingredients = [];
             state.bun = null;
             state.success = true;
-        },
-        setResetOrderNumber: (state) => {
-            state.orderNumber = null;
-        },
-        setStatusSuccess: (state, action) => {
+            state.orderRequest = false
+        })
+        builder.addCase(onPlaceOrder.rejected, (state, action) => {
             state.orderError = action.payload;
             state.success = false;
             state.orderNumber = null;
-        }
-    },
+            state.orderRequest = false
+        })
+    }
 })
 
-export const { addIngredient, removeIngredient, moveIngredient, setPlaceOrderRequest, setOrderNumber, setResetOrderNumber, setStatusSuccess } = constructorSlice.actions;
+export const { addIngredient, removeIngredient, moveIngredient } = constructorSlice.actions;
 export const constructorReducer = constructorSlice.reducer;

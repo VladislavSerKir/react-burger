@@ -1,34 +1,23 @@
 import { registerRequest, loginRequest, logoutRequest, resetRequest, editRequest, resetPasswordRequest, getOrderRequest, placeOrderRequest, userRequest, BASE_URL } from "../../utils/utils";
 import { setCookie, deleteCookie, getCookie } from "../../utils/cookie";
-import { setUser, setLogoutUser, setUpdateUser, setUpdateUserRequest, setUpdateUserError, setResetRequest, setResetConfirmed, setResetError, setChangePasswordRequest, setChangePasswordConfirmed, setChangePasswordError, setUserRequest, setUserError, setLogoutRequest, setLogoutError, setAuthChecked } from "../reducers/userReducer";
-import { loadDataFail, setFetchOrder, setFetchOrderError, setFetchOrderRequest, setIngredients, setIngredientsRequest } from "../reducers/dataReducer";
-import { setOrderNumber, setPlaceOrderRequest, setResetOrderNumber, setStatusSuccess } from "../reducers/constructorReducer";
-import { setOpenOrderModal } from "../reducers/modalReducer";
+import { setUser, setUserRequest, setUserError, setAuthChecked } from "../reducers/userReducer";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { checkResponse } from "../../utils/api";
-import { TIngredient, TUser } from "../types";
+import { TError, TIngredient, TOrder, TOrders, TUser, TUserEditResponse } from "../types";
 
 export interface IIngredients {
     success: boolean,
     data: TIngredient[]
 }
 
-export const getAllIngredients = createAsyncThunk(
+export const getAllIngredients = createAsyncThunk<IIngredients, undefined, { rejectValue: TError }>(
     'data/getAllIngredients',
-    async function (_, { dispatch }) {
-        dispatch(setIngredientsRequest(true))
-        return fetch(`${BASE_URL}/ingredients`)
-            .then(checkResponse)
-            .then((data) => {
-                dispatch(setIngredients(data))
-            })
-            .catch((error) => {
-                dispatch(loadDataFail(error))
-                console.warn(error)
-            })
-            .finally(() => {
-                dispatch(setIngredientsRequest(false))
-            })
+    async function (_, { rejectWithValue }) {
+        const response = await fetch(`${BASE_URL}/ingredients`);
+        if (!response.ok) {
+            return rejectWithValue({ status: response.status, message: 'Server Error!' });
+        }
+        const data = await response.json();
+        return data;
     }
 );
 
@@ -61,172 +50,109 @@ export const getUser = createAsyncThunk(
     }
 );
 
-export const onRegister = createAsyncThunk(
+export const onRegister = createAsyncThunk<TUserEditResponse, TUser, { rejectValue: TError }>(
     'user/onRegister',
-    async function (user: TUser, { dispatch }) {
-        dispatch(setUserRequest(true))
-        return registerRequest(user)
-            .then(checkResponse)
-            .then((res) => {
-                const accessToken = res.accessToken.split('Bearer ')[1];
-                const refreshToken = res.refreshToken;
-                setCookie('accessToken', accessToken, null);
-                setCookie('refreshToken', refreshToken, null);
-                dispatch(setUser(res));
-            })
-            .catch((err) => {
-                dispatch(setUserError(err))
-                console.warn(err);
-            })
-            .finally(() => {
-                dispatch(setUserRequest(false))
-            })
+    async function (user, { rejectWithValue }) {
+        const response = await registerRequest(user);
+        if (!response.ok) {
+            return rejectWithValue({ status: response.status, message: 'Server Error!' });
+        }
+        const data = await response.json();
+        const accessToken = data.accessToken.split('Bearer ')[1];
+        const refreshToken = data.refreshToken;
+        setCookie('accessToken', accessToken, {});
+        setCookie('refreshToken', refreshToken, {});
+        return data;
     }
-);
+)
 
-export const onLogin = createAsyncThunk(
+export const onLogin = createAsyncThunk<TUserEditResponse, TUser, { rejectValue: TError }>(
     'user/onLogin',
-    async function (body: TUser, { dispatch }) {
-        dispatch(setUserRequest(true))
-        loginRequest(body)
-            .then(checkResponse)
-            .then((res) => {
-                const accessToken = res.accessToken.split('Bearer ')[1];
-                const refreshToken = res.refreshToken;
-                dispatch(setUser(res));
-                setCookie('accessToken', accessToken, null);
-                setCookie('refreshToken', refreshToken, null);
-            })
-            .catch((err) => {
-                dispatch(setUserError(err))
-                console.warn(err);
-            })
-            .finally(() => {
-                dispatch(setUserRequest(false))
-            })
+    async function (user, { rejectWithValue }) {
+        const response = await loginRequest(user);
+        if (!response.ok) {
+            return rejectWithValue({ status: response.status, message: 'Server Error!' });
+        }
+        const data = await response.json();
+        const accessToken = data.accessToken.split('Bearer ')[1];
+        const refreshToken = data.refreshToken;
+        setCookie('accessToken', accessToken, {});
+        setCookie('refreshToken', refreshToken, {});
+        return data;
     }
 );
 
-export const onLogout = createAsyncThunk(
+export const onLogout = createAsyncThunk<undefined, undefined, { rejectValue: TError }>(
     'user/onLogout',
-    async function (_, { dispatch }) {
-        dispatch(setLogoutRequest(true))
-        logoutRequest()
-            .then(checkResponse)
-            .then((res) => {
-                dispatch(setLogoutUser());
-                deleteCookie('refreshToken');
-                deleteCookie('accessToken');
-            })
-            .catch((err) => {
-                dispatch(setLogoutError(err))
-                console.warn(err);
-            })
-            .finally(() => {
-                dispatch(setLogoutRequest(false))
-            })
+    async function (_, { rejectWithValue }) {
+        const response = await logoutRequest();
+        if (!response.ok) {
+            return rejectWithValue({ status: response.status, message: 'Server Error!' });
+        }
+        deleteCookie('refreshToken');
+        deleteCookie('accessToken');
+        const data = await response.json();
+        return data;
     }
 );
 
-export const onReset = createAsyncThunk(
+
+export const onReset = createAsyncThunk<boolean, TUser, { rejectValue: TError }>(
     'user/onReset',
-    async function (body: TUser, { dispatch }) {
-        dispatch(setResetRequest(true))
-        resetRequest(body)
-            .then(checkResponse)
-            .then((res) => {
-                if (res.success) {
-                    dispatch(setResetConfirmed(res.success))
-                }
-            })
-            .catch((err) => {
-                dispatch(setResetError(err))
-                console.warn(err);
-            })
-            .finally(() => {
-                dispatch(setResetRequest(false))
-            })
+    async function (user, { rejectWithValue }) {
+        const response = await resetRequest(user);
+        if (!response.ok) {
+            return rejectWithValue({ status: response.status, message: 'Server Error!' });
+        }
+        const data = await response.json();
+        return data;
     }
 );
 
-export const onResetPassword = createAsyncThunk(
+export const onResetPassword = createAsyncThunk<boolean, TUser, { rejectValue: TError }>(
     'user/onResetPassword',
-    async function (body: TUser, { dispatch }) {
-        dispatch(setChangePasswordRequest(true))
-        resetPasswordRequest(body)
-            .then(checkResponse)
-            .then((res) => {
-                if (res.success) {
-                    dispatch(setChangePasswordConfirmed(res.success))
-                }
-            })
-            .catch((err) => {
-                dispatch(setChangePasswordError(err))
-                console.warn(err);
-            })
-            .finally(() => {
-                dispatch(setChangePasswordRequest(false))
-            })
+    async function (user, { rejectWithValue }) {
+        const response = await resetPasswordRequest(user);
+        if (!response.ok) {
+            return rejectWithValue({ status: response.status, message: 'Server Error!' });
+        }
+        const data = await response.json();
+        return data;
     }
-);
+)
 
-export const onUpdateUser = createAsyncThunk(
+export const onUpdateUser = createAsyncThunk<TUserEditResponse, TUser, { rejectValue: TError }>(
     'user/onUpdateUser',
-    async function (user: TUser, { dispatch }) {
-        dispatch(setUpdateUserRequest(true))
-        editRequest(user)
-            .then(checkResponse)
-            .then((res) => {
-                dispatch(setUpdateUser(res))
-            })
-            .catch((err) => {
-                dispatch(setUpdateUserError(err))
-                console.warn(err);
-            })
-            .finally(() => {
-                dispatch(setUpdateUserRequest(false))
-            })
+    async function (user, { rejectWithValue }) {
+        const response = await editRequest(user);
+        if (!response.ok) {
+            return rejectWithValue({ status: response.status, message: 'Server Error!' });
+        }
+        const data = await response.json();
+        return data;
     }
-);
+)
 
-export const onFetchOrder = createAsyncThunk(
+export const onFetchOrder = createAsyncThunk<TOrders, string, { rejectValue: TError }>(
     'user/onFetchOrder',
-    async function (number: string, { dispatch }) {
-        dispatch(setFetchOrderRequest(true))
-        getOrderRequest(number)
-            .then(checkResponse)
-            .then((res) => {
-                dispatch(setFetchOrder(res))
-            })
-            .catch((err) => {
-                dispatch(setFetchOrderError(err))
-                console.warn(err);
-            })
-            .finally(() => {
-                dispatch(setFetchOrderRequest(false))
-            })
+    async function (number, { rejectWithValue }) {
+        const response = await getOrderRequest(number);
+        if (!response.ok) {
+            return rejectWithValue({ status: response.status, message: 'Server Error!' });
+        }
+        const data = await response.json();
+        return data;
     }
-);
+)
 
-export const onPlaceOrder = createAsyncThunk(
+export const onPlaceOrder = createAsyncThunk<{ order: TOrder }, string[], { rejectValue: TError }>(
     'user/onPlaceOrder',
-    async function (cart: string[], { dispatch }) {
-        dispatch(setResetOrderNumber())
-        dispatch(setPlaceOrderRequest(true))
-        return placeOrderRequest(cart)
-            .then(checkResponse)
-            .then((data) => {
-                dispatch(setOrderNumber(data))
-            })
-            .then(() => {
-                dispatch(setOpenOrderModal())
-            })
-            .catch((error) => {
-                dispatch(setStatusSuccess(error))
-                console.warn(error)
-            })
-            .finally(() => {
-                dispatch(setPlaceOrderRequest(false))
-            })
+    async function (cart, { rejectWithValue }) {
+        const response = await placeOrderRequest(cart);
+        if (!response.ok) {
+            return rejectWithValue({ status: response.status, message: 'Server Error!' });
+        }
+        const data = await response.json();
+        return data;
     }
-);
+)

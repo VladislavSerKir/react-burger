@@ -61,9 +61,9 @@ const BurgerConstructor: FC<IBurgerConstructorProps> = ({ onDropHandler }) => {
     const handlePlaceOrder = (event: React.FormEvent<HTMLFormElement>) => {
         if (!user) {
             history.push('/login')
-        } else {
+        } else if (cart) {
             event.preventDefault();
-            dispatch(onPlaceOrder(cart as string[]))
+            dispatch(onPlaceOrder(cart))
             history.push({
                 pathname: '/order',
                 state: {

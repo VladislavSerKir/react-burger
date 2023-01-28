@@ -12,3 +12,7 @@ export interface IUseLocation {
 export interface IUseParams {
     id: string
 }
+
+export type TSetCookieProps = {
+    [key: string]: any | {}
+}

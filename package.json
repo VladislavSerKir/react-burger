@@ -24,6 +24,7 @@
     "redux-devtools-extension": "^2.13.9",
     "redux-thunk": "^2.4.1",
     "typescript": "^4.8.3",
+    "typescript-cookie": "^1.0.4",
     "uuid": "^9.0.0",
     "web-vitals": "^2.1.4"
   },

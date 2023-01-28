@@ -26,7 +26,7 @@ export const Profile: FC = () => {
         return () => {
             dispatch(setWebsocketOffline())
         }
-    }, [location.pathname])
+    }, [url])
 
     const onLogoutHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
