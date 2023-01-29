@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { onLogin, onLogout, onRegister, onReset, onResetPassword, onUpdateUser } from '../actions/actions';
-import { TError, TUserEditResponse } from '../types';
+import { TError, TUserFetchResponse } from '../types';
 import { TUserState } from '../types/userType';
 
 const userState: TUserState = {
@@ -35,7 +35,7 @@ export const userSlice = createSlice({
         setAuthChecked: (state, action: PayloadAction<boolean>) => {
             state.isAuthChecked = action.payload
         },
-        setUser: (state, action: PayloadAction<TUserEditResponse>) => {
+        setUser: (state, action: PayloadAction<TUserFetchResponse>) => {
             state.userData.email = action.payload.user.email;
             state.userData.name = action.payload.user.name;
             state.userError = null;
@@ -95,7 +95,7 @@ export const userSlice = createSlice({
             state.resetRequest = true
         })
         builder.addCase(onReset.fulfilled, (state, action) => {
-            state.resetRequestConfirmed = action.payload
+            state.resetRequestConfirmed = action.payload.success
             state.resetRequest = false
         })
         builder.addCase(onReset.rejected, (state, action) => {
@@ -106,7 +106,7 @@ export const userSlice = createSlice({
             state.changePasswordRequest = true
         })
         builder.addCase(onResetPassword.fulfilled, (state, action) => {
-            state.changePasswordConfirmed = action.payload
+            state.changePasswordConfirmed = action.payload.success
             state.changePasswordRequest = false
         })
         builder.addCase(onResetPassword.rejected, (state, action) => {

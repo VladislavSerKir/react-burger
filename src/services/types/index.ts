@@ -20,15 +20,32 @@ export type TwsActions = {
     wsClose: string
 }
 
+export type TPlaceOrder = {
+    order: TOrder,
+    name: string,
+    success: boolean
+}
+
 export type TRefreshToken = {
     success: boolean,
-    refreshToken?: string,
-    accessToken?: string
+    refreshToken: string,
+    accessToken: string
 }
 
 export type TUserEditResponse = {
+    success: boolean
     user: TUser,
 } & TRefreshToken
+
+export type TUserFetchResponse = {
+    success: boolean
+    user: TUser
+}
+
+export type TResponseWithoutPayload = {
+    success: boolean,
+    message: string
+}
 
 export type TError = {
     success?: boolean;

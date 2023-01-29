@@ -2,7 +2,7 @@ import { registerRequest, loginRequest, logoutRequest, resetRequest, editRequest
 import { setCookie, deleteCookie, getCookie } from "../../utils/cookie";
 import { setUser, setUserRequest, setUserError, setAuthChecked } from "../reducers/userReducer";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { TError, TIngredient, TOrder, TOrders, TUser, TUserEditResponse } from "../types";
+import { TError, TIngredient, TResponseWithoutPayload, TOrders, TPlaceOrder, TUser, TUserEditResponse, TUserFetchResponse } from "../types";
 
 export interface IIngredients {
     success: boolean,
@@ -14,9 +14,9 @@ export const getAllIngredients = createAsyncThunk<IIngredients, undefined, { rej
     async function (_, { rejectWithValue }) {
         const response = await fetch(`${BASE_URL}/ingredients`);
         if (!response.ok) {
-            return rejectWithValue({ status: response.status, message: 'Server Error!' });
+            return rejectWithValue({ status: response.status, message: 'Server Error, take a look on method getAllIngredients' });
         }
-        const data = await response.json();
+        const data: IIngredients = await response.json();
         return data;
     }
 );
@@ -38,7 +38,7 @@ export const getUser = createAsyncThunk(
     async function (_, { dispatch }) {
         dispatch(setUserRequest(true))
         return userRequest()
-            .then((user) => {
+            .then((user: TUserFetchResponse) => {
                 dispatch(setUser(user))
             })
             .catch((err) => {
@@ -55,9 +55,9 @@ export const onRegister = createAsyncThunk<TUserEditResponse, TUser, { rejectVal
     async function (user, { rejectWithValue }) {
         const response = await registerRequest(user);
         if (!response.ok) {
-            return rejectWithValue({ status: response.status, message: 'Server Error!' });
+            return rejectWithValue({ status: response.status, message: 'Server Error, take a look on method onRegister' });
         }
-        const data = await response.json();
+        const data: TUserEditResponse = await response.json();
         const accessToken = data.accessToken.split('Bearer ')[1];
         const refreshToken = data.refreshToken;
         setCookie('accessToken', accessToken, {});
@@ -71,88 +71,88 @@ export const onLogin = createAsyncThunk<TUserEditResponse, TUser, { rejectValue:
     async function (user, { rejectWithValue }) {
         const response = await loginRequest(user);
         if (!response.ok) {
-            return rejectWithValue({ status: response.status, message: 'Server Error!' });
+            return rejectWithValue({ status: response.status, message: 'Server Error, take a look on method onLogin' });
         }
-        const data = await response.json();
+        const data: TUserEditResponse = await response.json();
         const accessToken = data.accessToken.split('Bearer ')[1];
         const refreshToken = data.refreshToken;
         setCookie('accessToken', accessToken, {});
         setCookie('refreshToken', refreshToken, {});
         return data;
     }
-);
+)
 
-export const onLogout = createAsyncThunk<undefined, undefined, { rejectValue: TError }>(
+export const onLogout = createAsyncThunk<TResponseWithoutPayload, undefined, { rejectValue: TError }>(
     'user/onLogout',
     async function (_, { rejectWithValue }) {
         const response = await logoutRequest();
         if (!response.ok) {
-            return rejectWithValue({ status: response.status, message: 'Server Error!' });
+            return rejectWithValue({ status: response.status, message: 'Server Error, take a look on method onLogout' });
         }
         deleteCookie('refreshToken');
         deleteCookie('accessToken');
-        const data = await response.json();
+        const data: TResponseWithoutPayload = await response.json();
         return data;
     }
 );
 
 
-export const onReset = createAsyncThunk<boolean, TUser, { rejectValue: TError }>(
+export const onReset = createAsyncThunk<TResponseWithoutPayload, TUser, { rejectValue: TError }>(
     'user/onReset',
     async function (user, { rejectWithValue }) {
         const response = await resetRequest(user);
         if (!response.ok) {
-            return rejectWithValue({ status: response.status, message: 'Server Error!' });
+            return rejectWithValue({ status: response.status, message: 'Server Error, take a look on method onReset' });
         }
-        const data = await response.json();
+        const data: TResponseWithoutPayload = await response.json();
         return data;
     }
-);
+)
 
-export const onResetPassword = createAsyncThunk<boolean, TUser, { rejectValue: TError }>(
+export const onResetPassword = createAsyncThunk<TResponseWithoutPayload, TUser, { rejectValue: TError }>(
     'user/onResetPassword',
     async function (user, { rejectWithValue }) {
         const response = await resetPasswordRequest(user);
         if (!response.ok) {
-            return rejectWithValue({ status: response.status, message: 'Server Error!' });
+            return rejectWithValue({ status: response.status, message: 'Server Error, take a look on method onResetPassword' });
         }
-        const data = await response.json();
+        const data: TResponseWithoutPayload = await response.json();
         return data;
     }
-)
+);
 
 export const onUpdateUser = createAsyncThunk<TUserEditResponse, TUser, { rejectValue: TError }>(
     'user/onUpdateUser',
     async function (user, { rejectWithValue }) {
         const response = await editRequest(user);
         if (!response.ok) {
-            return rejectWithValue({ status: response.status, message: 'Server Error!' });
+            return rejectWithValue({ status: response.status, message: 'Server Error, take a look on method onUpdateUser' });
         }
-        const data = await response.json();
+        const data: TUserEditResponse = await response.json();
         return data;
     }
 )
 
 export const onFetchOrder = createAsyncThunk<TOrders, string, { rejectValue: TError }>(
-    'user/onFetchOrder',
+    'data/onFetchOrder',
     async function (number, { rejectWithValue }) {
         const response = await getOrderRequest(number);
         if (!response.ok) {
-            return rejectWithValue({ status: response.status, message: 'Server Error!' });
+            return rejectWithValue({ status: response.status, message: 'Server Error, take a look on method onFetchOrder' });
         }
-        const data = await response.json();
+        const data: TOrders = await response.json();
         return data;
     }
 )
 
-export const onPlaceOrder = createAsyncThunk<{ order: TOrder }, string[], { rejectValue: TError }>(
-    'user/onPlaceOrder',
+export const onPlaceOrder = createAsyncThunk<TPlaceOrder, string[], { rejectValue: TError }>(
+    'constructor/onPlaceOrder',
     async function (cart, { rejectWithValue }) {
         const response = await placeOrderRequest(cart);
         if (!response.ok) {
-            return rejectWithValue({ status: response.status, message: 'Server Error!' });
+            return rejectWithValue({ status: response.status, message: 'Server Error, take a look on method onPlaceOrder' });
         }
-        const data = await response.json();
+        const data: TPlaceOrder = await response.json();
         return data;
     }
 )
