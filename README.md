@@ -1,46 +1,74 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+<div align="center">
+<h1>Проект Яндекса: 'Бургер'</h1>
+<a href="https://vladislavserkir.github.io/react-burger/">
+<img src="https://user-images.githubusercontent.com/83783362/215550821-5ac18260-6617-4941-848c-c56fb482c8e5.jpg">
+</img>
+</a>
+</div>
+<hr>
 
-In the project directory, you can run:
+Проект Burger-Stellar является полноценным фронтенд приложением-магазином, с возможностью регистрации, создания заказа и просмотра как всех заказов, так и каждого заказа по отдельности. Так же есть возможность редактировать свои данные в личном кабинете пользователя. 
 
-### `npm start`
+## Технологии в проекте
+Для написания проекта использовалась библиотека React, в основе проекта лежит сборка Create React App с флагом -template ts для возможности компиляции файлов компонентов с разметкой и простых файлов с JS в TypeScript. 
+* В качестве основной стилевой библиотеки использовалась **react-developer-burger-ui-components** - библиотека с UI компонентами, иконками и др. графическими элементами.
+* Для написания структуры стилей использовалась БЭМ методология, стили написаны на SCSS, который предлагает более удобный и интуитивно понятный синтаксис для понимания и реализации адаптивности на разных расширениях. **Решено не использовать modules** для уменьшения импортов в компоненты и невозможностью написания полноценных селекторов по БЭМ.
+* Приложение имеет каскадную структуру компонентов с разметкой, где головной компонент App рендерится в корневой блок div .
+* Для реализации функционала модальных окон использовался функционал **React-Create portal**, который позволяет **наложить** содержимое модальных окон поверх основного div.
+* В приложении реализован роутинг. В качестве библиотеки компонентов роутинга использовался **react-router-dom 5 версии**. В качестве вспомогательных хуков для осуществления полноценного роутинга использовались:
+<br> **useLocation** позволяет возвращать объект с url, state, и других свойств текущего компонента для управления програмным роутингом.
+<br> **useParams** позволяет осуществлять динамичесчкий роутинг относительно какого либо пути pathname на любом уровне приложения. И отображать динамически содержимое компонента в зависимости от переданного свойства, например id карточки.
+<br> **useHistory** за счет того что хук возвращает объект history с методами, позволяет осуществлять манипуляции с историей перемещений и реализации паттерна go back. Когда пользователь заполнил корзину, но не вошел в систему, происходит редирект на предыдущую страницу с которой пользователь ушел и доофомить заказ.
+* Использовалась библиотека **react-dnd** для интерактивного перемещения покупных элементов и формирования корзины.
+* Для управления состоянием приложения использовался **React Redux Toolkit** с использованием функции **createSlice** для автоматического создания экшенов и их последующей удобной типизацией. Для удобства стор был абстрактно разделен на 4 части редюсеров: user - для управлением данными пользователя, data - для управления и хранения данных получаемых с бэкенда, modal - для управления модальными окнами, constructor - для управления элементами корзины и формирования заказа.
+* Для осуществления непрерывного потока данных заказов с бэкенда реализован **Websocket**, который позволяет получать заказы и просматривать их статусы в режиме реального времени.
+* Реализован функционал **accessToken** и **refreshToken** в паре при аутентификации. При регистрации и входе выдаются оба токена. **accessToken** служит для автоматического входа в приложение при перезагрузке страницы. **refreshToken** служит для обновления предыдущего в случае если он истек.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Реализация
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Главная страница условно разделена на 2 части:
+* **Левая**: Список всех ингредиентов в виде карточек, доступных для оформления заказа. Для удобного переключения типов ингредиентов реализованы табы.
+* **Правая**: Список ингредиентов помещенных в корзину. Для оформления и выдачи номера заказа необходимо войти в систему, а так же выбрать булку к бургеру в качестве основы заказа.
 
-### `npm test`
+![Запись экрана 2023-01-30 в 22 02 39 (1)](https://user-images.githubusercontent.com/83783362/215572367-48fc7f24-84c7-452e-ac8c-29e61b858c13.gif)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Для осуществления заказа, как говорилось выше, необходимо войти в личный кабинет нажав на ссылку 'войти' или 'Личный кабинет' в правом верхнем углу. После оформления заказа будет выдан номер и откроется модальное окно.
 
-### `npm run build`
+![Запись экрана 2023-01-30 в 22 13 54](https://user-images.githubusercontent.com/83783362/215573946-c0098421-516c-484f-a22f-2c23349788ad.gif)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Можно просматривать все заказы в разделе 'Лента заказов', в нем находятся все заказы пользователей. Так же можно помотреть собственные заказы в личном кабинете. 
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+![Запись экрана 2023-01-30 в 22 21 21](https://user-images.githubusercontent.com/83783362/215575804-c239e03c-51c2-464f-8022-07d74e2c2f8c.gif)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Имеется возможность управления данными пользователя в разделе 'Профиль' Личного кабинета.
 
-### `npm run eject`
+![1212](https://user-images.githubusercontent.com/83783362/215576188-dee13f9d-a665-4626-b6b6-4a29ffd9bd84.jpg)
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Так же в данном приложении доступна возможность восстановления пароля. В этом случае необходимо ввести email аккаунта. На указанный ящик придет код восстановления пароля, его можно ввести в окне подтверждения смены пароля совместно с новым паролем.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+![Запись экрана 2023-01-30 в 22 32 08](https://user-images.githubusercontent.com/83783362/215577872-d6fc0b3f-1a8a-43a2-b498-5ee0cfa939b3.gif)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Технологии
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+<div align="left">
+  <br/>
+  <img src="https://github.com/devicons/devicon/blob/master/icons/html5/html5-original.svg" title="HTML5" alt="HTML" width="40" height="40"/>&nbsp;
+  <img src="https://github.com/devicons/devicon/blob/master/icons/sass/sass-original.svg"  title="SASS" alt="SASS" width="40" height="40"/>&nbsp;
+  <img src="https://github.com/devicons/devicon/blob/master/icons/react/react-original-wordmark.svg" title="React" alt="React" width="40" height="40"/>&nbsp;
+  <img src="https://github.com/devicons/devicon/blob/master/icons/typescript/typescript-plain.svg" title="TypeScript" alt="TypeScript" width="40" height="40"/>&nbsp;
+    <img src="https://github.com/devicons/devicon/blob/master/icons/javascript/javascript-plain.svg" title="JavaScript" alt="JavaScript" width="40" height="40"/>&nbsp;
+    <img src="https://github.com/devicons/devicon/blob/master/icons/redux/redux-original.svg" title="Redux" alt="Redux" width="40" height="40"/>&nbsp;
+    <img src="https://github.com/devicons/devicon/blob/master/icons/figma/figma-original.svg" title="Figma" alt="Figma" width="40" height="40"/>&nbsp;
+</div>
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Установка, настройка
+Проект, развернутый на Github:  [GitHub Pages](https://vladislavserkir.github.io/react-burger/)
+- Установка зависимостей: `npm install`
+- Режим разработки: `npm run dev`
+- Сформировать проект для последующего размещения на ресурсах: `npm run build`
+- Сформировать заново проект для отображения на GitHub pages: `npm run deploy`
+## Написать мне
+[![github](https://img.shields.io/badge/GitHub-000000?style=for-the-badge&logo=github)](https://github.com/VladislavSerKir)
+[![telegram](https://img.shields.io/badge/Telegram-68c4f0?style=for-the-badge&logo=telegram)](https://t.me/vl_kireev)
